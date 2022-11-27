@@ -57,8 +57,18 @@ const productDetails = ({ navigation, route }) => {
         })}
       </View>
       <View style={{ marginHorizontal: 20, marginTop: 40 }}>
-        <Button icon="cart" mode="contained" buttonColor="#6E9FFF">
+        <Button
+          icon="cart"
+          mode="contained"
+          color="#6E9FFF"
+          labelStyle={{ color: "#fff" }}
+        >
           Add To Cart
+        </Button>
+      </View>
+      <View style={{ marginHorizontal: 20, marginTop: 15, marginBottom: 50 }}>
+        <Button mode="contained" color="#6E9FFF" labelStyle={{ color: "#fff" }}>
+          Buy Now {price}$
         </Button>
       </View>
     </ScrollView>

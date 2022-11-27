@@ -68,7 +68,7 @@ const products = ({ navigation }) => {
   ];
   return (
     <View style={styles.container}>
-      <View style={{ paddingLeft: 20, marginTop: 85 }}>
+      <View style={{ paddingLeft: 20 }}>
         <Text style={{ fontSize: 28 }}>Shop</Text>
       </View>
 
@@ -140,6 +140,7 @@ const products = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: 20,
   },
   searchContainer: {
     marginLeft: 20,
