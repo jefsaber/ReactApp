@@ -1,8 +1,15 @@
-import { View, Text, StyleSheet, ScrollView, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import React from "react";
 import { Searchbar } from "react-native-paper";
 
-const products = () => {
+const products = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = React.useState("");
 
   const onChangeSearch = (query) => setSearchQuery(query);
@@ -11,9 +18,52 @@ const products = () => {
     {
       id: 1,
       imageUrl: require("../assets/nike1.png"),
-      title: "Nike Air Force 1",
-      color: ["White", "Black", "Red"],
+      category: "Nike Air Force 1",
+      title: "Midnight Red",
+      color: ["red", "green", "black"],
       price: 100,
+      description:
+        "lorem epsum lorem epsumlorem epsumlorem epsumlorem epsumlorem epsumlorem epsumlorem epsumlorem epsumlorem epsum",
+      sizes: [32, 34, 36, 38, 40, 42, 44, 46],
+    },
+    {
+      id: 2,
+      imageUrl: require("../assets/nike1.png"),
+      category: "Nike Air Force 1",
+      title: "Midnight Red",
+      color: ["Midnight Red", "White", "Black"],
+      price: 100,
+      description:
+        "lorem epsum lorem epsumlorem epsumlorem epsumlorem epsumlorem epsumlorem epsumlorem epsumlorem epsumlorem epsum",
+      sizes: [32, 34, 36, 38, 40],
+    },
+    {
+      id: 3,
+      imageUrl: require("../assets/nike1.png"),
+      category: "Nike Air Force 1",
+      title: "Midnight Red",
+      color: ["Midnight Red", "White", "Black"],
+      price: 100,
+      description:
+        "lorem epsum lorem epsumlorem epsumlorem epsumlorem epsumlorem epsumlorem epsumlorem epsumlorem epsumlorem epsum",
+      sizes: [32, 34, 36, 38, 40],
+    },
+    {
+      id: 4,
+      imageUrl: require("../assets/nike1.png"),
+      category: "Nike Air Force 1",
+      title: "Midnight Red",
+      color: ["Midnight Red", "White", "Black"],
+      price: 100,
+      description:
+        "lorem epsum lorem epsumlorem epsumlorem epsumlorem epsumlorem epsumlorem epsumlorem epsumlorem epsumlorem epsum",
+      //   sizes: [
+      //     { id: 1, size: 30 },
+      //     { id: 2, size: 32 },
+      //     { id: 3, size: 34 },
+      //     { id: 4, size: 36 },
+      //   ],
+      sizes: [32, 34, 36, 38, 40],
     },
   ];
   return (
@@ -30,19 +80,59 @@ const products = () => {
           style={{ borderRadius: 12 }}
         />
       </View>
-      <View style={styles.products}>
-        <ScrollView>
+
+      <ScrollView style={styles.products}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+          }}
+        >
           {DATA.map((item) => {
             return (
-              <View style={styles.productList}>
-                <Text>{item.title}</Text>
-                <Text>{item.color[0]}</Text>
-                <Text>${item.price}</Text>
-              </View>
+              <TouchableOpacity
+                key={item.id}
+                onPress={() => {
+                  navigation.navigate("Details", {
+                    id: item.id,
+                    category: item.category,
+                    title: item.title,
+                    color: item.color,
+                    price: item.price,
+                    image: item.imageUrl,
+                    description: item.description,
+                    sizes: item.sizes,
+                  });
+                }}
+                style={styles.productList}
+              >
+                <Image source={item.imageUrl} />
+                <Text
+                  style={{
+                    color: "#383838",
+                    fontWeight: "bold",
+                    fontSize: 16,
+                    marginTop: 30,
+                    marginLeft: 10,
+                  }}
+                >
+                  {item.title}
+                </Text>
+                <Text style={{ fontSize: 12, marginLeft: 10 }}>
+                  {item.category}
+                </Text>
+
+                <Text
+                  style={{ color: "#FFD600", fontSize: 14, marginLeft: 10 }}
+                >
+                  ${item.price}
+                </Text>
+              </TouchableOpacity>
             );
           })}
-        </ScrollView>
-      </View>
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -62,8 +152,10 @@ const styles = StyleSheet.create({
   },
   productList: {
     width: "45%",
-    backgroundColor: "#818181",
-    height: 200,
+    backgroundColor: "#EFEFEF",
+    height: 170,
+    borderRadius: 12,
+    marginBottom: 20,
   },
 });
 export default products;
