@@ -13,8 +13,8 @@ export default function App() {
     <View style={styles.container}>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="Profile" component={Profile} />
-          <Stack.Screen name="Update Password" component={UpdatePassword} />
+          <Stack.Screen name="Products" component={Products} />
+          <Stack.Screen name="Details" component={ProductDetails} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>
