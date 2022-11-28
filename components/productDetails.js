@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import React from "react";
 import { Button } from "react-native-paper";
+import { List } from "react-native-paper";
 
 const productDetails = ({ navigation, route }) => {
   const { id, category, title, color, price, image, description, sizes } =
@@ -27,11 +28,7 @@ const productDetails = ({ navigation, route }) => {
       </View>
       <View style={styles.sizes}>
         {sizes.map((size, index) => {
-          return (
-            <View key={index} style={styles.size}>
-              <Text style={{ textAlign: "center" }}>{size}</Text>
-            </View>
-          );
+          return <List.Item title={size} key={index} style={styles.size} />;
         })}
       </View>
       <View style={{ marginTop: 30, marginLeft: 20 }}>
@@ -98,11 +95,12 @@ const styles = StyleSheet.create({
   },
   size: {
     width: "15%",
+    height: 45,
     borderWidth: 0.5,
     borderRadius: 6,
-    padding: 6,
     marginRight: 10,
     marginBottom: 10,
+    textAlign: "center",
   },
   colors: {
     marginTop: 20,
