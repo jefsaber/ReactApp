@@ -61,6 +61,7 @@ const Profile = ({ navigation }) => {
             contentStyle={{ justifyContent: "flex-start" }}
             icon="lock"
             mode="contained"
+            onPress={() => navigation.navigate("Update Password")}
           >
             Password Update
           </Button>

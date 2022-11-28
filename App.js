@@ -4,6 +4,7 @@ import { NavigationContainer, StackActions } from "@react-navigation/native";
 import Products from "./components/products";
 import ProductDetails from "./components/productDetails";
 import Profile from "./components/Profile";
+import UpdatePassword from "./components/Updatepassword";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Stack = createNativeStackNavigator();
@@ -13,6 +14,7 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="Profile" component={Profile} />
+          <Stack.Screen name="Update Password" component={UpdatePassword} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>
