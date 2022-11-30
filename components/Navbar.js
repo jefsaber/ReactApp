@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View,TouchableOpacity } from 'react-native'
 import React from 'react'
 import MaterialIcons from '@expo/vector-icons/Ionicons';
-import  TouchableRipple  from 'react-native-paper'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
 const NavblockContent = (props) => {
     return (
       <View  style={styles.NavblockContentCont}>
@@ -54,4 +55,4 @@ const styles = StyleSheet.create({
   
   });
 export default Navbar
-  
+
