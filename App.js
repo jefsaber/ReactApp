@@ -6,13 +6,14 @@ import Navbar from './components/Navbar'
 import Products from './components/products'
 import ProductDetails from './components/productDetails'
 import Homepage from "./components/homepage";
+import Search from "./components/search";
 const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <View style={styles.container}>
       <NavigationContainer  >
         <Stack.Navigator screenOptions={{headerShown:false}} >
-          <Stack.Screen  name="Homepage" component={Homepage}  />
+          <Stack.Screen  name="Homepage" component={Search}  />
           <Stack.Screen name="Details" component={ProductDetails} />
           
         </Stack.Navigator>
