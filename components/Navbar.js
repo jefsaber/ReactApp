@@ -6,11 +6,11 @@ const NavblockContent = (props) => {
     return (
       <View  style={styles.NavblockContentCont}>
      
-      <TouchableRipple    style={styles.NavblockContent}>
-      <View style={styles.NavButtonCont}>
+      <TouchableOpacity  >
+      <View>
       <MaterialIcons style={styles.NavButton} name={props.icon} size={24} color="white" />
       </View>
-      </TouchableRipple>
+      </TouchableOpacity>
       </View>
     );
   }
@@ -46,15 +46,11 @@ const styles = StyleSheet.create({
       width:'20%',
       alignItems:'center',
       justifyContent:'center',
-      backgroundColor:'red',
-      borderWidth:1,
+      backgroundColor:'#6E9FFF',
       height:'100%',
-      flex:1
       
     },
-    NavblockContent:{
-      alignItems:'center',
-    },
+   
   
   });
 export default Navbar
