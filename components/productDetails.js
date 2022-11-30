@@ -3,7 +3,7 @@ import React from "react";
 import { Button } from "react-native-paper";
 import { List } from "react-native-paper";
 
-const productDetails = ({ navigation, route }) => {
+const ProductDetails = ({ navigation, route }) => {
   const { id, category, title, color, price, image, description, sizes } =
     route.params;
   return (
@@ -109,4 +109,4 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
 });
-export default productDetails;
+export default ProductDetails;

@@ -9,7 +9,7 @@ import {
 import React from "react";
 import { Searchbar } from "react-native-paper";
 
-const products = ({ navigation }) => {
+const Products = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = React.useState("");
 
   const onChangeSearch = (query) => setSearchQuery(query);
@@ -159,4 +159,4 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 });
-export default products;
+export default Products;
