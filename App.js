@@ -7,13 +7,15 @@ import Products from './components/products'
 import ProductDetails from './components/productDetails'
 import Homepage from "./components/homepage";
 import Search from "./components/search";
+import Favorites from "./components/favorites";
+import Cart from "./components/cart";
 const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <View style={styles.container}>
       <NavigationContainer  >
         <Stack.Navigator screenOptions={{headerShown:false}} >
-          <Stack.Screen  name="Homepage" component={Search}  />
+          <Stack.Screen  name="Homepage" component={Cart}  />
           <Stack.Screen name="Details" component={ProductDetails} />
           
         </Stack.Navigator>

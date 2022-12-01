@@ -1,12 +1,11 @@
 import {
   StyleSheet,
-  Text,
   View,
   TextInput,
   TouchableOpacity,
-  ScrollView,
-  Image
+  Keyboard
 } from "react-native";
+import Productlist from "./productlist";
 import React from "react";
 import MaterialIcons from "@expo/vector-icons/Ionicons";
 import { data } from "../assets/Data";
@@ -17,11 +16,14 @@ const Search = () => {
     item
   })
   };
+  const iconfunction = ()=>{
+    console.log('1')
+  }
   return (
     <View style={styles.container}>
       <View style={styles.SearchCont}>
         <View style={styles.SearchButton}>
-          <MaterialIcons name={"arrow-back"} size={28} color="black" />
+          <MaterialIcons  name={"arrow-back"} size={28} color="black" />
         </View>
         <View style={styles.SearchInputCont}>
           <TextInput
@@ -44,50 +46,10 @@ const Search = () => {
           </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.RecentCont}>
-        {
-          // searchQuery &&
-          <View>
-            <Text style={styles.RecentText}>Recent</Text>
-            <View>
-              <ScrollView>
-                <View style={styles.ProductsCont}>
-                
-                  {data.map((item) => {
-                    return (
-                      <TouchableOpacity
-                        delayPressIn={50}
-                        key={item.id}
-                      >
-                        <View style={styles.ProductCont}>
-                          <View style={styles.ProductDetails}>
-                          <Image resizeMode="contain" source={item.imageUrl}  style={styles.ProductImage}/>
-                          <View  >
-                            <Text style={styles.ProductTitle}>
-                            {item.title}
-                            </Text>
-                            <Text style={styles.ProductCategory}>
-                            {item.category}
-                            </Text>
-                          </View>
-                          </View>
-                          <TouchableOpacity 
-                        delayPressIn={50}>
-                          <MaterialIcons name="close" size={28} />
-                        </TouchableOpacity>
-                       
-
-                        </View>
-                        </TouchableOpacity>
-                       
-                    );
-                  })}
-                </View>
-              </ScrollView>
-            </View>
-          </View>
-        }
+      <View  onTouchStart={()=>{Keyboard.dismiss()}}>
+     <Productlist icon='close' title='Recent' data={data} iconfunction={iconfunction} />
       </View>
+      
     </View>
   );
 };
@@ -126,19 +88,21 @@ const styles = StyleSheet.create({
   },
   RecentCont: {
     paddingLeft: 20,
-    marginVertical: 15,
+    marginBottom: 15,
+    paddingTop:15,
+    
   },
   RecentText: {
     fontWeight: "bold",
-    // fontSize:'20'
     fontSize: 18,
   },
   ProductDetails :{
     flexDirection:'row',
     alignItems:'center',
     justifyContent:'space-between',
-    width:'60%' ,
+    width:'55%' ,
     height:'100%', 
+
   },
   ProductsCont :{
     marginTop:10,
@@ -148,17 +112,20 @@ const styles = StyleSheet.create({
     justifyContent:'space-between',
     alignItems:'center',
     marginBottom:10,
-    width:'98%',
-    // borderWidth:1
+    width:'96%',
   },
   ProductImage :{
-    width:100,
-    height:70,
+    width:90,
+    height:60,
   },
   ProductTitle :{
     fontWeight:'bold',
-    fontSize:16,
+    fontSize:14,
     marginBottom:5
   },
-  
+  ProductCategory : {
+    fontSize:12,
+
+  },
+ 
 });
