@@ -1,8 +1,8 @@
-import { StyleSheet, Text, View , TouchableOpacity} from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Productlist from "./productlist";
 import { data } from "../assets/Data";
-import { Button ,TouchableRipple } from 'react-native-paper';
+import { TouchableRipple } from 'react-native-paper';
 import MaterialIcons from "@expo/vector-icons/Ionicons";
 
 const Cart = () => {
@@ -16,7 +16,7 @@ const Cart = () => {
         </View>    
           <TouchableRipple borderless={true} style={styles.Button}
           onPress={() => console.log('Pressed')}
-          rippleColor="rgba(0, 0, 0, .32)">
+          rippleColor="rgba(255, 255, 255, .32)">
           <View style={{flexDirection:'row',alignItems:'center',justifyContent:'center'}}>
           <Text style={{color:'white',fontSize:20}}>Next</Text>
           <MaterialIcons name='chevron-forward' size={24} color={'white'}></MaterialIcons>

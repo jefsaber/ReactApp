@@ -8,6 +8,10 @@ import ProductDetails from './components/productDetails'
 import Homepage from "./components/homepage";
 import Search from "./components/search";
 import Favorites from "./components/favorites";
+import AddProduct from './components/dashboard/addprodut'
+import AllProduct from './components/dashboard/allproducts'
+import dashboard from './components/dashboard/dashboard'
+
 import Cart from "./components/cart";
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -15,7 +19,7 @@ export default function App() {
     <View style={styles.container}>
       <NavigationContainer  >
         <Stack.Navigator screenOptions={{headerShown:false}} >
-          <Stack.Screen  name="Homepage" component={Cart}  />
+          <Stack.Screen  name="Homepage" component={AddProduct}  />
           <Stack.Screen name="Details" component={ProductDetails} />
           
         </Stack.Navigator>
