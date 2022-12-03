@@ -28,7 +28,7 @@ const Profile = ({ navigation }) => {
       quality: 1,
     });
     console.log(JSON.stringify(_image));
-    if (!_image.cancelled) {
+    if (!_image.canceled) {
       setImage(_image.uri);
     }
   };
@@ -43,7 +43,7 @@ const Profile = ({ navigation }) => {
             />
           )}
           <View style={styles.uploadBtnContainer}>
-            <TouchableOpacity onPress={addImage} style={styles.uploadBtn}>
+            <TouchableOpacity  hitSlop={{right:0,left:0,top:8,bottom:0}} onPress={addImage} style={styles.uploadBtn}>
               <Text style={{ color: "#fff" }}>
                 {image ? "Edit" : "Upload"} Image
               </Text>
@@ -57,6 +57,7 @@ const Profile = ({ navigation }) => {
         </View>
         <View style={styles.passbutton}>
           <Button
+          
             style={{ backgroundColor: "#6E9FFF" }}
             contentStyle={{ justifyContent: "flex-start" }}
             icon="lock"

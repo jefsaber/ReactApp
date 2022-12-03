@@ -41,8 +41,7 @@ const Tabs = () => {
         tabBarHideOnKeyboard:true,
         tabBarStyle: { backgroundColor:'#6E9FFF',height:60},
         tabBarIcon:{color:'white'},
-        tabBarActiveTintColor: 'tomato',
-        tabBarInactiveTintColor: 'gray',
+     
       })}
       initialRouteName="Homepage"
     >
@@ -108,7 +107,7 @@ const Tabs = () => {
         headerShown: false,
         })}
 />
-      <Tab.Screen name="Profile" component={AddProduct} options={({ route }) => ({
+      <Tab.Screen name="Profile" component={Profile} options={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
             if (route.name === 'Profile') {
