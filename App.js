@@ -5,73 +5,122 @@ import Favorites from "./components/favorites";
 import Cart from "./components/cart";
 import Homepage from "./components/homepage";
 import Search from "./components/search";
+import Profile from "./components/Profile";
 import AddProduct from './components/dashboard/addprodut'
 import MaterialIcons from '@expo/vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator();
 const Tabs = () => {
   return (
+   
     <Tab.Navigator
-      screenOptions={{
+      screenOptions={({ route }) => ({
+        // tabBarIcon: ({ focused, color, size }) => {
+        //   let iconName;
+  
+        //   if (route.name === 'Homepage') {
+        //     iconName = focused
+        //       ? 'home'
+        //       : 'home-outline';
+        //   } else if (route.name === 'Favorites') {
+        //     iconName = focused ? 'heart' : 'heart-outline';
+        //   }
+        //   else if (route.name === 'Cart') {
+        //     iconName = focused ? 'heart' : 'heart-outline';
+        //   }
+        //   else if (route.name === 'Favorites') {
+        //     iconName = focused ? 'heart' : 'heart-outline';
+        //   }
+        //   else
+        //   iconName='home'
+        //   // You can return any component that you like here!
+        //   return <MaterialIcons name={iconName} size={24} color={'white'} />;
+        // },
         tabBarShowLabel:false,
-        tabBarActiveBackgroundColor:'red',
+        // tabBarActiveBackgroundColor:'red',
         tabBarHideOnKeyboard:true,
-        tabBarStyle: { backgroundColor:'#6E9FFF'},
-        tabBarActiveTintColor:'red',
-        tabBarIconStyle:{color:'white'},
-        
-      }}
+        tabBarStyle: { backgroundColor:'#6E9FFF',height:60},
+        tabBarIcon:{color:'white'},
+        tabBarActiveTintColor: 'tomato',
+        tabBarInactiveTintColor: 'gray',
+      })}
       initialRouteName="Homepage"
     >
       <Tab.Screen
         name="Homepage"
         component={Homepage}
-        options={{
-          headerShown: false,
-          tabBarIcon: () => (
-            <MaterialIcons name="home"  size={24} />
-          ),
-
-        }}
+        options={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+            if (route.name === 'Homepage') {
+              iconName = focused
+                ? 'home-outline'
+                : 'home';
+          }
+          return <MaterialIcons name={iconName} size={24} color={'white'} />;
+        },
+        headerShown: false,
+        })}
       />
       <Tab.Screen
         name="Favorites"
         component={Favorites}
-        options={{
-          headerShown: false,
-          tabBarIcon: () => (
-            <MaterialIcons name="heart"  size={24} />
-          ),
-
-        }} />
+        options={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+            if (route.name === 'Favorites') {
+              iconName = focused
+                ? 'heart-outline'
+                : 'heart';
+          }
+          return <MaterialIcons name={iconName} size={24} color={'white'} />;
+        },
+        headerShown: false,
+        })}
+ />
       <Tab.Screen
         name="Search"
         component={Search}
-        options={{
-          headerShown: false,
-
-          tabBarIcon: () => (
-            <MaterialIcons name="search"  size={24} />
-          ),
-
-        }} />
-
-      <Tab.Screen name="Cart" component={Cart} options={{
+        options={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+            if (route.name === 'Search') {
+              iconName = focused
+                ? 'search-outline'
+                : 'search';
+          }
+          return <MaterialIcons  name={iconName} size={24} color={'white'} />;
+        },
         headerShown: false,
+        })}
+ />
 
-        tabBarIcon: () => (
-          <MaterialIcons name="cart"  size={24} />
-        ),
-
-      }} />
-      <Tab.Screen name="AddProduct" component={AddProduct} options={{
+      <Tab.Screen name="Cart" component={Cart} options={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+            if (route.name === 'Cart') {
+              iconName = focused
+                ? 'cart-outline'
+                : 'cart';
+          }
+          return <MaterialIcons   name={iconName} size={24} color={'white'} />;
+        },
         headerShown: false,
-        // tabBarButton: () => <NavblockContent icon="home" />,
-        tabBarIcon: () => (
-          <MaterialIcons name="cart"  size={24} />
-        ),
-
-      }} />
+        })}
+/>
+      <Tab.Screen name="Profile" component={AddProduct} options={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+            if (route.name === 'Profile') {
+              iconName = focused
+                ? 'menu'
+                : 'menu-outline';
+          }
+          return <MaterialIcons  name={iconName} size={24} color={'white'} />;
+        },
+        headerShown: false,
+        })}
+ />
     </Tab.Navigator>
   );
 };
