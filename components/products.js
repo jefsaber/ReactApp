@@ -99,18 +99,28 @@ const Products = ({ navigation }) => {
                 style={styles.Product}
                 onPress={() => {
                   // navigation.navigate("ProductDetails", {
-                  //   id: item.id,
-                  //   category: item.category,
-                  //   title: item.title,
-                  //   color: item.color,
-                  //   price: item.price,
-                  //   image: item.imageUrl,
-                  //   description: item.description,
-                  //   sizes: item.sizes,
+                    // id: item.id,
+                    // category: item.category,
+                    // title: item.title,
+                    // color: item.color,
+                    // price: item.price,
+                    // image: item.imageUrl,
+                    // description: item.description,
+                    // sizes: item.sizes,
                   // })
                   navigation.navigate('ProductDetails',
                   {
-                    screen:'Homepage'
+                    screen:'Homepage',
+                    params: {
+                      id: item.id,
+                      category: item.category,
+                      title: item.title,
+                      color: item.color,
+                      price: item.price,
+                      image: item.imageUrl,
+                      description: item.description,
+                      sizes: item.sizes,
+                    },
                   }
                   )
               }

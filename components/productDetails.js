@@ -4,7 +4,7 @@ import { Button } from "react-native-paper";
 import { List } from "react-native-paper";
 
 const ProductDetails = ({ navigation, route }) => {
-  console.warn(route.params.id)
+  // console.warn(route.params.id)
   const { id, category, title, color, price, image, description, sizes } =route.params;
   return (
     <ScrollView>

@@ -15,12 +15,12 @@ import ProductDetails from "./components/productDetails";
 const Tab = createBottomTabNavigator();
 const Stack=createNativeStackNavigator();
 const Stacks= ()=>{
+  return (
   <Stack.Navigator initialRouteName="Products">
     <Stack.Screen name='Products' component={Products} />
     <Stack.Screen name='ProductDetails' component={ProductDetails} />
-
   </Stack.Navigator>
-}
+)}
 const width=Dimensions.get("screen").width
 const Tabs = () => {
   return (
@@ -51,7 +51,7 @@ const Tabs = () => {
       />
       
         <Tab.Screen
-        name="Products"
+        name="Shop"
         component={Stacks}
         options={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
