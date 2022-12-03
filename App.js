@@ -113,8 +113,8 @@ const Tabs = () => {
             let iconName;
             if (route.name === 'Profile') {
               iconName = focused
-                ? 'menu'
-                : 'menu-outline';
+                ? 'menu-outline'
+                : 'menu';
           }
           return <MaterialIcons  name={iconName} size={24} color={'white'} />;
         },
