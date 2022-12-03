@@ -1,21 +1,22 @@
 import {
   View,
+  Text,
   StyleSheet,
   ScrollView,
-  TouchableOpacity,
   Image,
-  Text,
+  TouchableOpacity,
 } from "react-native";
-// import Homepage from "./homepage";
-import React from "react";
+import React, { useState } from "react";
 import { Searchbar } from "react-native-paper";
-import Section from "./sections";
-const Products = ({ navigation }) => {
+import Icon from "react-native-vector-icons/MaterialIcons";
+
+const products = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = React.useState("");
+  const [isFavorite, setisFavorite] = useState(false);
 
   const onChangeSearch = (query) => setSearchQuery(query);
 
-  const data = [
+  const DATA = [
     {
       id: 1,
       imageUrl: require("../assets/nike1.png"),
@@ -67,8 +68,16 @@ const Products = ({ navigation }) => {
       sizes: [32, 34, 36, 38, 40],
     },
   ];
+  // const handlefavorite = () => {
+  //   setisFavorite(!isFavorite);
+  // };
+
   return (
     <View style={styles.container}>
+      <View style={{ paddingLeft: 20 }}>
+        <Text style={{ fontSize: 28 }}>Shop</Text>
+      </View>
+
       <View style={styles.searchContainer}>
         <Searchbar
           placeholder="Search"
@@ -77,38 +86,20 @@ const Products = ({ navigation }) => {
           style={{ borderRadius: 12 }}
         />
       </View>
-      {/* <Section navigation={navigation} data={DATA}  SectionTitle={''} /> */}
-      <ScrollView style={styles.ProductsScrollCont}>
-        <View style={styles.SectionCont}>
-          <Text style={styles.SectionTitle}>{data.title}</Text>
-          {/* <TouchableOpacity delayPressIn={30}  >
-      <MaterialIcons size={45} name='chevron-forward-circle'></MaterialIcons>
-      </TouchableOpacity> */}
-        </View>
+
+      <ScrollView style={styles.products}>
         <View
           style={{
             flexDirection: "row",
-            justifyContent: "space-around",
+            justifyContent: "space-between",
             flexWrap: "wrap",
           }}
         >
-          {data.map((item) => {
+          {DATA.map((item) => {
             return (
               <TouchableOpacity
-                delayPressIn={50}
                 key={item.id}
-                style={styles.Product}
                 onPress={() => {
-                  // navigation.navigate("ProductDetails", {
-                  // id: item.id,
-                  // category: item.category,
-                  // title: item.title,
-                  // color: item.color,
-                  // price: item.price,
-                  // image: item.imageUrl,
-                  // description: item.description,
-                  // sizes: item.sizes,
-                  // })
                   navigation.navigate("ProductDetails", {
                     id: item.id,
                     category: item.category,
@@ -120,7 +111,26 @@ const Products = ({ navigation }) => {
                     sizes: item.sizes,
                   });
                 }}
+                style={styles.productList}
               >
+                <TouchableOpacity
+                  style={{
+                    justifyContent: "flex-end",
+                    alignContent: "flex-end",
+                    flexDirection: "row",
+                  }}
+                  //onPress={handlefavorite(item.id)}
+                >
+                  <Icon
+                    name={isFavorite ? "favorite" : "favorite-outline"}
+                    color="red"
+                    size={25}
+                    style={{
+                      padding: 5,
+                    }}
+                  />
+                </TouchableOpacity>
+
                 <Image source={item.imageUrl} />
                 <Text
                   style={{
@@ -128,13 +138,18 @@ const Products = ({ navigation }) => {
                     fontWeight: "bold",
                     fontSize: 16,
                     marginTop: 30,
+                    marginLeft: 10,
                   }}
                 >
                   {item.title}
                 </Text>
-                <Text style={{ fontSize: 12 }}>{item.category}</Text>
+                <Text style={{ fontSize: 12, marginLeft: 10 }}>
+                  {item.category}
+                </Text>
 
-                <Text style={{ color: "#FFD600", fontSize: 14 }}>
+                <Text
+                  style={{ color: "#FFD600", fontSize: 14, marginLeft: 10 }}
+                >
                   ${item.price}
                 </Text>
               </TouchableOpacity>
@@ -149,7 +164,8 @@ const Products = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 20,
+    paddingTop: 50,
+
     backgroundColor: "#fff",
   },
   searchContainer: {
@@ -157,5 +173,16 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginTop: 30,
   },
+  products: {
+    marginTop: 30,
+    marginHorizontal: 20,
+  },
+  productList: {
+    width: "45%",
+    backgroundColor: "#EFEFEF",
+    height: 195,
+    borderRadius: 12,
+    marginBottom: 20,
+  },
 });
-export default Products;
+export default products;

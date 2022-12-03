@@ -28,7 +28,12 @@ const ProfileStacks = () => {
 };
 const ProductStacks = () => {
   return (
-    <ProductStack.Navigator initialRouteName="Products">
+    <ProductStack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+      initialRouteName="Products"
+    >
       <ProductStack.Screen name="Products" component={Products} />
       <ProductStack.Screen name="ProductDetails" component={ProductDetails} />
     </ProductStack.Navigator>
@@ -41,7 +46,7 @@ const Tabs = () => {
       screenOptions={{
         tabBarShowLabel: false,
         tabBarHideOnKeyboard: true,
-        tabBarStyle: { backgroundColor: "#6E9FFF", height: 60 },
+        tabBarStyle: { backgroundColor: "#6E9FFF", height: 80 },
         tabBarIcon: { color: "white" },
       }}
       initialRouteName="Homepage"
@@ -143,76 +148,75 @@ const slides = [
   },
 ];
 export default function App() {
-  // const [showhomepage, setShowhomepage] = useState(false);
+  const [showhomepage, setShowhomepage] = useState(false);
 
-  // const buttonLabel = (label) => {
-  //   return (
-  //     <View
-  //       style={{
-  //         padding: 12,
-  //       }}
-  //     >
-  //       <Text
-  //         style={{
-  //           color: "#072F4A",
-  //           fontWeight: "600",
-  //           fontSize: 16,
-  //         }}
-  //       >
-  //         {label}
-  //       </Text>
-  //     </View>
-  //   );
-  // };
-  // if (!showhomepage) {
-  //   return (
-  //     <AppIntroSlider
-  //       data={slides}
-  //       renderItem={({ item }) => {
-  //         return (
-  //           <View
-  //             style={{
-  //               flex: 1,
-  //               alignItems: "center",
-  //               padding: 15,
-  //               paddingTop: 100,
-  //             }}
-  //           >
-  //             <Image
-  //               source={item.image}
-  //               style={{
-  //                 width: width - 80,
-  //                 height: 400,
-  //               }}
-  //               resizeMode="contain"
-  //             />
-  //             <Text
-  //               style={{
-  //                 fontWeight: "bold",
-  //                 color: "#072F4A",
-  //                 fontSize: 22,
-  //               }}
-  //             >
-  //               {item.title == "icon" ? "" : item.title}
-  //             </Text>
-
-  //           </View>
-  //         );
-  //       }}
-  //       activeDotStyle={{
-  //         backgroundColor: '#0057FF',
-  //         width: 30,
-  //       }}
-  //       showSkipButton
-  //       renderNextButton={() => buttonLabel("Next")}
-  //       renderSkipButton={() => buttonLabel("Skip")}
-  //       renderDoneButton={() => buttonLabel("Done")}
-  //       onDone={() => {
-  //         setShowhomepage(true);
-  //       }}
-  //     />
-  //   );
-  // }
+  const buttonLabel = (label) => {
+    return (
+      <View
+        style={{
+          padding: 12,
+        }}
+      >
+        <Text
+          style={{
+            color: "#072F4A",
+            fontWeight: "600",
+            fontSize: 16,
+          }}
+        >
+          {label}
+        </Text>
+      </View>
+    );
+  };
+  if (!showhomepage) {
+    return (
+      <AppIntroSlider
+        data={slides}
+        renderItem={({ item }) => {
+          return (
+            <View
+              style={{
+                flex: 1,
+                alignItems: "center",
+                padding: 15,
+                paddingTop: 100,
+              }}
+            >
+              <Image
+                source={item.image}
+                style={{
+                  width: width - 80,
+                  height: 400,
+                }}
+                resizeMode="contain"
+              />
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  color: "#072F4A",
+                  fontSize: 22,
+                }}
+              >
+                {item.title == "icon" ? "" : item.title}
+              </Text>
+            </View>
+          );
+        }}
+        activeDotStyle={{
+          backgroundColor: "#0057FF",
+          width: 30,
+        }}
+        showSkipButton
+        renderNextButton={() => buttonLabel("Next")}
+        renderSkipButton={() => buttonLabel("Skip")}
+        renderDoneButton={() => buttonLabel("Done")}
+        onDone={() => {
+          setShowhomepage(true);
+        }}
+      />
+    );
+  }
   return (
     <NavigationContainer>
       <Tabs />
