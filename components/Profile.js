@@ -43,7 +43,11 @@ const Profile = ({ navigation }) => {
             />
           )}
           <View style={styles.uploadBtnContainer}>
-            <TouchableOpacity  hitSlop={{right:0,left:0,top:8,bottom:0}} onPress={addImage} style={styles.uploadBtn}>
+            <TouchableOpacity
+              hitSlop={{ right: 0, left: 0, top: 8, bottom: 0 }}
+              onPress={addImage}
+              style={styles.uploadBtn}
+            >
               <Text style={{ color: "#fff" }}>
                 {image ? "Edit" : "Upload"} Image
               </Text>
@@ -57,7 +61,6 @@ const Profile = ({ navigation }) => {
         </View>
         <View style={styles.passbutton}>
           <Button
-          
             style={{ backgroundColor: "#6E9FFF" }}
             contentStyle={{ justifyContent: "flex-start" }}
             icon="lock"
@@ -74,6 +77,7 @@ const Profile = ({ navigation }) => {
             contentStyle={{ justifyContent: "flex-start" }}
             icon="heart"
             mode="contained"
+            onPress={() => navigation.navigate("Favorites")}
           >
             Favourites
           </Button>
@@ -82,6 +86,7 @@ const Profile = ({ navigation }) => {
             contentStyle={{ justifyContent: "flex-start" }}
             icon="cart"
             mode="contained"
+            onPress={() => navigation.navigate("Cart")}
           >
             Shopping Cart
           </Button>
@@ -119,6 +124,7 @@ export default Profile;
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: 50,
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",

@@ -1,12 +1,15 @@
 import {
   View,
   StyleSheet,
-  ScrollView ,TouchableOpacity,Image,Text
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  Text,
 } from "react-native";
 // import Homepage from "./homepage";
 import React from "react";
 import { Searchbar } from "react-native-paper";
-import Section from './sections'
+import Section from "./sections";
 const Products = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = React.useState("");
 
@@ -76,53 +79,48 @@ const Products = ({ navigation }) => {
       </View>
       {/* <Section navigation={navigation} data={DATA}  SectionTitle={''} /> */}
       <ScrollView style={styles.ProductsScrollCont}>
-   <View style={styles.SectionCont}>
-      <Text style={styles.SectionTitle}>
-        {data.title}
-      </Text>
-      {/* <TouchableOpacity delayPressIn={30}  >
+        <View style={styles.SectionCont}>
+          <Text style={styles.SectionTitle}>{data.title}</Text>
+          {/* <TouchableOpacity delayPressIn={30}  >
       <MaterialIcons size={45} name='chevron-forward-circle'></MaterialIcons>
       </TouchableOpacity> */}
-    </View>
-      <View
+        </View>
+        <View
           style={{
             flexDirection: "row",
-            justifyContent: "space-between",
+            justifyContent: "space-around",
             flexWrap: "wrap",
-            
           }}
         >
           {data.map((item) => {
             return (
-              <TouchableOpacity delayPressIn={50}
+              <TouchableOpacity
+                delayPressIn={50}
                 key={item.id}
                 style={styles.Product}
                 onPress={() => {
                   // navigation.navigate("ProductDetails", {
-                    // id: item.id,
-                    // category: item.category,
-                    // title: item.title,
-                    // color: item.color,
-                    // price: item.price,
-                    // image: item.imageUrl,
-                    // description: item.description,
-                    // sizes: item.sizes,
+                  // id: item.id,
+                  // category: item.category,
+                  // title: item.title,
+                  // color: item.color,
+                  // price: item.price,
+                  // image: item.imageUrl,
+                  // description: item.description,
+                  // sizes: item.sizes,
                   // })
-                  navigation.navigate('ProductDetails',
-                  {
-                      id: item.id,
-                      category: item.category,
-                      title: item.title,
-                      color: item.color,
-                      price: item.price,
-                      image: item.imageUrl,
-                      description: item.description,
-                      sizes: item.sizes,
-                  }
-                  )
-              }
-                }
-                >
+                  navigation.navigate("ProductDetails", {
+                    id: item.id,
+                    category: item.category,
+                    title: item.title,
+                    color: item.color,
+                    price: item.price,
+                    image: item.imageUrl,
+                    description: item.description,
+                    sizes: item.sizes,
+                  });
+                }}
+              >
                 <Image source={item.imageUrl} />
                 <Text
                   style={{
@@ -134,19 +132,14 @@ const Products = ({ navigation }) => {
                 >
                   {item.title}
                 </Text>
-                <Text style={{ fontSize: 12 }}>
-                  {item.category}
-                </Text>
-  
-                <Text
-                  style={{ color: "#FFD600", fontSize: 14}}
-                >
+                <Text style={{ fontSize: 12 }}>{item.category}</Text>
+
+                <Text style={{ color: "#FFD600", fontSize: 14 }}>
                   ${item.price}
                 </Text>
               </TouchableOpacity>
             );
           })}
-         
         </View>
       </ScrollView>
     </View>
@@ -157,13 +150,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 20,
+    backgroundColor: "#fff",
   },
   searchContainer: {
     marginLeft: 20,
     marginRight: 20,
     marginTop: 30,
   },
- 
-
 });
 export default Products;

@@ -3,7 +3,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  Keyboard
+  Keyboard,
 } from "react-native";
 import Productlist from "./productlist";
 import React from "react";
@@ -11,19 +11,20 @@ import MaterialIcons from "@expo/vector-icons/Ionicons";
 import { data } from "../assets/Data";
 const Search = () => {
   const [searchQuery, setSearchQuery] = React.useState("");
-  const onChangeSearch = (query) => {setSearchQuery(query)
-  data.filter((item)=>{
-    item
-  })
+  const onChangeSearch = (query) => {
+    setSearchQuery(query);
+    data.filter((item) => {
+      item;
+    });
   };
-  const iconfunction = ()=>{
-    console.log('1')
-  }
+  const iconfunction = () => {
+    console.log("1");
+  };
   return (
     <View style={styles.container}>
       <View style={styles.SearchCont}>
         <View style={styles.SearchButton}>
-          <MaterialIcons  name={"arrow-back"} size={28} color="black" />
+          <MaterialIcons name={"arrow-back"} size={28} color="black" />
         </View>
         <View style={styles.SearchInputCont}>
           <TextInput
@@ -46,10 +47,19 @@ const Search = () => {
           </TouchableOpacity>
         </View>
       </View>
-      <View  onTouchStart={()=>{Keyboard.dismiss()}}>
-     <Productlist icon='close' title='Recent' data={data} iconfunction={iconfunction} />
+      <View
+        onTouchStart={() => {
+          Keyboard.dismiss();
+        }}
+        style={{ marginHorizontal: 20, marginTop: 20 }}
+      >
+        <Productlist
+          icon="close"
+          title="Recent"
+          data={data}
+          iconfunction={iconfunction}
+        />
       </View>
-      
     </View>
   );
 };
@@ -59,7 +69,7 @@ export default Search;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 20,
+    paddingTop: 50,
     backgroundColor: "#ffffff",
   },
   SearchCont: {
@@ -89,43 +99,39 @@ const styles = StyleSheet.create({
   RecentCont: {
     paddingLeft: 20,
     marginBottom: 15,
-    paddingTop:15,
-    
+    paddingTop: 15,
   },
   RecentText: {
     fontWeight: "bold",
     fontSize: 18,
   },
-  ProductDetails :{
-    flexDirection:'row',
-    alignItems:'center',
-    justifyContent:'space-between',
-    width:'55%' ,
-    height:'100%', 
-
+  ProductDetails: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "55%",
+    height: "100%",
   },
-  ProductsCont :{
-    marginTop:10,
+  ProductsCont: {
+    marginTop: 10,
   },
-  ProductCont:{
-    flexDirection:'row',
-    justifyContent:'space-between',
-    alignItems:'center',
-    marginBottom:10,
-    width:'96%',
+  ProductCont: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 10,
+    width: "96%",
   },
-  ProductImage :{
-    width:90,
-    height:60,
+  ProductImage: {
+    width: 90,
+    height: 60,
   },
-  ProductTitle :{
-    fontWeight:'bold',
-    fontSize:14,
-    marginBottom:5
+  ProductTitle: {
+    fontWeight: "bold",
+    fontSize: 14,
+    marginBottom: 5,
   },
-  ProductCategory : {
-    fontSize:12,
-
+  ProductCategory: {
+    fontSize: 12,
   },
- 
 });
