@@ -3,6 +3,8 @@ import React, {useState} from 'react';
 import {DATA,data} from '../assets/Data.js';
 import AppIntroSlider from "react-native-app-intro-slider";
 const { width: screenWidth } = Dimensions.get('window');
+import Section from './sections'
+
 const slides = [
   {
     id: 1,
@@ -33,63 +35,7 @@ const slides = [
        image: require("../assets/nike.jpg"),
   },
 ];
-const Section = (props) => {
-  const DATA = props.data;
-  return (
-    <View>
- <ScrollView style={styles.ProductsScrollCont}>
-    <View style={styles.SectionCont}>
-      <Text style={styles.SectionTitle}>
-        {props.SectionTitle}
-      </Text>
-      {/* <TouchableOpacity delayPressIn={30}  >
-      <MaterialIcons size={45} name='chevron-forward-circle'></MaterialIcons>
-      </TouchableOpacity> */}
-    </View>
-    <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          flexWrap: "wrap",
-          
-        }}
-      >
-        {DATA.map((item) => {
-          return (
-            <TouchableOpacity delayPressIn={50}
-              key={item.id}
-              style={styles.Product}
-            >
-              <Image source={item.imageUrl} />
-              <Text
-                style={{
-                  color: "#383838",
-                  fontWeight: "bold",
-                  fontSize: 16,
-                  marginTop: 30,
-                }}
-              >
-                {item.title}
-              </Text>
-              <Text style={{ fontSize: 12 }}>
-                {item.category}
-              </Text>
 
-              <Text
-                style={{ color: "#FFD600", fontSize: 14}}
-              >
-                ${item.price}
-              </Text>
-            </TouchableOpacity>
-          );
-        })}
-       
-      </View>
-    </ScrollView>
-    </View>
-    
-  )
-}
 const Homepage = () => {
   const [dotindex, setdotindex] = useState(1);
   return (

@@ -4,8 +4,8 @@ import { Button } from "react-native-paper";
 import { List } from "react-native-paper";
 
 const ProductDetails = ({ navigation, route }) => {
-  const { id, category, title, color, price, image, description, sizes } =
-    route.params;
+  console.warn(route.params.id)
+  const { id, category, title, color, price, image, description, sizes } =route.params;
   return (
     <ScrollView>
       <View style={styles.image}>

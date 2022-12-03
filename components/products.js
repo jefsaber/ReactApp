@@ -1,20 +1,18 @@
 import {
   View,
-  Text,
   StyleSheet,
-  ScrollView,
-  Image,
-  TouchableOpacity,
+  ScrollView ,TouchableOpacity,Image,Text
 } from "react-native";
+// import Homepage from "./homepage";
 import React from "react";
 import { Searchbar } from "react-native-paper";
-
+import Section from './sections'
 const Products = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = React.useState("");
 
   const onChangeSearch = (query) => setSearchQuery(query);
 
-  const DATA = [
+  const data = [
     {
       id: 1,
       imageUrl: require("../assets/nike1.png"),
@@ -68,10 +66,6 @@ const Products = ({ navigation }) => {
   ];
   return (
     <View style={styles.container}>
-      <View style={{ paddingLeft: 20 }}>
-        <Text style={{ fontSize: 28 }}>Shop</Text>
-      </View>
-
       <View style={styles.searchContainer}>
         <Searchbar
           placeholder="Search"
@@ -80,33 +74,48 @@ const Products = ({ navigation }) => {
           style={{ borderRadius: 12 }}
         />
       </View>
-
-      <ScrollView style={styles.products}>
-        <View
+      {/* <Section navigation={navigation} data={DATA}  SectionTitle={''} /> */}
+      <ScrollView style={styles.ProductsScrollCont}>
+   <View style={styles.SectionCont}>
+      <Text style={styles.SectionTitle}>
+        {data.title}
+      </Text>
+      {/* <TouchableOpacity delayPressIn={30}  >
+      <MaterialIcons size={45} name='chevron-forward-circle'></MaterialIcons>
+      </TouchableOpacity> */}
+    </View>
+      <View
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
             flexWrap: "wrap",
+            
           }}
         >
-          {DATA.map((item) => {
+          {data.map((item) => {
             return (
-              <TouchableOpacity
+              <TouchableOpacity delayPressIn={50}
                 key={item.id}
+                style={styles.Product}
                 onPress={() => {
-                  navigation.navigate("Details", {
-                    id: item.id,
-                    category: item.category,
-                    title: item.title,
-                    color: item.color,
-                    price: item.price,
-                    image: item.imageUrl,
-                    description: item.description,
-                    sizes: item.sizes,
-                  });
-                }}
-                style={styles.productList}
-              >
+                  // navigation.navigate("ProductDetails", {
+                  //   id: item.id,
+                  //   category: item.category,
+                  //   title: item.title,
+                  //   color: item.color,
+                  //   price: item.price,
+                  //   image: item.imageUrl,
+                  //   description: item.description,
+                  //   sizes: item.sizes,
+                  // })
+                  navigation.navigate('ProductDetails',
+                  {
+                    screen:'Homepage'
+                  }
+                  )
+              }
+                }
+                >
                 <Image source={item.imageUrl} />
                 <Text
                   style={{
@@ -114,23 +123,23 @@ const Products = ({ navigation }) => {
                     fontWeight: "bold",
                     fontSize: 16,
                     marginTop: 30,
-                    marginLeft: 10,
                   }}
                 >
                   {item.title}
                 </Text>
-                <Text style={{ fontSize: 12, marginLeft: 10 }}>
+                <Text style={{ fontSize: 12 }}>
                   {item.category}
                 </Text>
-
+  
                 <Text
-                  style={{ color: "#FFD600", fontSize: 14, marginLeft: 10 }}
+                  style={{ color: "#FFD600", fontSize: 14}}
                 >
                   ${item.price}
                 </Text>
               </TouchableOpacity>
             );
           })}
+         
         </View>
       </ScrollView>
     </View>
@@ -140,23 +149,14 @@ const Products = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 20,
+    paddingTop: 20,
   },
   searchContainer: {
     marginLeft: 20,
     marginRight: 20,
     marginTop: 30,
   },
-  products: {
-    marginTop: 30,
-    marginHorizontal: 20,
-  },
-  productList: {
-    width: "45%",
-    backgroundColor: "#EFEFEF",
-    height: 170,
-    borderRadius: 12,
-    marginBottom: 20,
-  },
+ 
+
 });
 export default Products;
