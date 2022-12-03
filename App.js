@@ -1,4 +1,3 @@
-import { StyleSheet, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Favorites from "./components/favorites";
@@ -6,50 +5,27 @@ import Cart from "./components/cart";
 import Homepage from "./components/homepage";
 import Search from "./components/search";
 import Profile from "./components/Profile";
-import AddProduct from "./components/dashboard/addprodut";
 import MaterialIcons from "@expo/vector-icons/Ionicons";
-
+import React, { useState } from "react";
+import AppIntroSlider from "react-native-app-intro-slider";
+import { StyleSheet, Text, View, Image ,Dimensions} from "react-native";
 const Tab = createBottomTabNavigator();
+
+const width=Dimensions.get("screen").width
+
+
+
 const Tabs = () => {
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
-        // tabBarIcon: ({ focused, color, size }) => {
-        //   let iconName;
-
-        //   if (route.name === 'Homepage') {
-        //     iconName = focused
-        //       ? 'home'
-        //       : 'home-outline';
-        //   } else if (route.name === 'Favorites') {
-        //     iconName = focused ? 'heart' : 'heart-outline';
-        //   }
-        //   else if (route.name === 'Cart') {
-        //     iconName = focused ? 'heart' : 'heart-outline';
-        //   }
-        //   else if (route.name === 'Favorites') {
-        //     iconName = focused ? 'heart' : 'heart-outline';
-        //   }
-        //   else
-        //   iconName='home'
-        //   // You can return any component that you like here!
-        //   return <MaterialIcons name={iconName} size={24} color={'white'} />;
-        // },
+      screenOptions={
+       {
         tabBarShowLabel: false,
-        // tabBarActiveBackgroundColor:'red',
-<<<<<<< HEAD
         tabBarHideOnKeyboard:true,
         tabBarStyle: { backgroundColor:'#6E9FFF',height:60},
-        tabBarIcon:{color:'white'},
-     
-=======
-        tabBarHideOnKeyboard: true,
-        tabBarStyle: { backgroundColor: "#6E9FFF", height: 80 },
         tabBarIcon: { color: "white" },
-        tabBarActiveTintColor: "tomato",
-        tabBarInactiveTintColor: "gray",
->>>>>>> 3c6151ef2f73e9dc7e781478e416ffff9ea4d40a
-      })}
+       }
+      }
       initialRouteName="Homepage"
     >
       <Tab.Screen
@@ -108,53 +84,131 @@ const Tabs = () => {
           },
           headerShown: false,
         })}
-<<<<<<< HEAD
-/>
-      <Tab.Screen name="Profile" component={Profile} options={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-            if (route.name === 'Profile') {
-              iconName = focused
-                ? 'menu-outline'
-                : 'menu';
-          }
-          return <MaterialIcons  name={iconName} size={24} color={'white'} />;
-        },
-        headerShown: false,
-=======
-      />
-      <Tab.Screen
-        name="Profile"
-        component={AddProduct}
-        options={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-            if (route.name === "Profile") {
-              iconName = focused ? "menu" : "menu-outline";
-            }
-            return <MaterialIcons name={iconName} size={26} color={"white"} />;
-          },
-          headerShown: false,
->>>>>>> 3c6151ef2f73e9dc7e781478e416ffff9ea4d40a
-        })}
-      />
+        />
+        <Tab.Screen
+                name="Profile"
+                component={Profile}
+                options={({ route }) => ({
+                  tabBarIcon: ({ focused, color, size }) => {
+                    let iconName;
+                    if (route.name === "Profile") {
+                      iconName = focused ? 'menu-outline' : "menu";
+                    }
+                    return <MaterialIcons name={iconName} size={26} color={"white"} />;
+                  },
+                  headerShown: false,
+                })}
+        />
+     
+    
     </Tab.Navigator>
-  );
+)
 };
-
+const slides = [
+  {
+    id: 1,
+    title: "icon",
+    description:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic",
+    image: require("./assets/logo.png"),
+  },
+  {
+    id: 2,
+    title: "Explore",
+    description:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic",
+    image: require("./assets/onboarding1.png"),
+  },
+  {
+    id: 3,
+    title: "Order",
+    description:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic",
+    image: require("./assets/onboarding2.png"),
+  },
+  {
+    id: 4,
+    title: "Recieve",
+    description:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic",
+    image: require("./assets/onboarding3.png"),
+  },
+];
 export default function App() {
+  const [showhomepage, setShowhomepage] = useState(false);
+
+  const buttonLabel = (label) => {
+    return (
+      <View
+        style={{
+          padding: 12,
+        }}
+      >
+        <Text
+          style={{
+            color: "#072F4A",
+            fontWeight: "600",
+            fontSize: 16,
+          }}
+        >
+          {label}
+        </Text>
+      </View>
+    );
+  };
+  if (!showhomepage) {
+    return (
+      <AppIntroSlider
+        data={slides}
+        renderItem={({ item }) => {
+          return (
+            <View
+              style={{
+                flex: 1,
+                alignItems: "center",
+                padding: 15,
+                paddingTop: 100,
+              }}
+            >
+              <Image
+                source={item.image}
+                style={{
+                  width: width - 80,
+                  height: 400,
+                }}
+                resizeMode="contain"
+              />
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  color: "#072F4A",
+                  fontSize: 22,
+                }}
+              >
+                {item.title == "icon" ? "" : item.title}
+              </Text>
+              
+            </View>
+          );
+        }}
+        activeDotStyle={{
+          backgroundColor: '#0057FF',
+          width: 30,
+        }}
+        showSkipButton
+        renderNextButton={() => buttonLabel("Next")}
+        renderSkipButton={() => buttonLabel("Skip")}
+        renderDoneButton={() => buttonLabel("Done")}
+        onDone={() => {
+          setShowhomepage(true);
+        }}
+      />
+    );
+  }
   return (
-    // <View style={styles.container}>
     <NavigationContainer>
       <Tabs />
     </NavigationContainer>
-    // </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#ffffff",
-  },
-});
