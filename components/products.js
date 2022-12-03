@@ -110,8 +110,6 @@ const Products = ({ navigation }) => {
                   // })
                   navigation.navigate('ProductDetails',
                   {
-                    screen:'Homepage',
-                    params: {
                       id: item.id,
                       category: item.category,
                       title: item.title,
@@ -120,7 +118,6 @@ const Products = ({ navigation }) => {
                       image: item.imageUrl,
                       description: item.description,
                       sizes: item.sizes,
-                    },
                   }
                   )
               }
