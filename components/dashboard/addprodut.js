@@ -1,53 +1,111 @@
-import { StyleSheet, Text, View, Keyboard, TouchableWithoutFeedback,KeyboardAvoidingView } from 'react-native'
+import { StyleSheet,Button, Text, View, Keyboard, TouchableWithoutFeedback,KeyboardAvoidingView,Platform } from 'react-native'
 import React from 'react'
-import { TextInput } from 'react-native-paper';
-const Input = (props) => {
-  const { label, value, onChangeText, returnKey } = props;
-  return (
-    <TextInput
-      mode='outlined'
-      label={label}
-      value={value}
-      onChangeText={onChangeText}
-      autoCapitalize={true}
-      multiline={false}
-      style={styles.InputStyle}
-      activeOutlineColor={'rgba(0,87,255,0.6)'}
-      returnKeyType={returnKey}
-      outlineColor={'rgba(0,87,255,0.4)'}
-    />
-  )
-}
+import { useForm } from 'react-hook-form';
+import CustomInputs from '../CustomInputs';
+import KeyboardWrapper from '../KeyboardWrapper';
 const Addproduct = () => {
   // const [ImageUrl, setImageUrl] = React.useState([]);
-  const [category, setcategory] = React.useState("");
-  const [title, settitle] = React.useState("");
-  const [color, setcolor] = React.useState([]);
-  const [price, setprice] = React.useState("");
-  const [description, setdescription] = React.useState("");
   const [sizes, setsizes] = React.useState([]);
+  const { control, handleSubmit, watch } = useForm();
 
   return (
     <View style={styles.container}>
-      <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.container}
-    >
-        <View style={styles.Cont} onTouchStart={()=>{Keyboard.dismiss()}} >
-      <View style={styles.TitleCont}>
+    <View style={styles.TitleCont}>
         <Text style={styles.Title}>Dashboard</Text>
       </View>
+  <KeyboardWrapper>
+        <View style={styles.Cont} onTouchStart={()=>{Keyboard.dismiss()}} >
+    
         <View style={styles.InputCont}>
-          <Input returnKey='next' label='title' value={title} onChangeText={settitle} />
-          <Input label='category' returnKey='next' value={category} onChangeText={setcategory} />
-          <Input label='price' returnKey='next' value={price} onChangeText={setprice} />
-          <Input label='description' returnKey='done' value={description} onChangeText={setdescription} />
-          <Input label='description' returnKey='done' value={description} onChangeText={setdescription} />
-          <Input label='description' returnKey='done' value={description} onChangeText={setdescription} />
-          <Input label='description' returnKey='done' value={description} onChangeText={setdescription} />
+               <CustomInputs
+                name="Title"
+                placeholder="Title"
+                control={control}
+                rules={{
+                  // required: "Title name is required",
+                  minLength: {
+                    value: 3,
+                    message: "Title name should be more than 3 characters",
+                  },
+                  maxLength: {
+                    value: 24,
+                    message: "Title name should be less than 24 characters",
+                  },
+                }}
+              />
 
-        </View></View>
-        </KeyboardAvoidingView>
+            <CustomInputs
+                name="Category"
+                placeholder="Category"
+                control={control}
+                rules={{
+                  // required: "Category is required",
+                  minLength: {
+                    value: 3,
+                    message: "Category should be more than 3 characters",
+                  },
+                  maxLength: {
+                    value: 24,
+                    message: "Category should be less than 24 characters",
+                  },
+                }}
+              />
+                  <CustomInputs
+                name="Color"
+                placeholder="Color"
+                control={control}
+                rules={{
+                  required: "Color is required",
+                  minLength: {
+                    value: 3,
+                    message: "Color should be more than 3 characters",
+                  },
+                  maxLength: {
+                    value: 24,
+                    message: "Color should be less than 24 characters",
+                  },
+                }}
+              />
+                  <CustomInputs
+                name="Price"
+                placeholder="Price"
+                control={control}
+                rules={{
+                  required: "Price is required",
+                  minLength: {
+                    value: 3,
+                    message: "Price should be more than 3 characters",
+                  },
+                  maxLength: {
+                    value: 24,
+                    message: "Price should be less than 24 characters",
+                  },
+                }}
+              />
+              <CustomInputs
+                name="Description"
+                placeholder="Description"
+                control={control}
+                rules={{
+                  required: "Description is required",
+                  minLength: {
+                    value: 3,
+                    message: "Description should be more than 3 characters",
+                  },
+                  maxLength: {
+                    value: 24,
+                    message: "Description should be less than 24 characters",
+                  },
+                }}
+              />
+              
+
+             
+
+
+        </View>
+        </View>
+        </KeyboardWrapper>
     </View>
   )
 }
@@ -67,7 +125,7 @@ const styles = StyleSheet.create({
     backgroundColor:'white',
   },
   Cont: {
-    backgroundColor: 'red',
+    // backgroundColor: 'red',
     flex: 1,
     // borderWidth: 1
   },
@@ -84,5 +142,6 @@ const styles = StyleSheet.create({
     height: "8%",
     paddingLeft: 20,
     paddingTop: 15,
+    zIndex:10000
 },
 })

@@ -1,31 +1,88 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import { NavigationContainer, StackActions } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Navbar from './components/Navbar'
-import Products from './components/products'
-import ProductDetails from './components/productDetails'
+import { StyleSheet, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Favorites from "./components/favorites";
+import Cart from "./components/cart";
 import Homepage from "./components/homepage";
 import Search from "./components/search";
-import Favorites from "./components/favorites";
 import AddProduct from './components/dashboard/addprodut'
-import AllProduct from './components/dashboard/allproducts'
-import dashboard from './components/dashboard/dashboard'
+import MaterialIcons from '@expo/vector-icons/Ionicons';
 
-import Cart from "./components/cart";
-const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
+const Tabs = () => {
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        tabBarShowLabel:false,
+        tabBarActiveBackgroundColor:'red',
+        tabBarHideOnKeyboard:true,
+        tabBarStyle: { backgroundColor:'#6E9FFF'},
+        tabBarActiveTintColor:'red',
+        tabBarIconStyle:{color:'white'},
+        
+      }}
+      initialRouteName="Homepage"
+    >
+      <Tab.Screen
+        name="Homepage"
+        component={Homepage}
+        options={{
+          headerShown: false,
+          tabBarIcon: () => (
+            <MaterialIcons name="home"  size={24} />
+          ),
+
+        }}
+      />
+      <Tab.Screen
+        name="Favorites"
+        component={Favorites}
+        options={{
+          headerShown: false,
+          tabBarIcon: () => (
+            <MaterialIcons name="heart"  size={24} />
+          ),
+
+        }} />
+      <Tab.Screen
+        name="Search"
+        component={Search}
+        options={{
+          headerShown: false,
+
+          tabBarIcon: () => (
+            <MaterialIcons name="search"  size={24} />
+          ),
+
+        }} />
+
+      <Tab.Screen name="Cart" component={Cart} options={{
+        headerShown: false,
+
+        tabBarIcon: () => (
+          <MaterialIcons name="cart"  size={24} />
+        ),
+
+      }} />
+      <Tab.Screen name="AddProduct" component={AddProduct} options={{
+        headerShown: false,
+        // tabBarButton: () => <NavblockContent icon="home" />,
+        tabBarIcon: () => (
+          <MaterialIcons name="cart"  size={24} />
+        ),
+
+      }} />
+    </Tab.Navigator>
+  );
+};
+
 export default function App() {
   return (
-    <View style={styles.container}>
-      <NavigationContainer  >
-        <Stack.Navigator screenOptions={{headerShown:false}} >
-          <Stack.Screen  name="Homepage" component={AddProduct}  />
-          <Stack.Screen name="Details" component={ProductDetails} />
-          
-        </Stack.Navigator>
-      </NavigationContainer>
-      <Navbar />
-    </View>
+    // <View style={styles.container}>
+    <NavigationContainer>
+      <Tabs />
+    </NavigationContainer>
+    // </View>
   );
 }
 
@@ -33,8 +90,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
-    
-
-
   },
 });
