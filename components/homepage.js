@@ -45,7 +45,7 @@ const slides = [
   },
 ];
 
-const Homepage = () => {
+const Homepage = ( { navigation }) => {
   const [dotindex, setdotindex] = useState(1);
   return (
     <View style={styles.container}>
@@ -80,9 +80,9 @@ const Homepage = () => {
             }}
           />
         </View>
-        <Section data={DATA} SectionTitle={"On Sale"} />
-        <Section data={data} SectionTitle={"On air"} />
-        <Section data={data} SectionTitle={"On air"} />
+        <Section data={DATA} SectionTitle={"On Sale"} navigation={navigation} />
+        <Section data={data} SectionTitle={"On air"} navigation={navigation} />
+        <Section data={data} SectionTitle={"On air"}  navigation={navigation}/>
       </ScrollView>
     </View>
   );

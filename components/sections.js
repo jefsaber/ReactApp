@@ -1,20 +1,23 @@
 import { StyleSheet, Text, View,ScrollView ,TouchableOpacity,Image} from 'react-native'
 import React from 'react'
-
+import MaterialIcons from "@expo/vector-icons/Ionicons";
 const Section = (props) => {
-    const {data,navigation} = props;
+    const {data,navigation,SectionTitle} = props;
     return (
       <View>
    <ScrollView style={styles.ProductsScrollCont}>
-   <View style={styles.SectionCont}>
+    {
+      SectionTitle &&
+     <View style={styles.SectionCont}>
       <Text style={styles.SectionTitle}>
-        {props.SectionTitle}
+        {SectionTitle}
       </Text>
       {/* <TouchableOpacity delayPressIn={30}  >
       <MaterialIcons size={45} name='chevron-forward-circle'></MaterialIcons>
       </TouchableOpacity> */}
     </View>
-      <View
+    }
+    <View
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
@@ -24,6 +27,7 @@ const Section = (props) => {
         >
           {data.map((item) => {
             return (
+
               <TouchableOpacity delayPressIn={50}
                 key={item.id}
                 style={styles.Product}
@@ -39,13 +43,25 @@ const Section = (props) => {
                     sizes: item.sizes,
                   })}}
                 >
-                <Image source={item.imageUrl} />
+                  <TouchableOpacity
+                   style={{
+                    justifyContent: "flex-end",
+                    flexDirection: "row",
+                    paddingTop:5,
+                    paddingRight:5,
+                  }}>
+                  <MaterialIcons name='heart-outline' size={24} color='red' />
+                  </TouchableOpacity>
+               
+                  <Image  source={item.imageUrl} />
+
                 <Text
                   style={{
                     color: "#383838",
                     fontWeight: "bold",
                     fontSize: 16,
-                    marginTop: 30,
+                    marginTop: 15,
+                    
                   }}
                 >
                   {item.title}
@@ -60,6 +76,7 @@ const Section = (props) => {
                   ${item.price}
                 </Text>
               </TouchableOpacity>
+
             );
           })}
          
@@ -84,7 +101,7 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         marginBottom: 20,
         justifyContent:'space-evenly',
-        paddingLeft:7
+        paddingLeft:7,
       },
       SectionTitle : {
         fontSize: 24 ,fontWeight:'bold',marginVertical:20

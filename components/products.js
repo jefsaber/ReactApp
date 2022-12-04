@@ -9,8 +9,8 @@ import {
 import React, { useState } from "react";
 import { Searchbar } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
-
-const products = ({ navigation }) => {
+import Section from  './sections'
+const Products = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = React.useState("");
   const [isFavorite, setisFavorite] = useState(false);
 
@@ -83,11 +83,11 @@ const products = ({ navigation }) => {
           placeholder="Search"
           onChangeText={onChangeSearch}
           value={searchQuery}
-          style={{ borderRadius: 12 }}
+          style={{ borderRadius: 12,marginBottom:30 }}
         />
       </View>
-
-      <ScrollView style={styles.products}>
+      <Section data={DATA} navigation={navigation} SectionTitle='' />
+      {/* <ScrollView style={styles.products}>
         <View
           style={{
             flexDirection: "row",
@@ -126,7 +126,8 @@ const products = ({ navigation }) => {
                     color="red"
                     size={25}
                     style={{
-                      padding: 5,
+                      paddingRight: 5,
+                      paddingTop:5
                     }}
                   />
                 </TouchableOpacity>
@@ -156,7 +157,7 @@ const products = ({ navigation }) => {
             );
           })}
         </View>
-      </ScrollView>
+      </ScrollView> */}
     </View>
   );
 };
@@ -185,4 +186,4 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 });
-export default products;
+export default Products;
