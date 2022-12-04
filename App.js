@@ -3,6 +3,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Favorites from "./components/favorites";
 import Cart from "./components/cart";
 import Homepage from "./components/homepage";
+import Signin from "./components/signin";
+import Signup from "./components/signup";
 import Search from "./components/search";
 import Profile from "./components/Profile";
 import Products from "./components/products";
@@ -24,6 +26,15 @@ const ProfileStacks = () => {
       <ProfileStack.Screen name="Favorites" component={Favorites} />
       <ProfileStack.Screen name="Cart" component={Cart} />
     </ProfileStack.Navigator>
+  );
+};
+const AuthStack = createNativeStackNavigator();
+const Auth = () => {
+  return (
+    <AuthStack.Navigator>
+      <Auth.Screen name="Sigin In" component={Signin} />
+      <Auth.Screen name="Sigin Up" component={Signup} />
+    </AuthStack.Navigator>
   );
 };
 const ProductStacks = () => {
