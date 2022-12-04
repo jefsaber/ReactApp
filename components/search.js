@@ -51,8 +51,7 @@ const Search = () => {
         onTouchStart={() => {
           Keyboard.dismiss();
         }}
-        style={{ marginHorizontal: 20, marginTop: 20 }}
-      >
+        style={{ marginHorizontal: 20, marginTop: 20 }}>
         <Productlist
           icon="close"
           title="Recent"

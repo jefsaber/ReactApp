@@ -17,17 +17,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ProductDetails from "./components/productDetails";
 const Tab = createBottomTabNavigator();
 const MainStack = createNativeStackNavigator();
-const ProductStack = createNativeStackNavigator();
 const ProfileStack = createNativeStackNavigator();
-const ProductStacks = ()=>{
-  return (
-    <ProductStack.Navigator >
-      <ProductStack.Screen name="Products" component={Products} />
-      <ProductStack.Screen name="ProductDetails" component={ProductDetails} />
-      
-    </ProductStack.Navigator>
-  );
-}
+
 const ProfileStacks = () => {
   return (
     <ProfileStack.Navigator initialRouteName="Profile">
@@ -47,16 +38,13 @@ const Auth = () => {
     </AuthStack.Navigator>
   );
 };
-const width = Dimensions.get("screen").width;
 
 const MainStacks = ({navigation}) => {
   return (
     <MainStack.Navigator initialRouteName="Tabs" screenOptions={{headerShown:false}}>
       <MainStack.Screen name='Tabs' component={Tabs} />
-      <MainStack.Screen options={{animation:'slide_from_bottom',presentation:'modal',headerShown:true}}name="Products" component={Products} />
+      <MainStack.Screen name="Products" component={Products} />
       <MainStack.Screen options={{animation:'slide_from_bottom',presentation:'modal',headerShown:true}} name="ProductDetails" component={ProductDetails} />
-      
-    
     </MainStack.Navigator>
   );
 };
@@ -102,6 +90,7 @@ const Tabs = () => {
             return <MaterialIcons name={iconName} size={26} color={"white"} />;
           },
           headerShown: false,
+          tabBarVisibilityAnimationConfig:{show:true}
         })}
       />
       <Tab.Screen

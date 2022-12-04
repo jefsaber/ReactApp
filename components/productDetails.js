@@ -9,7 +9,7 @@ const ProductDetails = ({ navigation, route }) => {
     route.params;
   console.log(route.params);
   return (
-    <ScrollView style={{ backgroundColor: "#fff", paddingTop: 50 }}>
+    <ScrollView style={{ backgroundColor: "#fff",  }}>
       <View style={styles.image}>
         <Image
           source={image}
@@ -37,39 +37,47 @@ const ProductDetails = ({ navigation, route }) => {
         <Text style={{ fontWeight: "bold", fontSize: 22 }}>Select Color</Text>
       </View>
       <View style={styles.colors}>
-        {color.map((color, index) => {
+        {color.map((item, index) => {
+          console.log(item)
           return (
             <View
               key={index}
               style={{
-                backgroundColor: { color },
+                backgroundColor:  `${item}` ,
                 borderRadius: 100,
                 width: 50,
                 height: 50,
                 marginRight: 10,
                 marginBottom: 10,
-                borderWidth: 1,
-                borderColor: "#CECECE",
               }}
             ></View>
           );
         })}
       </View>
-      <View style={{ marginHorizontal: 20, marginTop: 40 }}>
+      <View style={{marginHorizontal:10, marginTop: 20,flexDirection:'row',marginBottom:40,justifyContent:'space-between',borderWidth:0}}>
         <Button
           icon="cart"
-          mode="contained"
+          mode="outlined"
           color="#6E9FFF"
-          labelStyle={{ color: "#fff" }}
-        >
+          style={styles.ButtonStyle}
+          labelStyle={{fontSize:15}}
+          onPress={ ()=>console.log('first')}
+          uppercase={false}
+        > 
           Add To Cart
+       </Button>
+        <Button mode="contained" color="#6E9FFF" 
+          style={styles.ButtonStyle}
+          icon="heart"
+          onPress={ ()=>console.log('first')}
+          labelStyle={{fontSize:15,color:'white'}}
+          uppercase={false}
+
+          >
+        Add To Favorites
         </Button>
       </View>
-      <View style={{ marginHorizontal: 20, marginTop: 15, marginBottom: 50 }}>
-        <Button mode="contained" color="#6E9FFF" labelStyle={{ color: "#fff" }}>
-          Buy Now {price}$
-        </Button>
-      </View>
+   
     </ScrollView>
   );
 };
@@ -110,5 +118,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
   },
+  ButtonStyle : {
+    width:'48%',
+    borderRadius:8,
+    // flexDirection:'row-reverse'
+  }
 });
 export default ProductDetails;

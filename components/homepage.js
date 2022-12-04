@@ -3,12 +3,11 @@ import {
   Text,
   View,
   ScrollView,
-  TouchableOpacity,
   Image,
   Dimensions,
-  FlatList,
+  Platform
 } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import { DATA, data } from "../assets/Data.js";
 import AppIntroSlider from "react-native-app-intro-slider";
 const { width: screenWidth } = Dimensions.get("window");
@@ -46,7 +45,7 @@ const slides = [
 ];
 
 const Homepage = ( { navigation }) => {
-  const [dotindex, setdotindex] = useState(1);
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -101,7 +100,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingTop: 50,
+    paddingTop:Platform.OS =='ios' ? 50 : 30 ,
     backgroundColor: "#ffffff",
   },
   ProductsScrollCont: {

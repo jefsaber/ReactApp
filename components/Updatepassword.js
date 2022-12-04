@@ -40,12 +40,6 @@ const Updatepassword = () => {
           control={control}
           placeholder=" Old Password"
           secureTextEntry={passwordVisibility}
-          right={
-            <TextInput.Icon
-              onPress={handlePasswordVisibility}
-              icon={rightIcon}
-            />
-          }
           rules={{
             required: " Old Password is required",
             minLength: {
@@ -96,10 +90,10 @@ const Updatepassword = () => {
       </View>
       <View style={{ marginTop: 20, marginHorizontal: 20 }}>
         <Button
-          style={{ backgroundColor: "#6E9FFF" }}
+          style={{ backgroundColor: "#6E9FFF", }}
           onPress={handleSubmit(onSubmit)}
           mode="contained"
-          contentStyle={{ height: 50 }}
+          contentStyle={{ height: 50,borderRadius:10 }}
         >
           Update Password
         </Button>
