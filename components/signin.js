@@ -6,24 +6,32 @@ import {
   Pressable,
   TouchableOpacity,
   ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import { useForm } from "react-hook-form";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Icon from "react-native-vector-icons/FontAwesome";
 import CustomInputs from "./CustomInputs";
+import { useHeaderHeight } from "@react-navigation/elements";
 
-const signup = ({ navigation }) => {
+const signin = ({ navigation }) => {
+  const { control, handleSubmit } = useForm();
+  const height = useHeaderHeight();
+
+  const EMAIL_REGEX =
+    /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
   const useTogglePasswordVisibility = () => {
     const [passwordVisibility, setPasswordVisibility] = useState(true);
-    const [rightIcon, setRightIcon] = useState("eye");
+    const [rightIcon, setRightIcon] = useState("eye-off");
 
     const handlePasswordVisibility = () => {
-      if (rightIcon === "eye") {
-        setRightIcon("eye-off");
-        setPasswordVisibility(!passwordVisibility);
-      } else if (rightIcon === "eye-off") {
+      if (rightIcon === "eye-off") {
         setRightIcon("eye");
+        setPasswordVisibility(!passwordVisibility);
+      } else if (rightIcon === "eye") {
+        setRightIcon("eye-off");
         setPasswordVisibility(!passwordVisibility);
       }
     };
@@ -37,167 +45,165 @@ const signup = ({ navigation }) => {
   const { passwordVisibility, rightIcon, handlePasswordVisibility } =
     useTogglePasswordVisibility();
 
-  const EMAIL_REGEX =
-    /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-  const { control, handleSubmit, watch } = useForm();
-  const pass = watch("Password");
-
   const onSubmit = (data) => console.log(data);
   return (
-    <View style={styles.Signupcontainer}>
-      <ScrollView>
-        <View style={styles.title}>
-          <Text
-            style={{ fontSize: 30, fontWeight: "bold", textAlign: "center" }}
-          >
-            Create An Account
-          </Text>
-        </View>
-        <View style={styles.Signupform}>
-          <View
-            style={{ flexDirection: "row", width: "100%", marginBottom: 10 }}
-          >
-            <View style={{ width: "48%", marginRight: "4%" }}>
+    <View style={styles.SiginContainer}>
+      <KeyboardAvoidingView
+        keyboardVerticalOffset={height + 47}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        enabled
+        style={{ flex: 1 }}
+      >
+        <ScrollView>
+          <View style={styles.title}>
+            <Text style={{ fontSize: 30, fontWeight: "bold" }}>Welcome to</Text>
+            <View style={styles.second_title}>
+              <Text
+                style={{ color: "#6E9FFF", fontSize: 30, fontWeight: "bold" }}
+              >
+                UA
+              </Text>
+              <Text
+                style={{ fontSize: 30, paddingLeft: 8, fontWeight: "bold" }}
+              >
+                Shop
+              </Text>
+            </View>
+          </View>
+          <View style={styles.paragraph}>
+            <Text style={{ fontSize: 16, color: "#656565" }}>
+              An exciting place to shop all
+            </Text>
+            <Text style={{ fontSize: 16, color: "#656565" }}>
+              your requirements.
+            </Text>
+          </View>
+          <View style={styles.loginForm}>
+            <View style={{ marginBottom: 10 }}>
               <CustomInputs
-                name="firstName"
-                placeholder="First Name"
+                name="email"
+                placeholder="Email"
                 control={control}
                 rules={{
-                  required: "First name is required",
-                  minLength: {
-                    value: 3,
-                    message: "first name should be more than 3 characters",
-                  },
-                  maxLength: {
-                    value: 24,
-                    message: "first name should be less than 24 characters",
-                  },
+                  required: "Email is required",
+                  pattern: { value: EMAIL_REGEX, message: "Email is invalid" },
                 }}
               />
             </View>
-            <View style={{ width: "48%" }}>
+            <View>
               <CustomInputs
-                name="lastName"
-                placeholder="Last Name"
+                name="Password"
+                placeholder="Password"
+                secureTextEntry={passwordVisibility}
                 control={control}
+                right={
+                  <TextInput.Icon
+                    onPress={handlePasswordVisibility}
+                    icon={rightIcon}
+                  />
+                }
                 rules={{
-                  required: "Last name is required",
-                  minLength: {
-                    value: 3,
-                    message: "last name should be more than 3 characters",
-                  },
-                  maxLength: {
-                    value: 24,
-                    message: "last name should be less than 24 characters",
-                  },
+                  required: "Password is required",
                 }}
-                style={{ width: "40%" }}
               />
             </View>
           </View>
-          <View style={styles.input}>
-            <CustomInputs
-              name="email"
-              control={control}
-              placeholder="Email"
-              rules={{
-                required: "Email is required",
-                pattern: { value: EMAIL_REGEX, message: "Email is invalid" },
-              }}
-            />
+          <View style={{ marginTop: 20 }}>
+            <Button
+              color="white"
+              labelStyle={{ fontWeight: "bold" }}
+              style={styles.button}
+              onPress={handleSubmit(onSubmit)}
+            >
+              Sign In
+            </Button>
           </View>
-          <View style={styles.input}>
-            <CustomInputs
-              name="Password"
-              control={control}
-              placeholder="Password"
-              secureTextEntry={passwordVisibility}
-              right={
-                <TextInput.Icon
-                  onPress={handlePasswordVisibility}
-                  icon={rightIcon}
-                />
-              }
-              rules={{
-                required: "Password is required",
-                minLength: {
-                  value: 8,
-                  message: "Password should be minimum 8 character",
-                },
-              }}
-            />
+          <View style={{ marginLeft: 20, marginRight: 20, marginTop: 20 }}>
+            <TouchableOpacity>
+              <Text style={{ color: "#6E9FFF" }}>Forgot Password?</Text>
+            </TouchableOpacity>
           </View>
-          <View style={styles.input}>
-            <CustomInputs
-              name="confirmpassword"
-              control={control}
-              placeholder="Confirm Password"
-              secureTextEntry={passwordVisibility}
-              right={
-                <TextInput.Icon
-                  onPress={handlePasswordVisibility}
-                  icon={rightIcon}
-                />
-              }
-              rules={{
-                required: "Confirm Password is required",
-                validate: (value) => value == pass || "Password do not match",
-              }}
-            />
-          </View>
-        </View>
-        <View style={{ marginTop: 20 }}>
-          <Button
-            color="white"
-            labelStyle={{ fontWeight: "bold" }}
-            style={styles.button}
-            onPress={handleSubmit(onSubmit)}
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Sign Up")}
+            style={{
+              marginLeft: 20,
+              marginRight: 20,
+              backgroundColor: "#6E9FFF",
+              borderRadius: 4,
+              padding: 6,
+              marginTop: 90,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: 25,
+            }}
           >
-            Continue
-          </Button>
-        </View>
-        <View style={{ width: "100%", marginTop: 30 }}>
-          <Text style={{ textAlign: "center" }}>
-            By Signing up, you agree to our
-          </Text>
-          <View style={{ flexDirection: "row", justifyContent: "center" }}>
-            <Text style={{ color: "#6E9FFF" }}>Terms</Text>
-            <Text> and </Text>
-            <Text style={{ color: "#6E9FFF" }}>Conditions</Text>
-          </View>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            marginTop: 100,
-            paddingBottom: 25,
-          }}
-        >
-          <Text>Powered by </Text>
-          <Text style={{ color: "#6E9FFF" }}>UA</Text>
-        </View>
-      </ScrollView>
+            <Button color="white" labelStyle={{ fontWeight: "bold" }}>
+              Signup
+            </Button>
+            <Icon
+              style={{ paddingRight: 10, alignItems: "center" }}
+              name="angle-right"
+              size={30}
+              color="white"
+            />
+          </TouchableOpacity>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </View>
   );
 };
 const styles = StyleSheet.create({
-  Signupcontainer: {
+  SiginContainer: {
     flex: 1,
     backgroundColor: "#fff",
   },
 
   title: {
-    marginTop: 110,
+    marginTop: 90,
+    marginLeft: 20,
   },
 
-  Signupform: {
+  second_title: {
+    flexDirection: "row",
+  },
+
+  paragraph: {
+    paddingTop: 7,
+    marginLeft: 20,
+  },
+  loginForm: {
     paddingLeft: 20,
     paddingRight: 20,
     marginTop: 80,
   },
-  input: {
-    marginBottom: 10,
+  allpassword: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  passwordContainer: {
+    backgroundColor: "white",
+    width: "100%",
+    borderRadius: 8,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  inputfield_password: {
+    backgroundColor: "transparent",
+    borderColor: "#747474",
+    marginBottom: 20,
+    width: "90%",
+  },
+
+  inputfield: {
+    backgroundColor: "transparent",
+    borderColor: "#747474",
+    marginBottom: 20,
+  },
+  inputFocus: {
+    borderBottomColor: "#6E9FFF",
+    backgroundColor: "transparent",
+    marginBottom: 20,
   },
   button: {
     backgroundColor: "#6E9FFF",
@@ -207,4 +213,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default signup;
+export default signin;

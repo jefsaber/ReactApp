@@ -20,7 +20,7 @@ const ProductStack = createNativeStackNavigator();
 const ProfileStack = createNativeStackNavigator();
 const ProfileStacks = () => {
   return (
-    <ProfileStack.Navigator>
+    <ProfileStack.Navigator initialRouteName="Profile">
       <ProfileStack.Screen name="Profile" component={Profile} />
       <ProfileStack.Screen name="Update Password" component={UpdatePassword} />
       <ProfileStack.Screen name="Favorites" component={Favorites} />
@@ -32,8 +32,8 @@ const AuthStack = createNativeStackNavigator();
 const Auth = () => {
   return (
     <AuthStack.Navigator>
-      <Auth.Screen name="Sigin In" component={Signin} />
-      <Auth.Screen name="Sigin Up" component={Signup} />
+      <AuthStack.Screen name="Sigin In" component={Signin} />
+      <AuthStack.Screen name="Sigin Up" component={Signup} />
     </AuthStack.Navigator>
   );
 };
@@ -61,6 +61,11 @@ const Tabs = () => {
         tabBarIcon: { color: "white" },
       }}
       initialRouteName="Homepage"
+      screenListeners={({ navigation, route }) => ({
+        tabPress: (e) => {
+          navigation.navigate(route.name);
+        },
+      })}
     >
       <Tab.Screen
         name="Homepage"
@@ -228,6 +233,7 @@ export default function App() {
       />
     );
   }
+  //const Stack=createNativeStackNavigator();
   return (
     <NavigationContainer>
       <Tabs />
