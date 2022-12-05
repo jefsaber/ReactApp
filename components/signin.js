@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -15,8 +15,35 @@ import { useForm } from "react-hook-form";
 import Icon from "react-native-vector-icons/FontAwesome";
 import CustomInputs from "./CustomInputs";
 import { useHeaderHeight } from "@react-navigation/elements";
+import { db } from "../firebase/firebase";
+import {
+  collection,
+  doc,
+  setDoc,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  getDoc,
+  getDocs,
+  where,
+  query,
+  getCountFromServer,
+} from "firebase/firestore";
 
 const Signin = ({ navigation }) => {
+  let users = [];
+  useEffect(() => {
+    getDocs(collection(db, "Users"))
+      .then((docSnap) => {
+        docSnap.forEach((doc) => {
+          users.push({ ...doc.data(), id: doc.id });
+        });
+        console.log(users);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
   const { control, handleSubmit } = useForm();
   const height = useHeaderHeight();
 
@@ -46,7 +73,18 @@ const Signin = ({ navigation }) => {
   const { passwordVisibility, rightIcon, handlePasswordVisibility } =
     useTogglePasswordVisibility();
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    let userFound = false;
+    users.forEach((user) => {
+      if (data.Email == user.Email && data.Password == user.Password) {
+        userFound = true;
+        navigation.navigate("Homepage", { user });
+      }
+    });
+    if (!userFound) {
+      alert("Account does not exist");
+    }
+  };
   return (
     <View style={styles.SiginContainer}>
       <KeyboardAvoidingView
@@ -82,7 +120,7 @@ const Signin = ({ navigation }) => {
           <View style={styles.loginForm}>
             <View style={{ marginBottom: 10 }}>
               <CustomInputs
-                name="email"
+                name="Email"
                 placeholder="Email"
                 control={control}
                 rules={{
