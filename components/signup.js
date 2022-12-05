@@ -9,14 +9,30 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
+import { db } from "../firebase/firebase";
+import {
+  collection,
+  doc,
+  setDoc,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  getDoc,
+  getDocs,
+  where,
+  query,
+  getCountFromServer,
+} from "firebase/firestore";
 import { Button, TextInput } from "react-native-paper";
 import { useForm } from "react-hook-form";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Icon from "react-native-vector-icons/FontAwesome";
 import CustomInputs from "./CustomInputs";
 import { useHeaderHeight } from "@react-navigation/elements";
+import { data } from "../assets/Data";
+import { async } from "@firebase/util";
 
-const signup = ({ navigation }) => {
+const Signup = ({ navigation }) => {
   const height = useHeaderHeight();
   const useTogglePasswordVisibility = () => {
     const [passwordVisibility, setPasswordVisibility] = useState(true);
@@ -46,7 +62,33 @@ const signup = ({ navigation }) => {
   const { control, handleSubmit, watch } = useForm();
   const pass = watch("Password");
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    const userRef = collection(db, "Users");
+    const q = query(userRef, where("Email", "==", data.Email));
+    // const z = await getCountFromServer(userRef);
+    // // console.log(z.data().count);
+    // const id = z.data().count + 1;
+    // console.log(id);
+    getDocs(q)
+      .then((result) => {
+        if (result.empty) {
+          addDoc(userRef, {
+            Email: data.Email,
+            Password: data.Password,
+            FirstName: data.FirstName,
+            LastName: data.LastName,
+          }).then(() => {
+            console.warn("data submited");
+            navigation.navigate("Homepage");
+          });
+        } else {
+          alert("email is already in use");
+        }
+      })
+      .catch((error) => {
+        console.warn(error);
+      });
+  };
   return (
     <View style={styles.Signupcontainer}>
       <KeyboardAvoidingView
@@ -69,7 +111,7 @@ const signup = ({ navigation }) => {
             >
               <View style={{ width: "48%", marginRight: "4%" }}>
                 <CustomInputs
-                  name="firstName"
+                  name="FirstName"
                   placeholder="First Name"
                   control={control}
                   rules={{
@@ -87,7 +129,7 @@ const signup = ({ navigation }) => {
               </View>
               <View style={{ width: "48%" }}>
                 <CustomInputs
-                  name="lastName"
+                  name="LastName"
                   placeholder="Last Name"
                   control={control}
                   rules={{
@@ -107,7 +149,7 @@ const signup = ({ navigation }) => {
             </View>
             <View style={styles.input}>
               <CustomInputs
-                name="email"
+                name="Email"
                 control={control}
                 placeholder="Email"
                 rules={{
@@ -218,4 +260,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default signup;
+export default Signup;

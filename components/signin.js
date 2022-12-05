@@ -9,13 +9,14 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
+
 import { Button, TextInput } from "react-native-paper";
 import { useForm } from "react-hook-form";
 import Icon from "react-native-vector-icons/FontAwesome";
 import CustomInputs from "./CustomInputs";
 import { useHeaderHeight } from "@react-navigation/elements";
 
-const signin = ({ navigation }) => {
+const Signin = ({ navigation }) => {
   const { control, handleSubmit } = useForm();
   const height = useHeaderHeight();
 
@@ -213,4 +214,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default signin;
+export default Signin;

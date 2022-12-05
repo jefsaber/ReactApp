@@ -12,7 +12,28 @@ import MaterialIcons from "@expo/vector-icons/Ionicons";
 import React, { useState } from "react";
 import UpdatePassword from "./components/Updatepassword";
 import AppIntroSlider from "react-native-app-intro-slider";
-import { StyleSheet, Text, View, Image, Dimensions,Platform, Button } from "react-native";
+import { db } from "./firebase/firebase";
+import {
+  collection,
+  doc,
+  setDoc,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  getDoc,
+  getDocs,
+  where,
+  query,
+} from "firebase/firestore";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Dimensions,
+  Platform,
+  Button,
+} from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ProductDetails from "./components/productDetails";
 
@@ -33,19 +54,30 @@ const ProfileStacks = () => {
 const AuthStack = createNativeStackNavigator();
 const Auth = () => {
   return (
-    <AuthStack.Navigator initialRouteName="Sign Up">
+    <AuthStack.Navigator initialRouteName="Sign In">
       <AuthStack.Screen name="Sign In" component={Signin} />
       <AuthStack.Screen name="Sign Up" component={Signup} />
     </AuthStack.Navigator>
   );
 };
 
-const MainStacks = ({navigation}) => {
+const MainStacks = ({ navigation }) => {
   return (
-    <MainStack.Navigator initialRouteName="Tabs" screenOptions={{headerShown:false}}>
-      <MainStack.Screen name='Tabs' component={Tabs} />
+    <MainStack.Navigator
+      initialRouteName="Tabs"
+      screenOptions={{ headerShown: false }}
+    >
+      <MainStack.Screen name="Tabs" component={Tabs} />
       <MainStack.Screen name="Products" component={Products} />
-      <MainStack.Screen options={{animation:'slide_from_bottom',presentation:'modal',headerShown:true}} name="ProductDetails" component={ProductDetails} />
+      <MainStack.Screen
+        options={{
+          animation: "slide_from_bottom",
+          presentation: "modal",
+          headerShown: true,
+        }}
+        name="ProductDetails"
+        component={ProductDetails}
+      />
     </MainStack.Navigator>
   );
 };
@@ -55,7 +87,10 @@ const Tabs = () => {
       screenOptions={{
         tabBarShowLabel: false,
         tabBarHideOnKeyboard: true,
-        tabBarStyle: { backgroundColor: "#6E9FFF", height:Platform.OS=='ios'? 80:60 },
+        tabBarStyle: {
+          backgroundColor: "#6E9FFF",
+          height: Platform.OS == "ios" ? 80 : 60,
+        },
         tabBarIcon: { color: "white" },
       }}
       initialRouteName="Homepage"
@@ -91,12 +126,12 @@ const Tabs = () => {
             return <MaterialIcons name={iconName} size={26} color={"white"} />;
           },
           headerShown: false,
-          tabBarVisibilityAnimationConfig:{show:true}
+          tabBarVisibilityAnimationConfig: { show: true },
         })}
       />
       <Tab.Screen
         name="Search"
-        component={Search}
+        component={Auth}
         options={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
@@ -231,8 +266,8 @@ export default function App() {
   //     />
   //   );
   // }
+
   return (
-  
     <NavigationContainer>
       <MainStacks />
     </NavigationContainer>
