@@ -12,9 +12,10 @@ import MaterialIcons from "@expo/vector-icons/Ionicons";
 import React, { useState } from "react";
 import UpdatePassword from "./components/Updatepassword";
 import AppIntroSlider from "react-native-app-intro-slider";
-import { StyleSheet, Text, View, Image, Dimensions,Platform } from "react-native";
+import { StyleSheet, Text, View, Image, Dimensions,Platform, Button } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ProductDetails from "./components/productDetails";
+
 const Tab = createBottomTabNavigator();
 const MainStack = createNativeStackNavigator();
 const ProfileStack = createNativeStackNavigator();
@@ -231,6 +232,7 @@ export default function App() {
   //   );
   // }
   return (
+  
     <NavigationContainer>
       <MainStacks />
     </NavigationContainer>

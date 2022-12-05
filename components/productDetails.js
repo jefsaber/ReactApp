@@ -5,7 +5,7 @@ import { List } from "react-native-paper";
 
 const ProductDetails = ({ navigation, route }) => {
   // console.warn(route.params.id)
-  const { id, category, title, color, price, image, description, sizes } =
+  const {  title, color, price, image, description, sizes } =
     route.params;
   console.log(route.params);
   return (
