@@ -5,14 +5,13 @@ import { List } from "react-native-paper";
 
 const ProductDetails = ({ navigation, route }) => {
   // console.warn(route.params.id)
-  const {  title, color, price, image, description, sizes } =
-    route.params;
+  const { title, color, price, image, description, sizes } = route.params;
   console.log(route.params);
   return (
-    <ScrollView style={{ backgroundColor: "#fff",  }}>
+    <ScrollView style={{ backgroundColor: "#fff" }}>
       <View style={styles.image}>
         <Image
-          source={image}
+          source={require("../assets/nike1.png")}
           style={{
             width: "80%",
             height: 150,
@@ -38,12 +37,12 @@ const ProductDetails = ({ navigation, route }) => {
       </View>
       <View style={styles.colors}>
         {color.map((item, index) => {
-          console.log(item)
+          console.log(item);
           return (
             <View
               key={index}
               style={{
-                backgroundColor:  `${item}` ,
+                backgroundColor: `${item}`,
                 borderRadius: 100,
                 width: 50,
                 height: 50,
@@ -54,30 +53,39 @@ const ProductDetails = ({ navigation, route }) => {
           );
         })}
       </View>
-      <View style={{marginHorizontal:10, marginTop: 20,flexDirection:'row',marginBottom:40,justifyContent:'space-between',borderWidth:0}}>
+      <View
+        style={{
+          marginHorizontal: 10,
+          marginTop: 20,
+          flexDirection: "row",
+          marginBottom: 40,
+          justifyContent: "space-between",
+          borderWidth: 0,
+        }}
+      >
         <Button
           icon="cart"
           mode="outlined"
           color="#6E9FFF"
           style={styles.ButtonStyle}
-          labelStyle={{fontSize:15}}
-          onPress={ ()=>console.log('first')}
+          labelStyle={{ fontSize: 15 }}
+          onPress={() => console.log("first")}
           uppercase={false}
-        > 
+        >
           Add To Cart
-       </Button>
-        <Button mode="contained" color="#6E9FFF" 
+        </Button>
+        <Button
+          mode="contained"
+          color="#6E9FFF"
           style={styles.ButtonStyle}
           icon="heart"
-          onPress={ ()=>console.log('first')}
-          labelStyle={{fontSize:15,color:'white'}}
+          onPress={() => console.log("first")}
+          labelStyle={{ fontSize: 15, color: "white" }}
           uppercase={false}
-
-          >
-        Add To Favorites
+        >
+          Add To Favorites
         </Button>
       </View>
-   
     </ScrollView>
   );
 };
@@ -118,10 +126,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
   },
-  ButtonStyle : {
-    width:'48%',
-    borderRadius:8,
+  ButtonStyle: {
+    width: "48%",
+    borderRadius: 8,
     // flexDirection:'row-reverse'
-  }
+  },
 });
 export default ProductDetails;

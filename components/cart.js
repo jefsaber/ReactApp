@@ -4,42 +4,81 @@ import Productlist from "./productlist";
 import { data } from "../assets/Data";
 import { TouchableRipple } from "react-native-paper";
 import MaterialIcons from "@expo/vector-icons/Ionicons";
+import { Button } from "react-native-paper";
 
-const Cart = () => {
+const Cart = ({ navigation }) => {
   const iconfunction = () => {
     console.log("1");
   };
   return (
     <View style={styles.container}>
       <View style={styles.CartCont}>
-        <Productlist
-          icon="close"
-          title="Cart"
-          data={data}
-          iconfunction={iconfunction}
-        />
+        {data.length != 0 ? (
+          <Productlist
+            icon="close"
+            title="Cart"
+            data={data}
+            iconfunction={iconfunction}
+          />
+        ) : (
+          <View
+            style={{
+              height: "100%",
+            }}
+          >
+            <Text
+              style={{
+                marginTop: "50%",
+                textAlign: "center",
+                fontWeight: "bold",
+                fontSize: 22,
+                marginBottom: 20,
+              }}
+            >
+              Your Cart Is Empty
+            </Text>
+            <Button
+              style={{
+                backgroundColor: "#6E9FFF",
+                marginRight: 20,
+                marginLeft: 20,
+                padding: 6,
+              }}
+              labelStyle={{ fontWeight: "bold" }}
+              mode="contained"
+              title="Go to Shop"
+              onPress={() => navigation.navigate("Shop")}
+            >
+              go to shop
+            </Button>
+          </View>
+        )}
       </View>
-      <TouchableRipple
-        borderless={true}
-        style={styles.Button}
-        onPress={() => console.log("Pressed")}
-        rippleColor="rgba(255, 255, 255, .32)"
-      >
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
+      {data.length != 0 ? (
+        <TouchableRipple
+          borderless={true}
+          style={styles.Button}
+          onPress={() => console.log("Pressed")}
+          rippleColor="rgba(255, 255, 255, .32)"
         >
-          <Text style={{ color: "white", fontSize: 20 }}>Next</Text>
-          <MaterialIcons
-            name="chevron-forward"
-            size={24}
-            color={"white"}
-          ></MaterialIcons>
-        </View>
-      </TouchableRipple>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Text style={{ color: "white", fontSize: 20 }}>Next</Text>
+            <MaterialIcons
+              name="chevron-forward"
+              size={24}
+              color={"white"}
+            ></MaterialIcons>
+          </View>
+        </TouchableRipple>
+      ) : (
+        ""
+      )}
     </View>
   );
 };
