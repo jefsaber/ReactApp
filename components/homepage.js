@@ -56,7 +56,6 @@ export { setUserData, getUserData };
 
 const Homepage = ({ route, navigation }) => {
   const { user_data } = route.params;
-  console.log(user_data);
   setUserData(user_data);
   return (
     <View style={styles.container}>

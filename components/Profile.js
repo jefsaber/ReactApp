@@ -17,13 +17,13 @@ const Profile = ({ navigation }) => {
   const tmpUser = getUserData();
   console.log(tmpUser);
   const User = {
-    id: 1,
+    id: tmpUser.id,
     fname: tmpUser.FirstName,
     lname: tmpUser.LastName,
+    imageurl: tmpUser.ImageUrl,
   };
-
   const [image, setImage] = useState(null);
-
+  console.log(User.imageurl);
   const addImage = async () => {
     let _image = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
