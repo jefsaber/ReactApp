@@ -5,7 +5,7 @@ import {
   ScrollView,
   Image,
   Dimensions,
-  Platform
+  Platform,
 } from "react-native";
 import React from "react";
 import { DATA, data } from "../assets/Data.js";
@@ -43,9 +43,21 @@ const slides = [
     image: require("../assets/nike.jpg"),
   },
 ];
+export let loggedinUser = [];
+function setUserData(data) {
+  loggedinUser = data;
+}
 
-const Homepage = ( { navigation }) => {
+function getUserData() {
+  return loggedinUser;
+}
 
+export { setUserData, getUserData };
+
+const Homepage = ({ route, navigation }) => {
+  const { user_data } = route.params;
+  console.log(user_data);
+  setUserData(user_data);
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -81,7 +93,7 @@ const Homepage = ( { navigation }) => {
         </View>
         <Section data={DATA} SectionTitle={"On Sale"} navigation={navigation} />
         <Section data={data} SectionTitle={"On air"} navigation={navigation} />
-        <Section data={data} SectionTitle={"On air"}  navigation={navigation}/>
+        <Section data={data} SectionTitle={"On air"} navigation={navigation} />
       </ScrollView>
     </View>
   );
@@ -100,7 +112,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingTop:Platform.OS =='ios' ? 50 : 30 ,
+    paddingTop: Platform.OS == "ios" ? 50 : 30,
     backgroundColor: "#ffffff",
   },
   ProductsScrollCont: {

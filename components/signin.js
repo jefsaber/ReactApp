@@ -38,7 +38,7 @@ const Signin = ({ navigation }) => {
         docSnap.forEach((doc) => {
           users.push({ ...doc.data(), id: doc.id });
         });
-        console.log(users);
+        //console.log(users);
       })
       .catch((err) => {
         console.log(err);
@@ -78,7 +78,10 @@ const Signin = ({ navigation }) => {
     users.forEach((user) => {
       if (data.Email == user.Email && data.Password == user.Password) {
         userFound = true;
-        navigation.navigate("Homepage", { user });
+        navigation.navigate("Tabs", {
+          screen: "Homepage",
+          params: { user_data: user },
+        });
       }
     });
     if (!userFound) {

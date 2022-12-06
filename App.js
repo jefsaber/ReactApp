@@ -40,6 +40,7 @@ import ProductDetails from "./components/productDetails";
 const Tab = createBottomTabNavigator();
 const MainStack = createNativeStackNavigator();
 const ProfileStack = createNativeStackNavigator();
+const { width, height } = Dimensions.get("screen");
 
 const ProfileStacks = () => {
   return (
@@ -64,11 +65,10 @@ const Auth = () => {
 const MainStacks = ({ navigation }) => {
   return (
     <MainStack.Navigator
-      initialRouteName="Tabs"
+      initialRouteName="Auth"
       screenOptions={{ headerShown: false }}
     >
-      <MainStack.Screen name="Sign In" component={Signin} />
-      <MainStack.Screen name="Sign Up" component={Signup} />
+      <MainStack.Screen name="Auth" component={Auth} />
       <MainStack.Screen name="Tabs" component={Tabs} />
       <MainStack.Screen name="Products" component={Products} />
       <MainStack.Screen
@@ -133,7 +133,7 @@ const Tabs = () => {
       />
       <Tab.Screen
         name="Search"
-        component={Auth}
+        component={Search}
         options={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;

@@ -11,11 +11,15 @@ import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { Button } from "react-native-paper";
 
+import { getUserData } from "./homepage";
+
 const Profile = ({ navigation }) => {
+  const tmpUser = getUserData();
+  console.log(tmpUser);
   const User = {
     id: 1,
-    fname: "John",
-    lname: "Doe",
+    fname: tmpUser.FirstName,
+    lname: tmpUser.LastName,
   };
 
   const [image, setImage] = useState(null);
