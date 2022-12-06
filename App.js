@@ -36,6 +36,7 @@ import {
 } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ProductDetails from "./components/productDetails";
+import { getUserData } from "./components/homepage";
 
 const Tab = createBottomTabNavigator();
 const MainStack = createNativeStackNavigator();
@@ -84,6 +85,7 @@ const MainStacks = ({ navigation }) => {
   );
 };
 const Tabs = () => {
+  let user = getUserData();
   return (
     <Tab.Navigator
       screenOptions={{
@@ -98,7 +100,7 @@ const Tabs = () => {
       initialRouteName="Homepage"
       screenListeners={({ navigation, route }) => ({
         tabPress: (e) => {
-          navigation.navigate(route.name);
+          navigation.navigate(route.name, { params: { user } });
         },
       })}
     >

@@ -3,10 +3,28 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import CustomInputs from "./CustomInputs";
 import { Button, TextInput } from "react-native-paper";
+import { getUserData } from "./homepage";
+import { db } from "../firebase/firebase";
+import {
+  collection,
+  doc,
+  setDoc,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  getDoc,
+  getDocs,
+  where,
+  query,
+  getCountFromServer,
+} from "firebase/firestore";
 
-const Updatepassword = () => {
+const Updatepassword = ({ navigation }) => {
+  //const { Userid } = route.params;
   const { control, handleSubmit, watch } = useForm();
-
+  const User = getUserData();
+  //console.log(User);
+  //console.log(Userid);
   const pass = watch("newPassword");
   const useTogglePasswordVisibility = () => {
     const [passwordVisibility, setPasswordVisibility] = useState(true);
@@ -30,8 +48,26 @@ const Updatepassword = () => {
   };
   const { passwordVisibility, rightIcon, handlePasswordVisibility } =
     useTogglePasswordVisibility();
+  const docRef = doc(db, "Users", User.id);
 
-  const onSubmit = () => console.log(updated);
+  const onSubmit = (data) => {
+    if (data.oldPassword == User.Password) {
+      const Password = {
+        Password: data.newPassword,
+      };
+      updateDoc(docRef, Password)
+        .then(() => {
+          console.log("added successfuly");
+          alert("Password Successfuly changed");
+          navigation.navigate("Profile");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      alert("Password is incorrect");
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={{ marginTop: 30, marginHorizontal: 20 }}>
@@ -90,10 +126,10 @@ const Updatepassword = () => {
       </View>
       <View style={{ marginTop: 20, marginHorizontal: 20 }}>
         <Button
-          style={{ backgroundColor: "#6E9FFF", }}
+          style={{ backgroundColor: "#6E9FFF" }}
           onPress={handleSubmit(onSubmit)}
           mode="contained"
-          contentStyle={{ height: 50,borderRadius:10 }}
+          contentStyle={{ height: 50, borderRadius: 10 }}
         >
           Update Password
         </Button>

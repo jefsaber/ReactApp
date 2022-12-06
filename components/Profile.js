@@ -25,6 +25,14 @@ import {
   getCountFromServer,
 } from "firebase/firestore";
 import { getUserData } from "./homepage";
+import call from "react-native-phone-call";
+import email from "react-native-email";
+
+const args = {
+  number: "81236606", // String value with the number to call
+  prompt: false, // Optional boolean property. Determines if the user should be prompted prior to the call
+  skipCanOpen: true, // Skip the canOpenURL check
+};
 
 const Profile = ({ navigation }) => {
   const tmpUser = getUserData();
@@ -35,11 +43,11 @@ const Profile = ({ navigation }) => {
     lname: tmpUser.LastName,
     imageurl: tmpUser.ImageUrl,
   };
+
   const docRef = doc(db, "Users", User.id);
 
   const [image, setImage] = useState(null);
 
-  //console.log(User.imageurl);
   const addImage = async () => {
     let _image = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -64,12 +72,13 @@ const Profile = ({ navigation }) => {
         });
     }
   };
-  const buttonpress = () => {
-    // console.log("userid: " + tmpUser.id);
-    // console.log("imageurl: " + tmpUser.ImageUrl);
-    console.log("image: " + image);
-    console.log("imageurl:" + tmpUser.ImageUrl);
-    console.log("imageurl:" + User.imageurl);
+  handleEmail = () => {
+    const to = ["jef.saber@hotmail.com"]; // string or array of email addresses
+    email(to, {
+      // Optional additional arguments
+      cc: ["souheilnasser4@gmail.com"], // string or array of email addresses
+      checkCanOpen: false, // Call Linking.canOpenURL prior to Linking.openURL
+    }).catch(console.error);
   };
   return (
     <ScrollView>
@@ -104,7 +113,11 @@ const Profile = ({ navigation }) => {
             contentStyle={{ justifyContent: "flex-start" }}
             icon="lock"
             mode="contained"
-            onPress={() => navigation.navigate("Update Password")}
+            onPress={() =>
+              navigation.navigate("Update Password", {
+                Userid: User.id,
+              })
+            }
           >
             Password Update
           </Button>
@@ -137,7 +150,7 @@ const Profile = ({ navigation }) => {
             contentStyle={{ justifyContent: "flex-start" }}
             icon="mail"
             mode="contained"
-            onPress={buttonpress}
+            onPress={handleEmail}
           >
             Send Us Email
           </Button>
@@ -146,12 +159,17 @@ const Profile = ({ navigation }) => {
             contentStyle={{ justifyContent: "flex-start" }}
             icon="phone"
             mode="contained"
+            onPress={() => call(args).catch(console.error)}
           >
             call
           </Button>
         </View>
         <View style={styles.logout}>
-          <Button style={{ backgroundColor: "#6E9FFF" }} mode="contained">
+          <Button
+            style={{ backgroundColor: "#6E9FFF" }}
+            onPress={() => navigation.navigate("Auth", { screen: "Sigin In" })}
+            mode="contained"
+          >
             Logout
           </Button>
         </View>
