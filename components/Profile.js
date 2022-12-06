@@ -10,20 +10,36 @@ import React, { useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { Button } from "react-native-paper";
-
+import { db } from "../firebase/firebase";
+import {
+  collection,
+  doc,
+  setDoc,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  getDoc,
+  getDocs,
+  where,
+  query,
+  getCountFromServer,
+} from "firebase/firestore";
 import { getUserData } from "./homepage";
 
 const Profile = ({ navigation }) => {
   const tmpUser = getUserData();
-  console.log(tmpUser);
+  //console.log(tmpUser);
   const User = {
     id: tmpUser.id,
     fname: tmpUser.FirstName,
     lname: tmpUser.LastName,
     imageurl: tmpUser.ImageUrl,
   };
+  const docRef = doc(db, "Users", User.id);
+
   const [image, setImage] = useState(null);
-  console.log(User.imageurl);
+
+  //console.log(User.imageurl);
   const addImage = async () => {
     let _image = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -31,10 +47,29 @@ const Profile = ({ navigation }) => {
       aspect: [4, 3],
       quality: 1,
     });
-    console.log(JSON.stringify(_image));
+    //console.log(JSON.stringify(_image));
     if (!_image.canceled) {
       setImage(_image.uri);
+      const data = {
+        ImageUrl: image,
+      };
+      updateDoc(docRef, data)
+        .then(() => {
+          console.log("added successfuly");
+          tmpUser.ImageUrl = data.ImageUrl;
+          User.imageurl = data.ImageUrl;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
+  };
+  const buttonpress = () => {
+    // console.log("userid: " + tmpUser.id);
+    // console.log("imageurl: " + tmpUser.ImageUrl);
+    console.log("image: " + image);
+    console.log("imageurl:" + tmpUser.ImageUrl);
+    console.log("imageurl:" + User.imageurl);
   };
   return (
     <ScrollView>
@@ -42,7 +77,7 @@ const Profile = ({ navigation }) => {
         <View style={styles.imagecontainer}>
           {image && (
             <Image
-              source={{ uri: image }}
+              source={{ uri: tmpUser.ImageUrl }}
               style={{ width: 200, height: 200 }}
             />
           )}
@@ -102,6 +137,7 @@ const Profile = ({ navigation }) => {
             contentStyle={{ justifyContent: "flex-start" }}
             icon="mail"
             mode="contained"
+            onPress={buttonpress}
           >
             Send Us Email
           </Button>
