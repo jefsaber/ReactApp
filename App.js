@@ -67,6 +67,8 @@ const MainStacks = ({ navigation }) => {
       initialRouteName="Tabs"
       screenOptions={{ headerShown: false }}
     >
+      <MainStack.Screen name="Sign In" component={Signin} />
+      <MainStack.Screen name="Sign Up" component={Signup} />
       <MainStack.Screen name="Tabs" component={Tabs} />
       <MainStack.Screen name="Products" component={Products} />
       <MainStack.Screen
@@ -197,75 +199,75 @@ const slides = [
   },
 ];
 export default function App() {
-  // const [showhomepage, setShowhomepage] = useState(false);
+  const [showhomepage, setShowhomepage] = useState(false);
 
-  // const buttonLabel = (label) => {
-  //   return (
-  //     <View
-  //       style={{
-  //         padding: 12,
-  //       }}
-  //     >
-  //       <Text
-  //         style={{
-  //           color: "#072F4A",
-  //           fontWeight: "600",
-  //           fontSize: 16,
-  //         }}
-  //       >
-  //         {label}
-  //       </Text>
-  //     </View>
-  //   );
-  // };
-  // if (!showhomepage) {
-  //   return (
-  //     <AppIntroSlider
-  //       data={slides}
-  //       renderItem={({ item }) => {
-  //         return (
-  //           <View
-  //             style={{
-  //               flex: 1,
-  //               alignItems: "center",
-  //               padding: 15,
-  //               paddingTop: 100,
-  //             }}
-  //           >
-  //             <Image
-  //               source={item.image}
-  //               style={{
-  //                 width: width - 80,
-  //                 height: 400,
-  //               }}
-  //               resizeMode="contain"
-  //             />
-  //             <Text
-  //               style={{
-  //                 fontWeight: "bold",
-  //                 color: "#072F4A",
-  //                 fontSize: 22,
-  //               }}
-  //             >
-  //               {item.title == "icon" ? "" : item.title}
-  //             </Text>
-  //           </View>
-  //         );
-  //       }}
-  //       activeDotStyle={{
-  //         backgroundColor: "#0057FF",
-  //         width: 30,
-  //       }}
-  //       showSkipButton
-  //       renderNextButton={() => buttonLabel("Next")}
-  //       renderSkipButton={() => buttonLabel("Skip")}
-  //       renderDoneButton={() => buttonLabel("Done")}
-  //       onDone={() => {
-  //         setShowhomepage(true);
-  //       }}
-  //     />
-  //   );
-  // }
+  const buttonLabel = (label) => {
+    return (
+      <View
+        style={{
+          padding: 12,
+        }}
+      >
+        <Text
+          style={{
+            color: "#072F4A",
+            fontWeight: "600",
+            fontSize: 16,
+          }}
+        >
+          {label}
+        </Text>
+      </View>
+    );
+  };
+  if (!showhomepage) {
+    return (
+      <AppIntroSlider
+        data={slides}
+        renderItem={({ item }) => {
+          return (
+            <View
+              style={{
+                flex: 1,
+                alignItems: "center",
+                padding: 15,
+                paddingTop: 100,
+              }}
+            >
+              <Image
+                source={item.image}
+                style={{
+                  width: width - 80,
+                  height: 400,
+                }}
+                resizeMode="contain"
+              />
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  color: "#072F4A",
+                  fontSize: 22,
+                }}
+              >
+                {item.title == "icon" ? "" : item.title}
+              </Text>
+            </View>
+          );
+        }}
+        activeDotStyle={{
+          backgroundColor: "#0057FF",
+          width: 30,
+        }}
+        showSkipButton
+        renderNextButton={() => buttonLabel("Next")}
+        renderSkipButton={() => buttonLabel("Skip")}
+        renderDoneButton={() => buttonLabel("Done")}
+        onDone={() => {
+          setShowhomepage(true);
+        }}
+      />
+    );
+  }
 
   return (
     <NavigationContainer>
