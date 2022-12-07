@@ -2,11 +2,18 @@ import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import React from "react";
 import { Button } from "react-native-paper";
 import { List } from "react-native-paper";
+import { getUserData } from "./homepage";
 
 const ProductDetails = ({ navigation, route }) => {
+  const user = getUserData();
+  //console.log(user);
   // console.warn(route.params.id)
-  const { title, color, price, image, description, sizes } = route.params;
-  console.log(route.params);
+  const { title, color, price, image, description, sizes, id } = route.params;
+  //console.log(route.params);
+  //console.log(id);
+  const AddtoCart = (id) => {
+    console.log(id);
+  };
   return (
     <ScrollView style={{ backgroundColor: "#fff" }}>
       <View style={styles.image}>
@@ -37,7 +44,7 @@ const ProductDetails = ({ navigation, route }) => {
       </View>
       <View style={styles.colors}>
         {color.map((item, index) => {
-          console.log(item);
+          //console.log(item);
           return (
             <View
               key={index}
@@ -69,7 +76,7 @@ const ProductDetails = ({ navigation, route }) => {
           color="#6E9FFF"
           style={styles.ButtonStyle}
           labelStyle={{ fontSize: 15 }}
-          onPress={() => console.log("first")}
+          onPress={AddtoCart}
           uppercase={false}
         >
           Add To Cart

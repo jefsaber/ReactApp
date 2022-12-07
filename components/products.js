@@ -20,13 +20,28 @@ import {
 
 const Products = ({ navigation }) => {
   let Products = [];
+  // const getAllProducts = () => {
+  //   getDocs(collection(db, "Products"))
+  //     .then((docSnap) => {
+  //       docSnap.forEach((doc) => {
+  //         Products.push({ ...doc.data(), id: doc.id });
+  //       });
+  //       console.log(Products);
+  //       //console.log(DATA);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
+  //console.log(Products);
   useEffect(() => {
     getDocs(collection(db, "Products"))
       .then((docSnap) => {
         docSnap.forEach((doc) => {
           Products.push({ ...doc.data(), id: doc.id });
         });
-        console.log(Products);
+        // console.log(Products);
+        //console.log(DATA);
       })
       .catch((err) => {
         console.log(err);

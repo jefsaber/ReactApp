@@ -9,13 +9,17 @@ import {
 import React from "react";
 import MaterialIcons from "@expo/vector-icons/Ionicons";
 const Section = (props) => {
-  const { data, navigation, SectionTitle } = props;
+  //console.log(props.SectionTitle);
+  //const { data, navigation, SectionTitle } = props;
+  //console.log("the data is: " + data.id);
+  //console.log(props.data);
+
   return (
     <View>
       <ScrollView style={styles.ProductsScrollCont}>
-        {SectionTitle && (
+        {props.SectionTitle && (
           <View style={styles.SectionCont}>
-            <Text style={styles.SectionTitle}>{SectionTitle}</Text>
+            <Text style={styles.SectionTitle}>{props.SectionTitle}</Text>
             {/* <TouchableOpacity delayPressIn={30}  >
       <MaterialIcons size={45} name='chevron-forward-circle'></MaterialIcons>
       </TouchableOpacity> */}
@@ -28,15 +32,15 @@ const Section = (props) => {
             flexWrap: "wrap",
           }}
         >
-          {data.map((item) => {
+          {props.data.map((item) => {
             return (
               <TouchableOpacity
                 delayPressIn={50}
-                key={item.Id}
+                key={item.id}
                 style={styles.Product}
                 onPress={() => {
-                  navigation.navigate("ProductDetails", {
-                    id: item.Id,
+                  props.navigation.navigate("ProductDetails", {
+                    id: item.id,
                     category: item.Category,
                     title: item.Title,
                     color: item.Colors,

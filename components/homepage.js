@@ -55,8 +55,10 @@ function getUserData() {
 export { setUserData, getUserData };
 
 const Homepage = ({ route, navigation }) => {
+  //console.log(data);
   const { user_data } = route.params;
   setUserData(user_data);
+  console.log(loggedinUser);
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -90,9 +92,9 @@ const Homepage = ({ route, navigation }) => {
             }}
           />
         </View>
-        <Section data={DATA} SectionTitle={"On Sale"} navigation={navigation} />
-        <Section data={data} SectionTitle={"On air"} navigation={navigation} />
-        <Section data={data} SectionTitle={"On air"} navigation={navigation} />
+        <Section data={DATA} navigation={navigation} SectionTitle={"On Sale"} />
+        <Section data={data} navigation={navigation} SectionTitle={"On air"} />
+        <Section data={data} navigation={navigation} SectionTitle={"On air"} />
       </ScrollView>
     </View>
   );
