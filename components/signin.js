@@ -3,33 +3,22 @@ import {
   StyleSheet,
   Text,
   View,
-  Pressable,
   TouchableOpacity,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
-
 import { Button, TextInput } from "react-native-paper";
 import { useForm } from "react-hook-form";
 import Icon from "react-native-vector-icons/FontAwesome";
 import CustomInputs from "./CustomInputs";
-import { useHeaderHeight } from "@react-navigation/elements";
 import { db } from "../firebase/firebase";
 import {
   collection,
-  doc,
-  setDoc,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  getDoc,
   getDocs,
-  where,
-  query,
-  getCountFromServer,
-} from "firebase/firestore";
 
+} from "firebase/firestore";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 const Signin = ({ navigation }) => {
   let users = [];
   useEffect(() => {
@@ -38,7 +27,6 @@ const Signin = ({ navigation }) => {
         docSnap.forEach((doc) => {
           users.push({ ...doc.data(), id: doc.id });
         });
-        //console.log(users);
       })
       .catch((err) => {
         console.log(err);
@@ -46,7 +34,6 @@ const Signin = ({ navigation }) => {
   });
 
   const { control, handleSubmit } = useForm();
-  const height = useHeaderHeight();
 
   const EMAIL_REGEX =
     /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -91,10 +78,11 @@ const Signin = ({ navigation }) => {
   };
   return (
     <View style={styles.SiginContainer}>
+      
       <KeyboardAvoidingView
-        keyboardVerticalOffset={height + 47}
+        // keyboardVerticalOffset={height}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        enabled
+        enabled ={true}
         style={{ flex: 1 }}
       >
         <ScrollView>
@@ -130,7 +118,9 @@ const Signin = ({ navigation }) => {
                 rules={{
                   required: "Email is required",
                   pattern: { value: EMAIL_REGEX, message: "Email is invalid" },
+                 
                 }}
+                
               />
             </View>
             <View>
@@ -151,41 +141,43 @@ const Signin = ({ navigation }) => {
               />
             </View>
           </View>
-          <View style={{ marginTop: 20 }}>
-            <Button
-              color="white"
-              labelStyle={{ fontWeight: "bold" }}
-              style={styles.button}
+          <TouchableOpacity style={styles.button}
               onPress={handleSubmit(onSubmit)}
+              delayPressIn={100}
+              activeOpacity={0.5}
+          >
+            <Text
+            style={{
+                color:'white',
+                fontWeight:"bold",
+                fontSize:18
+            }}
             >
-              Sign In
-            </Button>
-          </View>
+            Sign In
+            </Text>
+          </TouchableOpacity>
           <View style={{ marginLeft: 20, marginRight: 20, marginTop: 20 }}>
             <TouchableOpacity>
               <Text style={{ color: "#6E9FFF" }}>Forgot Password?</Text>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity
+          <TouchableOpacity style={styles.button}
             onPress={() => navigation.navigate("Sign Up")}
+              delayPressIn={100}
+              activeOpacity={0.5}>
+            <Text
             style={{
-              marginLeft: 20,
-              marginRight: 20,
-              backgroundColor: "#6E9FFF",
-              borderRadius: 4,
-              padding: 6,
-              marginTop: 90,
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: 25,
+                color:'white',
+                fontWeight:"bold",
+                fontSize:18,
             }}
-          >
-            <Button color="white" labelStyle={{ fontWeight: "bold" }}>
-              Signup
-            </Button>
+            >
+            Sign Up
+            </Text>
             <Icon
-              style={{ paddingRight: 10, alignItems: "center" }}
+              style={{ paddingRight: 10, alignItems: "center",
+              marginLeft:10
+            }}
               name="angle-right"
               size={30}
               color="white"
@@ -253,6 +245,13 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginLeft: 20,
     padding: 6,
+    marginTop:20,
+    alignItems:'center',
+    justifyContent:'center',
+    height:50,
+    borderRadius:5,
+    flexDirection:'row',
+    
   },
 });
 

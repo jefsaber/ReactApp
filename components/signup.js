@@ -3,8 +3,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Pressable,
-  TouchableOpacity,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
@@ -12,25 +10,16 @@ import {
 import { db } from "../firebase/firebase";
 import {
   collection,
-  doc,
-  setDoc,
   addDoc,
-  updateDoc,
-  deleteDoc,
-  getDoc,
   getDocs,
   where,
   query,
-  getCountFromServer,
 } from "firebase/firestore";
 import { Button, TextInput } from "react-native-paper";
 import { useForm } from "react-hook-form";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import Icon from "react-native-vector-icons/FontAwesome";
 import CustomInputs from "./CustomInputs";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { data } from "../assets/Data";
-import { async } from "@firebase/util";
 
 const Signup = ({ navigation }) => {
   const height = useHeaderHeight();
@@ -63,6 +52,7 @@ const Signup = ({ navigation }) => {
   const pass = watch("Password");
 
   const onSubmit = async (data) => {
+    console.log('iseeee effect sign up')
     const userRef = collection(db, "Users");
     const q = query(userRef, where("Email", "==", data.Email));
     // const z = await getCountFromServer(userRef);
@@ -154,7 +144,7 @@ const Signup = ({ navigation }) => {
                 placeholder="Email"
                 rules={{
                   required: "Email is required",
-                  pattern: { value: EMAIL_REGEX, message: "Email is invalid" },
+                  pattern: { value: EMAIL_REGEX, message: "Email is invalid"},
                 }}
               />
             </View>
@@ -205,7 +195,16 @@ const Signup = ({ navigation }) => {
               style={styles.button}
               onPress={handleSubmit(onSubmit)}
             >
-              Continue
+              Sign up
+            </Button>
+          </View>
+          <View style={{ marginTop: 20 }}>
+            <Button
+              color="#6E9FFF"
+              mode="outlined"
+              style={styles.signinbutton}
+            >
+              Sign in
             </Button>
           </View>
           <View style={{ width: "100%", marginTop: 30 }}>
@@ -222,7 +221,7 @@ const Signup = ({ navigation }) => {
             style={{
               flexDirection: "row",
               justifyContent: "center",
-              marginTop: 100,
+              marginTop: 70,
               paddingBottom: 25,
             }}
           >
@@ -241,13 +240,13 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    marginTop: 110,
+    marginTop: 100,
   },
 
   Signupform: {
     paddingLeft: 20,
     paddingRight: 20,
-    marginTop: 80,
+    marginTop: 50,
   },
   input: {
     marginBottom: 10,
@@ -258,6 +257,12 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     padding: 6,
   },
+  signinbutton: {
+    marginRight: 20,
+    marginLeft: 20,
+    padding: 6,
+    borderColor:'#6E9FFF'
+  }
 });
 
 export default Signup;

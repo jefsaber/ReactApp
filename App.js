@@ -56,7 +56,7 @@ const ProfileStacks = () => {
 const AuthStack = createNativeStackNavigator();
 const Auth = () => {
   return (
-    <AuthStack.Navigator initialRouteName="Sign In">
+    <AuthStack.Navigator screenOptions={{headerShown:false}} initialRouteName="Sign In" >
       <AuthStack.Screen name="Sign In" component={Signin} />
       <AuthStack.Screen name="Sign Up" component={Signup} />
     </AuthStack.Navigator>
