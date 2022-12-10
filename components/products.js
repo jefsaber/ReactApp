@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from "react-native";
-import React, { useEffect , useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Searchbar } from "react-native-paper";
 import Section from "./sections";
 import { DATA } from "../assets/Data";
@@ -19,21 +19,27 @@ import {
 } from "firebase/firestore";
 
 const Products = ({ navigation }) => {
-
   const [Products, setProducts] = useState([]);
-  useEffect(() => {
-    console.log(Products);
-    // setProducts([]);
+
+  const getAllProducts = async () => {
+    let temp = [];
     getDocs(collection(db, "Products"))
       .then((docSnap) => {
         docSnap.forEach((doc) => {
-          Products.push({ ...doc.data(), id: doc.id });
+          temp.push({ ...doc.data(), id: doc.id });
         });
+        setProducts(temp);
+        // console.log(Products);
       })
+
       .catch((err) => {
         console.log(err);
       });
-  });
+  };
+  useEffect(() => {
+    getAllProducts();
+  }, []);
+  console.log(Products);
   const [searchQuery, setSearchQuery] = React.useState("");
   const onChangeSearch = (query) => setSearchQuery(query);
   return (

@@ -36,7 +36,7 @@ import {
 } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ProductDetails from "./components/productDetails";
-import { getUserData } from "./components/homepage";
+//import { getUserData } from "./components/homepage";
 
 const Tab = createBottomTabNavigator();
 const MainStack = createNativeStackNavigator();
@@ -56,7 +56,10 @@ const ProfileStacks = () => {
 const AuthStack = createNativeStackNavigator();
 const Auth = () => {
   return (
-    <AuthStack.Navigator screenOptions={{headerShown:false}} initialRouteName="Sign In" >
+    <AuthStack.Navigator
+      screenOptions={{ headerShown: false }}
+      initialRouteName="Sign In"
+    >
       <AuthStack.Screen name="Sign In" component={Signin} />
       <AuthStack.Screen name="Sign Up" component={Signup} />
     </AuthStack.Navigator>
@@ -84,7 +87,7 @@ const MainStacks = ({ navigation }) => {
   );
 };
 const Tabs = () => {
-  let user = getUserData();
+  //let user = getUserData();
   return (
     <Tab.Navigator
       screenOptions={{
@@ -99,7 +102,7 @@ const Tabs = () => {
       initialRouteName="Homepage"
       screenListeners={({ navigation, route }) => ({
         tabPress: (e) => {
-          navigation.navigate(route.name, { params: { user } });
+          navigation.navigate(route.name);
         },
       })}
     >

@@ -13,12 +13,8 @@ import { useForm } from "react-hook-form";
 import Icon from "react-native-vector-icons/FontAwesome";
 import CustomInputs from "./CustomInputs";
 import { db } from "../firebase/firebase";
-import {
-  collection,
-  getDocs,
+import { collection, getDocs } from "firebase/firestore";
 
-} from "firebase/firestore";
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 const Signin = ({ navigation }) => {
   let users = [];
   useEffect(() => {
@@ -78,11 +74,10 @@ const Signin = ({ navigation }) => {
   };
   return (
     <View style={styles.SiginContainer}>
-      
       <KeyboardAvoidingView
         // keyboardVerticalOffset={height}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        enabled ={true}
+        enabled={true}
         style={{ flex: 1 }}
       >
         <ScrollView>
@@ -118,9 +113,7 @@ const Signin = ({ navigation }) => {
                 rules={{
                   required: "Email is required",
                   pattern: { value: EMAIL_REGEX, message: "Email is invalid" },
-                 
                 }}
-                
               />
             </View>
             <View>
@@ -141,19 +134,20 @@ const Signin = ({ navigation }) => {
               />
             </View>
           </View>
-          <TouchableOpacity style={styles.button}
-              onPress={handleSubmit(onSubmit)}
-              delayPressIn={100}
-              activeOpacity={0.5}
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleSubmit(onSubmit)}
+            delayPressIn={100}
+            activeOpacity={0.5}
           >
             <Text
-            style={{
-                color:'white',
-                fontWeight:"bold",
-                fontSize:18
-            }}
+              style={{
+                color: "white",
+                fontWeight: "bold",
+                fontSize: 18,
+              }}
             >
-            Sign In
+              Sign In
             </Text>
           </TouchableOpacity>
           <View style={{ marginLeft: 20, marginRight: 20, marginTop: 20 }}>
@@ -161,23 +155,23 @@ const Signin = ({ navigation }) => {
               <Text style={{ color: "#6E9FFF" }}>Forgot Password?</Text>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.button}
+          <TouchableOpacity
+            style={styles.button}
             onPress={() => navigation.navigate("Sign Up")}
-              delayPressIn={100}
-              activeOpacity={0.5}>
+            delayPressIn={100}
+            activeOpacity={0.5}
+          >
             <Text
-            style={{
-                color:'white',
-                fontWeight:"bold",
-                fontSize:18,
-            }}
+              style={{
+                color: "white",
+                fontWeight: "bold",
+                fontSize: 18,
+              }}
             >
-            Sign Up
+              Sign Up
             </Text>
             <Icon
-              style={{ paddingRight: 10, alignItems: "center",
-              marginLeft:10
-            }}
+              style={{ paddingRight: 10, alignItems: "center", marginLeft: 10 }}
               name="angle-right"
               size={30}
               color="white"
@@ -245,13 +239,12 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginLeft: 20,
     padding: 6,
-    marginTop:20,
-    alignItems:'center',
-    justifyContent:'center',
-    height:50,
-    borderRadius:5,
-    flexDirection:'row',
-    
+    marginTop: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    height: 50,
+    borderRadius: 5,
+    flexDirection: "row",
   },
 });
 
