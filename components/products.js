@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect , useState } from "react";
 import { Searchbar } from "react-native-paper";
 import Section from "./sections";
 import { DATA } from "../assets/Data";
@@ -19,29 +19,16 @@ import {
 } from "firebase/firestore";
 
 const Products = ({ navigation }) => {
-  let Products = [];
-  // const getAllProducts = () => {
-  //   getDocs(collection(db, "Products"))
-  //     .then((docSnap) => {
-  //       docSnap.forEach((doc) => {
-  //         Products.push({ ...doc.data(), id: doc.id });
-  //       });
-  //       console.log(Products);
-  //       //console.log(DATA);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
-  //console.log(Products);
+
+  const [Products, setProducts] = useState([]);
   useEffect(() => {
+    console.log(Products);
+    // setProducts([]);
     getDocs(collection(db, "Products"))
       .then((docSnap) => {
         docSnap.forEach((doc) => {
           Products.push({ ...doc.data(), id: doc.id });
         });
-        // console.log(Products);
-        //console.log(DATA);
       })
       .catch((err) => {
         console.log(err);

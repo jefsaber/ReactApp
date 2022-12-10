@@ -43,22 +43,22 @@ const slides = [
     image: require("../assets/nike.jpg"),
   },
 ];
-export let loggedinUser = [];
-function setUserData(data) {
-  loggedinUser = data;
-}
+// export let loggedinUser = [];
+// function setUserData(data) {
+//   loggedinUser = data;
+// }
 
-function getUserData() {
-  return loggedinUser;
-}
+// function getUserData() {
+//   return loggedinUser;
+// }
 
-export { setUserData, getUserData };
+// export { setUserData, getUserData };
 
 const Homepage = ({ route, navigation }) => {
   //console.log(data);
-  const { user_data } = route.params;
-  setUserData(user_data);
-  console.log(loggedinUser);
+  // const { user_data } = route.params;
+  // setUserData(user_data);
+  // console.log(loggedinUser);
   return (
     <View style={styles.container}>
       <ScrollView>
