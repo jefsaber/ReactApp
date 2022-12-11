@@ -13,28 +13,28 @@ const ProductDetails = ({ navigation, route }) => {
   const [isFav,setisFav]=useState(tmpUser.Favorites.includes(id));
   const [isCart,setisCart]=useState(tmpUser.Cart.includes(id));
 
-  const AddtoCart = () => {
-      const docRef = doc(db, "Users", tmpUser.id);
-      tmpUser.Cart.push(id)
-      
-      const cart={
-        Cart:tmpUser.Cart
+    const AddtoCart = () => {
+        const docRef = doc(db, "Users", tmpUser.id);
+        tmpUser.Cart.push(id)
+        console.log(tmpUser.Cart)
+        const cart={
+          Cart:tmpUser.Cart
+        }
+        updateDoc(docRef,cart)
+        .then(()=>{
+          setisCart(!isCart)
+
+          console.log("added successfuly");
+          alert("Cart Successfuly changed");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
       }
-      updateDoc(docRef,cart)
-      .then(()=>{
-        setisCart(!isCart)
-
-        console.log("added successfuly");
-        alert("Cart Successfuly changed");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    }
     const RemoveCart = () => {
       const docRef = doc(db, "Users", tmpUser.id);
-      tmpUser.Cart.push(id)
+      tmpUser.Cart.splice(tmpUser.Cart.indexOf(id),1)
       const cart={
         Cart:tmpUser.Cart
       }
@@ -42,32 +42,50 @@ const ProductDetails = ({ navigation, route }) => {
       .then(()=>{
         setisCart(!isCart)
 
-        console.log("added successfuly");
-        alert("Cart Successfuly changed");
+        console.log("Remove successfuly");
+        alert("Cart Successfuly Remove");
       })
       .catch((err) => {
         console.log(err);
       });
 
     }
-  const AddtoFav =()=>{
-    const docRef = doc(db, "Users", tmpUser.id);
-    tmpUser.Favorites.push(id)
-    
-    const fav={
-      Favorites:tmpUser.Favorites
-    }
-    updateDoc(docRef,fav)
-    .then(()=>{
-      setisFav(!isFav)
-      console.log("added successfuly");
-      alert("Favorites Successfuly changed");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    const AddtoFav =()=>{
+      const docRef = doc(db, "Users", tmpUser.id);
+      tmpUser.Favorites.push(id)
+      
+      const fav={
+        Favorites:tmpUser.Favorites
+      }
+      updateDoc(docRef,fav)
+      .then(()=>{
+        setisFav(!isFav)
+        console.log("added successfuly");
+        alert("Favorites Successfuly changed");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
-  }
+    }
+    const RemoveFav =()=>{
+      const docRef = doc(db, "Users", tmpUser.id);
+      tmpUser.Favorites.splice(tmpUser.Favorites.indexOf(id),1)
+      const Favorites={
+        Favorites:tmpUser.Favorites
+      }
+      updateDoc(docRef,Favorites)
+      .then(()=>{
+        setisFav(!isFav)
+
+        console.log("Remove successfuly");
+        alert("fav Successfuly Remove");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    }
   console.log(tmpUser.Cart.includes(id))
   return (
     <ScrollView style={{ backgroundColor: "#fff" }}>
@@ -133,10 +151,10 @@ const ProductDetails = ({ navigation, route }) => {
           color="#6E9FFF"
           style={styles.ButtonStyle}
           labelStyle={{ fontSize: 15 }}
-          onPress={AddtoCart}
+          onPress={RemoveCart}
           uppercase={false}
         >
-        Remove From Cart
+        Remove  Cart
         </Button> :
         <Button
           icon="cart"
@@ -149,34 +167,34 @@ const ProductDetails = ({ navigation, route }) => {
         Add to Cart
 
         </Button>
-}
-{
-    isFav ?
-        <Button
-          mode="contained"
-          color="#6E9FFF"
-          style={styles.ButtonStyle}
-          icon="heart"
-          onPress={AddtoFav}
-          labelStyle={{ fontSize: 14, color: "white" }}
-          uppercase={false}
-        >
-          Remove From Fav
-        </Button>
-        :
-        <Button
-        mode="contained"
-        color="#6E9FFF"
-        style={styles.ButtonStyle}
-        icon="heart"
-        onPress={AddtoFav}
-        labelStyle={{ fontSize: 14, color: "white" }}
-        uppercase={false}
-      >
-          Add to Fav 
+      }
+      {
+          isFav ?
+              <Button
+                mode="contained"
+                color="#6E9FFF"
+                style={styles.ButtonStyle}
+                icon="heart"
+                onPress={RemoveFav}
+                labelStyle={{ fontSize: 14, color: "white" }}
+                uppercase={false}
+              >
+                Remove From Fav
+              </Button>
+              :
+              <Button
+              mode="contained"
+              color="#6E9FFF"
+              style={styles.ButtonStyle}
+              icon="heart"
+              onPress={AddtoFav}
+              labelStyle={{ fontSize: 14, color: "white" }}
+              uppercase={false}
+            >
+                Add to Fav 
 
-      </Button>
-}
+            </Button>
+      }
       </View>
 
     </ScrollView>

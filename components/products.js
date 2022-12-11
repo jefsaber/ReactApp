@@ -2,21 +2,7 @@ import { View, Text, StyleSheet } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Searchbar } from "react-native-paper";
 import Section from "./sections";
-import { DATA } from "../assets/Data";
-import { db } from "../firebase/firebase";
-import {
-  collection,
-  doc,
-  setDoc,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  getDoc,
-  getDocs,
-  where,
-  query,
-  getCountFromServer,
-} from "firebase/firestore";
+
 import { getAllProducts } from "../App.js";
 const Products = ({ navigation }) => {
   let AllProducts = getAllProducts();
