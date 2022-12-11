@@ -6,25 +6,16 @@ import { Button, TextInput } from "react-native-paper";
 import { getUserData } from "./homepage";
 import { db } from "../firebase/firebase";
 import {
-  collection,
   doc,
-  setDoc,
-  addDoc,
   updateDoc,
-  deleteDoc,
-  getDoc,
-  getDocs,
-  where,
-  query,
-  getCountFromServer,
 } from "firebase/firestore";
 
-const Updatepassword = ({ navigation }) => {
-  //const { Userid } = route.params;
+const Updatepassword = ({ navigation ,route}) => {
+  const { Userid } = route.params;
   const { control, handleSubmit, watch } = useForm();
   const User = getUserData();
   //console.log(User);
-  //console.log(Userid);
+  console.log(Userid);
   const pass = watch("newPassword");
   const useTogglePasswordVisibility = () => {
     const [passwordVisibility, setPasswordVisibility] = useState(true);

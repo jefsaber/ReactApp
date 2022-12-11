@@ -1,19 +1,74 @@
 import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "react-native-paper";
 import { List } from "react-native-paper";
-//import { getUserData } from "./homepage";
-
+import { getUserData } from "./homepage";import { db } from "../firebase/firebase";
+import {
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 const ProductDetails = ({ navigation, route }) => {
-  //const user = getUserData();
-  //console.log(user);
-  // console.warn(route.params.id)
+  const tmpUser = getUserData();
   const { title, color, price, image, description, sizes, id } = route.params;
-  //console.log(route.params);
-  //console.log(id);
-  const AddtoCart = (id) => {
-    console.log(id);
-  };
+  const [isFav,setisFav]=useState(tmpUser.Favorites.includes(id));
+  const [isCart,setisCart]=useState(tmpUser.Cart.includes(id));
+
+  const AddtoCart = () => {
+      const docRef = doc(db, "Users", tmpUser.id);
+      tmpUser.Cart.push(id)
+      
+      const cart={
+        Cart:tmpUser.Cart
+      }
+      updateDoc(docRef,cart)
+      .then(()=>{
+        setisCart(!isCart)
+
+        console.log("added successfuly");
+        alert("Cart Successfuly changed");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    }
+    const RemoveCart = () => {
+      const docRef = doc(db, "Users", tmpUser.id);
+      tmpUser.Cart.push(id)
+      const cart={
+        Cart:tmpUser.Cart
+      }
+      updateDoc(docRef,cart)
+      .then(()=>{
+        setisCart(!isCart)
+
+        console.log("added successfuly");
+        alert("Cart Successfuly changed");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    }
+  const AddtoFav =()=>{
+    const docRef = doc(db, "Users", tmpUser.id);
+    tmpUser.Favorites.push(id)
+    
+    const fav={
+      Favorites:tmpUser.Favorites
+    }
+    updateDoc(docRef,fav)
+    .then(()=>{
+      setisFav(!isFav)
+      console.log("added successfuly");
+      alert("Favorites Successfuly changed");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+  }
+  console.log(tmpUser.Cart.includes(id))
   return (
     <ScrollView style={{ backgroundColor: "#fff" }}>
       <View style={styles.image}>
@@ -59,6 +114,7 @@ const ProductDetails = ({ navigation, route }) => {
           );
         })}
       </View>
+        
       <View
         style={{
           marginHorizontal: 10,
@@ -69,6 +125,8 @@ const ProductDetails = ({ navigation, route }) => {
           borderWidth: 0,
         }}
       >
+        {
+         isCart ?
         <Button
           icon="cart"
           mode="outlined"
@@ -78,23 +136,53 @@ const ProductDetails = ({ navigation, route }) => {
           onPress={AddtoCart}
           uppercase={false}
         >
-          Add To Cart
+        Remove From Cart
+        </Button> :
+        <Button
+          icon="cart"
+          mode="outlined"
+          color="#6E9FFF"
+          style={styles.ButtonStyle}
+          labelStyle={{ fontSize: 15 }}
+          onPress={AddtoCart}
+          uppercase={false}>
+        Add to Cart
+
         </Button>
+}
+{
+    isFav ?
         <Button
           mode="contained"
           color="#6E9FFF"
           style={styles.ButtonStyle}
           icon="heart"
-          onPress={() => console.log("first")}
-          labelStyle={{ fontSize: 15, color: "white" }}
+          onPress={AddtoFav}
+          labelStyle={{ fontSize: 14, color: "white" }}
           uppercase={false}
         >
-          Add To Favorites
+          Remove From Fav
         </Button>
+        :
+        <Button
+        mode="contained"
+        color="#6E9FFF"
+        style={styles.ButtonStyle}
+        icon="heart"
+        onPress={AddtoFav}
+        labelStyle={{ fontSize: 14, color: "white" }}
+        uppercase={false}
+      >
+          Add to Fav 
+
+      </Button>
+}
       </View>
+
     </ScrollView>
   );
-};
+ }
+export default ProductDetails; 
 
 const styles = StyleSheet.create({
   image: {
@@ -137,5 +225,4 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     // flexDirection:'row-reverse'
   },
-});
-export default ProductDetails;
+})

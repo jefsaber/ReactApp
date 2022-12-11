@@ -12,17 +12,9 @@ import * as ImagePicker from "expo-image-picker";
 import { Button } from "react-native-paper";
 import { db } from "../firebase/firebase";
 import {
-  collection,
   doc,
-  setDoc,
-  addDoc,
   updateDoc,
-  deleteDoc,
-  getDoc,
-  getDocs,
-  where,
-  query,
-  getCountFromServer,
+
 } from "firebase/firestore";
 import { getUserData } from "./homepage";
 import call from "react-native-phone-call";
@@ -106,9 +98,9 @@ const Profile = ({ navigation }) => {
           <Text style={{ fontSize: 24 }}>
             {tmpUser.FirstName + " " + tmpUser.LastName}
           </Text>
-          <Text style={{ textAlign: "center", marginTop: 10 }}>
-            {/* {tmpUser.CreatedAt.toDate()} */}
-          </Text>
+          {/* <Text style={{ textAlign: "center", marginTop: 10 }}>
+            {tmpUser.CreatedAt.toDate()}
+          </Text> */}
         </View>
         <View style={styles.passbutton}>
           <Button
@@ -118,7 +110,7 @@ const Profile = ({ navigation }) => {
             mode="contained"
             onPress={() =>
               navigation.navigate("Update Password", {
-                //Userid: tmpUser.id,
+                Userid: tmpUser.id,
               })
             }
           >
