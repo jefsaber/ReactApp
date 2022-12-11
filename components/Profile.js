@@ -24,7 +24,7 @@ import {
   query,
   getCountFromServer,
 } from "firebase/firestore";
-//import { getUserData } from "./homepage";
+import { getUserData } from "./homepage";
 import call from "react-native-phone-call";
 import email from "react-native-email";
 
@@ -35,26 +35,16 @@ const args = {
 };
 
 const Profile = ({ navigation }) => {
-  //const tmpUser = getUserData();
-  //console.log(tmpUser);
-  //   const User = {
-  //     id: tmpUser.id,
-  //     fname: tmpUser.FirstName,
-  //     lname: tmpUser.LastName,
-  //     imageurl: tmpUser.ImageUrl,
-  //   };
-  const User = {
-    id: "tmpUser.id",
+  const tmpUser = getUserData();
+  console.log(tmpUser);
+  // const User = {
+  //   id: tmpUser.id,
+  //   fname: tmpUser.FirstName,
+  //   lname: tmpUser.LastName,
+  //   imageurl: tmpUser.ImageUrl,
+  // };
 
-    fname: "tmpUser.FirstName",
-
-    lname: "tmpUser.LastName",
-
-    imageurl: "tmpUser.ImageUrl",
-    IsAdmin: true,
-  };
-
-  const docRef = doc(db, "Users", User.id);
+  const docRef = doc(db, "Users", tmpUser.id);
 
   const [image, setImage] = useState(null);
 
@@ -75,7 +65,6 @@ const Profile = ({ navigation }) => {
         .then(() => {
           console.log("added successfuly");
           tmpUser.ImageUrl = data.ImageUrl;
-          User.imageurl = data.ImageUrl;
         })
         .catch((err) => {
           console.log(err);
@@ -114,8 +103,12 @@ const Profile = ({ navigation }) => {
           </View>
         </View>
         <View style={styles.name}>
-          <Text style={{ fontSize: 24 }}>{User.fname + " " + User.lname}</Text>
-          <Text style={{ textAlign: "center", marginTop: 10 }}>9 May 2020</Text>
+          <Text style={{ fontSize: 24 }}>
+            {tmpUser.FirstName + " " + tmpUser.LastName}
+          </Text>
+          <Text style={{ textAlign: "center", marginTop: 10 }}>
+            {/* {tmpUser.CreatedAt.toDate()} */}
+          </Text>
         </View>
         <View style={styles.passbutton}>
           <Button
@@ -125,7 +118,7 @@ const Profile = ({ navigation }) => {
             mode="contained"
             onPress={() =>
               navigation.navigate("Update Password", {
-                Userid: User.id,
+                //Userid: tmpUser.id,
               })
             }
           >
@@ -174,7 +167,7 @@ const Profile = ({ navigation }) => {
             call
           </Button>
         </View>
-        {User.IsAdmin && (
+        {tmpUser.IsAdmin && (
           <View style={styles.dashboard}>
             <Text style={{ fontSize: 18 }}>Dashboard</Text>
             <Button

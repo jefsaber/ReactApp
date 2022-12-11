@@ -46,7 +46,7 @@ const MainStack = createNativeStackNavigator();
 const ProfileStack = createNativeStackNavigator();
 const DashboardStacks = createNativeStackNavigator();
 const { width, height } = Dimensions.get("screen");
-
+import { getUserData } from "./components/homepage";
 export let AllProducts = [];
 
 function setAllProducts(data) {
@@ -117,7 +117,7 @@ const MainStacks = ({ navigation }) => {
   );
 };
 const Tabs = () => {
-  //let user = getUserData();
+  let user = getUserData();
   return (
     <Tab.Navigator
       screenOptions={{
@@ -132,7 +132,7 @@ const Tabs = () => {
       initialRouteName="Homepage"
       screenListeners={({ navigation, route }) => ({
         tabPress: (e) => {
-          navigation.navigate(route.name);
+          navigation.navigate(route.name, { params: user });
         },
       })}
     >

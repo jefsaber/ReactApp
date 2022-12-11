@@ -7,7 +7,7 @@ import {
   Dimensions,
   Platform,
 } from "react-native";
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import AppIntroSlider from "react-native-app-intro-slider";
 const { width: screenWidth } = Dimensions.get("window");
 import Section from "./sections";
@@ -43,20 +43,20 @@ const slides = [
     image: require("../assets/nike.jpg"),
   },
 ];
-// export let loggedinUser = [];
-// function setUserData(data) {
-//   loggedinUser = data;
-// }
+export let loggedinUser;
+function setUserData(data) {
+  loggedinUser = data;
+}
 
-// function getUserData() {
-//   return loggedinUser;
-// }
+function getUserData() {
+  return loggedinUser;
+}
 
-// export { setUserData, getUserData };
+export { setUserData, getUserData };
 const Homepage = ({ route, navigation }) => {
-
   let AllProducts = getAllProducts();
-
+  const user_data = route.params.user_data;
+  setUserData(user_data);
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -90,9 +90,21 @@ const Homepage = ({ route, navigation }) => {
             }}
           />
         </View>
-       <Section data={AllProducts} navigation={navigation} SectionTitle={"On Sale"} />
-        <Section data={AllProducts} navigation={navigation} SectionTitle={"On air"} />
-        <Section data={AllProducts} navigation={navigation} SectionTitle={"On air"} /> 
+        <Section
+          data={AllProducts}
+          navigation={navigation}
+          SectionTitle={"On Sale"}
+        />
+        <Section
+          data={AllProducts}
+          navigation={navigation}
+          SectionTitle={"On air"}
+        />
+        <Section
+          data={AllProducts}
+          navigation={navigation}
+          SectionTitle={"On air"}
+        />
       </ScrollView>
     </View>
   );
