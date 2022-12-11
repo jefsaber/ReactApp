@@ -17,29 +17,12 @@ import {
   query,
   getCountFromServer,
 } from "firebase/firestore";
-
+import { getAllProducts } from "../App.js";
 const Products = ({ navigation }) => {
-  const [Products, setProducts] = useState([]);
+  let AllProducts = getAllProducts();
+  // console.log(AllProducts);
+  //const [Products, setProducts] = useState([]);
 
-  const getAllProducts = async () => {
-    let temp = [];
-    getDocs(collection(db, "Products"))
-      .then((docSnap) => {
-        docSnap.forEach((doc) => {
-          temp.push({ ...doc.data(), id: doc.id });
-        });
-        setProducts(temp);
-        // console.log(Products);
-      })
-
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-  useEffect(() => {
-    getAllProducts();
-  }, []);
-  console.log(Products);
   const [searchQuery, setSearchQuery] = React.useState("");
   const onChangeSearch = (query) => setSearchQuery(query);
   return (
@@ -55,7 +38,7 @@ const Products = ({ navigation }) => {
           style={{ borderRadius: 12, marginBottom: 30 }}
         />
       </View>
-      <Section data={Products} navigation={navigation} SectionTitle="" />
+      <Section data={AllProducts} navigation={navigation} SectionTitle="" />
     </View>
   );
 };

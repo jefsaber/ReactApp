@@ -2,10 +2,10 @@ import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import React from "react";
 import { Button } from "react-native-paper";
 import { List } from "react-native-paper";
-import { getUserData } from "./homepage";
+//import { getUserData } from "./homepage";
 
 const ProductDetails = ({ navigation, route }) => {
-  const user = getUserData();
+  //const user = getUserData();
   //console.log(user);
   // console.warn(route.params.id)
   const { title, color, price, image, description, sizes, id } = route.params;

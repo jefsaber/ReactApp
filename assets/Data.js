@@ -105,8 +105,9 @@ const data = [
     sizes: [32, 34, 36, 38, 40],
   },
 ];
-
+const AllProducts =[]
 module.exports = {
   DATA,
   data,
+  AllProducts
 };

@@ -52,13 +52,8 @@ const Signup = ({ navigation }) => {
   const pass = watch("Password");
 
   const onSubmit = async (data) => {
-    console.log('iseeee effect sign up')
     const userRef = collection(db, "Users");
     const q = query(userRef, where("Email", "==", data.Email));
-    // const z = await getCountFromServer(userRef);
-    // // console.log(z.data().count);
-    // const id = z.data().count + 1;
-    // console.log(id);
     getDocs(q)
       .then((result) => {
         if (result.empty) {

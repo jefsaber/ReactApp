@@ -9,7 +9,7 @@ import Search from "./components/search";
 import Profile from "./components/Profile";
 import Products from "./components/products";
 import MaterialIcons from "@expo/vector-icons/Ionicons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import UpdatePassword from "./components/Updatepassword";
 import AppIntroSlider from "react-native-app-intro-slider";
 import { db } from "./firebase/firebase";
@@ -42,6 +42,15 @@ const Tab = createBottomTabNavigator();
 const MainStack = createNativeStackNavigator();
 const ProfileStack = createNativeStackNavigator();
 const { width, height } = Dimensions.get("screen");
+export let AllProducts = [];
+
+function setAllProducts(data) {
+  AllProducts = data;
+}
+function getAllProducts() {
+  return AllProducts;
+}
+export { setAllProducts, getAllProducts };
 
 const ProfileStacks = () => {
   return (
@@ -203,76 +212,95 @@ const slides = [
   },
 ];
 export default function App() {
-  // const [showhomepage, setShowhomepage] = useState(false);
+  const getAllProducts = async () => {
+    let temp = [];
+    getDocs(collection(db, "Products"))
+      .then((docSnap) => {
+        docSnap.forEach((doc) => {
+          temp.push({ ...doc.data(), id: doc.id });
+        });
+        setAllProducts(temp);
+        //console.log(AllProducts);
+      })
 
-  // const buttonLabel = (label) => {
-  //   return (
-  //     <View
-  //       style={{
-  //         padding: 12,
-  //       }}
-  //     >
-  //       <Text
-  //         style={{
-  //           color: "#072F4A",
-  //           fontWeight: "600",
-  //           fontSize: 16,
-  //         }}
-  //       >
-  //         {label}
-  //       </Text>
-  //     </View>
-  //   );
-  // };
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  useEffect(() => {
+    getAllProducts();
+  }, []);
+  console.log(Products);
+  const [showhomepage, setShowhomepage] = useState(false);
 
-  // if (!showhomepage) {
-  //   return (
-  //     <AppIntroSlider
-  //       data={slides}
-  //       renderItem={({ item }) => {
-  //         return (
-  //           <View
-  //             style={{
-  //               flex: 1,
-  //               alignItems: "center",
-  //               padding: 15,
-  //               paddingTop: 100,
-  //             }}
-  //           >
-  //             <Image
-  //               source={item.image}
-  //               style={{
-  //                 width: width - 80,
-  //                 height: 400,
-  //               }}
-  //               resizeMode="contain"
-  //             />
-  //             <Text
-  //               style={{
-  //                 fontWeight: "bold",
-  //                 color: "#072F4A",
-  //                 fontSize: 22,
-  //               }}
-  //             >
-  //               {item.title == "icon" ? "" : item.title}
-  //             </Text>
-  //           </View>
-  //         );
-  //       }}
-  //       activeDotStyle={{
-  //         backgroundColor: "#0057FF",
-  //         width: 30,
-  //       }}
-  //       showSkipButton
-  //       renderNextButton={() => buttonLabel("Next")}
-  //       renderSkipButton={() => buttonLabel("Skip")}
-  //       renderDoneButton={() => buttonLabel("Done")}
-  //       onDone={() => {
-  //         setShowhomepage(true);
-  //       }}
-  //     />
-  //   );
-  // }
+  const buttonLabel = (label) => {
+    return (
+      <View
+        style={{
+          padding: 12,
+        }}
+      >
+        <Text
+          style={{
+            color: "#072F4A",
+            fontWeight: "600",
+            fontSize: 16,
+          }}
+        >
+          {label}
+        </Text>
+      </View>
+    );
+  };
+
+  if (!showhomepage) {
+    return (
+      <AppIntroSlider
+        data={slides}
+        renderItem={({ item }) => {
+          return (
+            <View
+              style={{
+                flex: 1,
+                alignItems: "center",
+                padding: 15,
+                paddingTop: 100,
+              }}
+            >
+              <Image
+                source={item.image}
+                style={{
+                  width: width - 80,
+                  height: 400,
+                }}
+                resizeMode="contain"
+              />
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  color: "#072F4A",
+                  fontSize: 22,
+                }}
+              >
+                {item.title == "icon" ? "" : item.title}
+              </Text>
+            </View>
+          );
+        }}
+        activeDotStyle={{
+          backgroundColor: "#0057FF",
+          width: 30,
+        }}
+        showSkipButton
+        renderNextButton={() => buttonLabel("Next")}
+        renderSkipButton={() => buttonLabel("Skip")}
+        renderDoneButton={() => buttonLabel("Done")}
+        onDone={() => {
+          setShowhomepage(true);
+        }}
+      />
+    );
+  }
 
   return (
     <NavigationContainer>

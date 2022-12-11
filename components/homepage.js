@@ -7,12 +7,12 @@ import {
   Dimensions,
   Platform,
 } from "react-native";
-import React from "react";
-import { DATA, data } from "../assets/Data.js";
+import React,{useState,useEffect} from "react";
 import AppIntroSlider from "react-native-app-intro-slider";
 const { width: screenWidth } = Dimensions.get("window");
 import Section from "./sections";
 
+import { getAllProducts } from "../App.js";
 const slides = [
   {
     id: 1,
@@ -53,12 +53,10 @@ const slides = [
 // }
 
 // export { setUserData, getUserData };
-
 const Homepage = ({ route, navigation }) => {
-  //console.log(data);
-  // const { user_data } = route.params;
-  // setUserData(user_data);
-  // console.log(loggedinUser);
+
+  let AllProducts = getAllProducts();
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -92,9 +90,9 @@ const Homepage = ({ route, navigation }) => {
             }}
           />
         </View>
-        <Section data={DATA} navigation={navigation} SectionTitle={"On Sale"} />
-        <Section data={data} navigation={navigation} SectionTitle={"On air"} />
-        <Section data={data} navigation={navigation} SectionTitle={"On air"} />
+       <Section data={AllProducts} navigation={navigation} SectionTitle={"On Sale"} />
+        <Section data={AllProducts} navigation={navigation} SectionTitle={"On air"} />
+        <Section data={AllProducts} navigation={navigation} SectionTitle={"On air"} /> 
       </ScrollView>
     </View>
   );
