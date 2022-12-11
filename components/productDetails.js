@@ -44,7 +44,6 @@ const ProductDetails = ({ navigation, route }) => {
       </View>
       <View style={styles.colors}>
         {color.map((item, index) => {
-          //console.log(item);
           return (
             <View
               key={index}

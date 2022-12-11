@@ -8,13 +8,7 @@ import {
   Platform,
 } from "react-native";
 import { db } from "../firebase/firebase";
-import {
-  collection,
-  addDoc,
-  getDocs,
-  where,
-  query,
-} from "firebase/firestore";
+import { collection, addDoc, getDocs, where, query } from "firebase/firestore";
 import { Button, TextInput } from "react-native-paper";
 import { useForm } from "react-hook-form";
 import CustomInputs from "./CustomInputs";
@@ -62,6 +56,7 @@ const Signup = ({ navigation }) => {
             Password: data.Password,
             FirstName: data.FirstName,
             LastName: data.LastName,
+            IsAdmin: false,
           }).then(() => {
             console.warn("data submited");
             navigation.navigate("Homepage");
@@ -139,7 +134,7 @@ const Signup = ({ navigation }) => {
                 placeholder="Email"
                 rules={{
                   required: "Email is required",
-                  pattern: { value: EMAIL_REGEX, message: "Email is invalid"},
+                  pattern: { value: EMAIL_REGEX, message: "Email is invalid" },
                 }}
               />
             </View>
@@ -194,11 +189,7 @@ const Signup = ({ navigation }) => {
             </Button>
           </View>
           <View style={{ marginTop: 20 }}>
-            <Button
-              color="#6E9FFF"
-              mode="outlined"
-              style={styles.signinbutton}
-            >
+            <Button color="#6E9FFF" mode="outlined" style={styles.signinbutton}>
               Sign in
             </Button>
           </View>
@@ -256,8 +247,8 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginLeft: 20,
     padding: 6,
-    borderColor:'#6E9FFF'
-  }
+    borderColor: "#6E9FFF",
+  },
 });
 
 export default Signup;

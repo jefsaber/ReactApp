@@ -9,11 +9,6 @@ import {
 import React from "react";
 import MaterialIcons from "@expo/vector-icons/Ionicons";
 const Section = (props) => {
-  //console.log(props.SectionTitle);
-  //const { data, navigation, SectionTitle } = props;
-  //console.log("the data is: " + data.id);
-  //console.log(props.data);
-
   return (
     <View>
       <ScrollView style={styles.ProductsScrollCont}>

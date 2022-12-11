@@ -3,12 +3,12 @@ import React from "react";
 import { TouchableRipple } from "react-native-paper";
 import MaterialIcons from "@expo/vector-icons/Ionicons";
 const CustomButton = (props) => {
-  const { title } = props;
+  const { navigation, title, name } = props;
   return (
     <TouchableRipple
       borderless={true}
       style={styles.Button}
-      onPress={() => console.log("Pressed")}
+      onPress={() => {navigation}.navigate({ name })}
       rippleColor="rgba(255, 255, 255, .32)"
     >
       <View
@@ -28,16 +28,24 @@ const CustomButton = (props) => {
     </TouchableRipple>
   );
 };
-const Dashboard = () => {
+const Dashboard = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.TitleCont}>
         <Text style={styles.Title}>Dashboard</Text>
       </View>
       <View style={styles.ButtonsCont}>
-        <CustomButton title="Add Products" />
-        <CustomButton title="Delete Products" />
-        <CustomButton title="All Products" />
+        <CustomButton
+          navigation={navigation}
+          title="Add Products"
+          name="AddProduct"
+        />
+        {/* <CustomButton navigation={navigation} title="Delete Products" /> */}
+        <CustomButton
+          navigation={navigation}
+          title="All Products"
+          name="AllProducts"
+        />
       </View>
     </View>
   );
@@ -69,7 +77,7 @@ const styles = StyleSheet.create({
     height: "8%",
     paddingLeft: 20,
     paddingTop: 15,
-},
+  },
   ButtonsCont: {
     justifyContent: "center",
     flex: 1,

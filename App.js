@@ -36,12 +36,17 @@ import {
 } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ProductDetails from "./components/productDetails";
+import Dashboard from "./components/dashboard/dashboard";
+import AllProductData from "./components/dashboard/allproducts";
+import AddProduct from "./components/dashboard/addproduct";
 //import { getUserData } from "./components/homepage";
 
 const Tab = createBottomTabNavigator();
 const MainStack = createNativeStackNavigator();
 const ProfileStack = createNativeStackNavigator();
+const DashboardStacks = createNativeStackNavigator();
 const { width, height } = Dimensions.get("screen");
+
 export let AllProducts = [];
 
 function setAllProducts(data) {
@@ -52,13 +57,29 @@ function getAllProducts() {
 }
 export { setAllProducts, getAllProducts };
 
+const DashboardStack = () => {
+  return (
+    <DashboardStacks.Navigator
+      initialRouteName="Dashboard"
+      screenOptions={{ headerShown: false }}
+    >
+      <DashboardStacks.Screen name="Dashboard" component={Dashboard} />
+      <DashboardStacks.Screen name="AddProduct" component={AddProduct} />
+      <DashboardStacks.Screen name="AllProducts" component={AllProductData} />
+    </DashboardStacks.Navigator>
+  );
+};
 const ProfileStacks = () => {
   return (
-    <ProfileStack.Navigator initialRouteName="Profile">
+    <ProfileStack.Navigator
+      initialRouteName="Profile"
+      screenOptions={{ headerShown: false }}
+    >
       <ProfileStack.Screen name="Profile" component={Profile} />
       <ProfileStack.Screen name="Update Password" component={UpdatePassword} />
       <ProfileStack.Screen name="Favorites" component={Favorites} />
       <ProfileStack.Screen name="Cart" component={Cart} />
+      <ProfileStack.Screen name="Dash" component={DashboardStack} />
     </ProfileStack.Navigator>
   );
 };
@@ -220,7 +241,6 @@ export default function App() {
           temp.push({ ...doc.data(), id: doc.id });
         });
         setAllProducts(temp);
-        //console.log(AllProducts);
       })
 
       .catch((err) => {
@@ -230,7 +250,6 @@ export default function App() {
   useEffect(() => {
     getAllProducts();
   }, []);
-  console.log(Products);
   const [showhomepage, setShowhomepage] = useState(false);
 
   const buttonLabel = (label) => {

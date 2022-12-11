@@ -20,8 +20,6 @@ import {
 import { getAllProducts } from "../App.js";
 const Products = ({ navigation }) => {
   let AllProducts = getAllProducts();
-  // console.log(AllProducts);
-  //const [Products, setProducts] = useState([]);
 
   const [searchQuery, setSearchQuery] = React.useState("");
   const onChangeSearch = (query) => setSearchQuery(query);
