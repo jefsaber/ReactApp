@@ -15,7 +15,7 @@ const Cart = ({ navigation }) => {
   const tmpUser = getUserData();
 
   const data = AllProducts.filter((element) => {
-    return tmpUser.Favorites.includes(element.id);
+    return tmpUser.Cart.includes(element.id);
   });
   return (
     <View style={styles.container}>

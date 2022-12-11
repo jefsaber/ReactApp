@@ -9,6 +9,9 @@ import Productlist from "./productlist";
 import React from "react";
 import MaterialIcons from "@expo/vector-icons/Ionicons";
 import { data } from "../assets/Data";
+import { getAllProducts } from "../App.js";
+import { getUserData } from "./homepage";
+
 const Search = () => {
   const [searchQuery, setSearchQuery] = React.useState("");
   const onChangeSearch = (query) => {
@@ -17,6 +20,12 @@ const Search = () => {
       item;
     });
   };
+  let AllProducts = getAllProducts();
+  const tmpUser = getUserData();
+
+  const data = AllProducts.filter((element) => {
+    return tmpUser.Recent.includes(element.id);
+  });
   const iconfunction = () => {
     console.log("1");
   };
