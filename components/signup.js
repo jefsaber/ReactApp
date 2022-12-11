@@ -56,10 +56,11 @@ const Signup = ({ navigation }) => {
             Password: data.Password,
             FirstName: data.FirstName,
             LastName: data.LastName,
+            CreatedAt: new Date(),
             IsAdmin: false,
           }).then(() => {
             console.warn("data submited");
-            navigation.navigate("Homepage");
+            navigation.navigate("Tabs", { screen: "Homepage" });
           });
         } else {
           alert("email is already in use");

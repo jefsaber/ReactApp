@@ -101,7 +101,7 @@ const MainStacks = ({ navigation }) => {
       initialRouteName="Auth"
       screenOptions={{ headerShown: false }}
     >
-      {/* <MainStack.Screen name="Auth" component={Auth} /> */}
+      <MainStack.Screen name="Auth" component={Auth} />
       <MainStack.Screen name="Tabs" component={Tabs} />
       <MainStack.Screen name="Products" component={Products} />
       <MainStack.Screen
