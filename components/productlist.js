@@ -10,14 +10,13 @@ import React from "react";
 import MaterialIcons from "@expo/vector-icons/Ionicons";
 
 const Productlist = (props) => {
-  const { data, title, icon,iconfunction } = props;
+  const { data, title, icon, iconfunction } = props;
   return (
-   
-    <ScrollView >
-    <View >
-       <Text style={styles.RecentText}>{title}</Text>
-
+    <ScrollView>
       <View>
+        <Text style={styles.RecentText}>{title}</Text>
+
+        <View>
           <View style={styles.ProductsCont}>
             {data.map((item) => {
               return (
@@ -30,53 +29,49 @@ const Productlist = (props) => {
                     <View style={styles.ProductDetails}>
                       <Image
                         resizeMode="contain"
-                        source={item.imageUrl}
+                        source={require("../assets/nike1.png")}
                         style={styles.ProductImage}
                       />
                       <View>
-                        <Text style={styles.ProductTitle}>{item.title}</Text>
+                        <Text style={styles.ProductTitle}>{item.Title}</Text>
                         <Text style={styles.ProductCategory}>
-                          {item.category}
+                          {item.Category}
                         </Text>
                       </View>
                     </View>
-                     {
-                        title =='Cart' &&
-                        <View style={{flexDirection:'row'}}>
-                           <View>
-                          <Text>
-                            1pc
-                          </Text>
-                          </View>
-                        <View style={styles.PriceCont}>
-                        <Text>${item.price}</Text>
+                    {title == "Cart" && (
+                      <View style={{ flexDirection: "row" }}>
+                        <View>
+                          <Text>1pc</Text>
                         </View>
-                         </View>
-                     }
-                
+                        <View style={styles.PriceCont}>
+                          <Text>${item.Price}</Text>
+                        </View>
+                      </View>
+                    )}
+
                     <TouchableOpacity
                       delayPressIn={50}
                       style={styles.CloseButton}
                       hitSlop={{ top: 9, bottom: 9, left: 9, right: 9 }}
                       onPress={iconfunction}
                     >
-                      <MaterialIcons name={icon}  size={24} />
+                      <MaterialIcons name={icon} size={24} />
                     </TouchableOpacity>
                   </View>
                 </TouchableOpacity>
               );
             })}
           </View>
-          </View>
-    </View>
-        </ScrollView>
+        </View>
+      </View>
+    </ScrollView>
   );
 };
 
 export default Productlist;
 
 const styles = StyleSheet.create({
-
   RecentCont: {
     paddingLeft: 20,
     marginBottom: 15,
@@ -115,7 +110,7 @@ const styles = StyleSheet.create({
   ProductCategory: {
     fontSize: 12,
   },
-  PriceCont : {
-    marginLeft:10
-  }
+  PriceCont: {
+    marginLeft: 10,
+  },
 });

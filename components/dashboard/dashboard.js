@@ -3,12 +3,11 @@ import React from "react";
 import { TouchableRipple } from "react-native-paper";
 import MaterialIcons from "@expo/vector-icons/Ionicons";
 const CustomButton = (props) => {
-  const { navigation, title, name } = props;
   return (
     <TouchableRipple
       borderless={true}
       style={styles.Button}
-      onPress={() => {navigation}.navigate({ name })}
+      onPress={() => props.navigation.navigate(`${props.name}`)}
       rippleColor="rgba(255, 255, 255, .32)"
     >
       <View
@@ -18,7 +17,7 @@ const CustomButton = (props) => {
           justifyContent: "center",
         }}
       >
-        <Text style={{ color: "white", fontSize: 20 }}>{title}</Text>
+        <Text style={{ color: "white", fontSize: 20 }}>{props.title}</Text>
         <MaterialIcons
           name="chevron-forward"
           size={24}

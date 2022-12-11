@@ -1,6 +1,5 @@
 import {
   StyleSheet,
-  Button,
   Text,
   View,
   Keyboard,
@@ -8,6 +7,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
+import { Button } from "react-native-paper";
 import React from "react";
 import { useForm } from "react-hook-form";
 import CustomInputs from "../CustomInputs";
@@ -16,7 +16,7 @@ import { db } from "../../firebase/firebase";
 //import { collection, addDoc, getDocs, where, query } from "firebase/firestore";
 const Addproduct = () => {
   // const [ImageUrl, setImageUrl] = React.useState([]);
-  const { control, handleSubmit, watch } = useForm();
+  const { control, handleSubmit } = useForm();
   const onSubmit = async (data) => {
     const userRef = collection(db, "Products");
     const q = query(userRef, where("Title", "==", data.Title));
@@ -138,7 +138,7 @@ const Addproduct = () => {
               }}
             />
 
-            <View style={{ marginTop: 20 }}>
+            <View style={{ marginTop: 20, width: "100%" }}>
               <Button
                 color="white"
                 labelStyle={{ fontWeight: "bold" }}
@@ -163,20 +163,27 @@ const styles = StyleSheet.create({
     marginTop: 20,
     backgroundColor: "#ffffff",
   },
+  button: {
+    backgroundColor: "#6E9FFF",
+    padding: 6,
+  },
   InputStyle: {
     width: "80%",
-    marginBottom: 10,
+    marginBottom: 20,
     backgroundColor: "white",
   },
   Cont: {
     // backgroundColor: 'red',
     flex: 1,
-    // borderWidth: 1
+    //borderWidth: 1,
+    marginTop: 20,
   },
   InputCont: {
     flex: 1,
     alignItems: "center",
-    borderWidth: 1,
+    //borderWidth: 1,
+    marginHorizontal: 20,
+    marginTop: 30,
   },
   Title: {
     fontWeight: "bold",
