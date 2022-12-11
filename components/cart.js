@@ -1,15 +1,22 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import Productlist from "./productlist";
-import { data } from "../assets/Data";
 import { TouchableRipple } from "react-native-paper";
 import MaterialIcons from "@expo/vector-icons/Ionicons";
 import { Button } from "react-native-paper";
+import { getAllProducts } from "../App.js";
+import { getUserData } from "./homepage";
 
 const Cart = ({ navigation }) => {
   const iconfunction = () => {
     console.log("1");
   };
+  let AllProducts = getAllProducts();
+  const tmpUser = getUserData();
+
+  const data = AllProducts.filter((element) => {
+    return tmpUser.Favorites.includes(element.id);
+  });
   return (
     <View style={styles.container}>
       <View style={styles.CartCont}>
@@ -18,6 +25,7 @@ const Cart = ({ navigation }) => {
             icon="close"
             title="Cart"
             data={data}
+            navigation={navigation}
             iconfunction={iconfunction}
           />
         ) : (
