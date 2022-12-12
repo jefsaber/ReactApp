@@ -1,33 +1,104 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
-import Productlist from "./productlist";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+} from "react-native";
+import React, { useState } from "react";
 import { TouchableRipple } from "react-native-paper";
 import MaterialIcons from "@expo/vector-icons/Ionicons";
 import { Button } from "react-native-paper";
 import { getAllProducts } from "../App.js";
 import { getUserData } from "./homepage";
+import { db } from "../firebase/firebase";
+import { doc, updateDoc } from "firebase/firestore";
 
 const Cart = ({ navigation }) => {
-  const iconfunction = () => {
-    console.log("1");
-  };
   let AllProducts = getAllProducts();
   const tmpUser = getUserData();
 
   const data = AllProducts.filter((element) => {
     return tmpUser.Cart.includes(element.id);
   });
+  const [cart, setcart] = useState(data);
+  //console.log(Favorites);
+  const RemoveCart = async (item) => {
+    console.log(item.id);
+    const docRef = doc(db, "Users", tmpUser.id);
+    tmpUser.Cart.splice(tmpUser.Cart.indexOf(item.id));
+
+    const Cart = {
+      Cart: tmpUser.Cart,
+    };
+    updateDoc(docRef, Cart)
+      .then(() => {
+        setcart(tmpUser.Cart);
+        console.log("added successfuly");
+        alert("Favorites Successfuly changed");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <View style={styles.container}>
       <View style={styles.CartCont}>
+        <View>
+          <Text style={styles.RecentText}>Shopping Cart</Text>
+        </View>
         {data.length != 0 ? (
-          <Productlist
-            icon="close"
-            title="Cart"
-            data={data}
-            navigation={navigation}
-            iconfunction={iconfunction}
-          />
+          <ScrollView>
+            <View>
+              <View style={styles.ProductsCont}>
+                {cart.map((item) => {
+                  console.log(item);
+                  return (
+                    <TouchableOpacity
+                      delayPressIn={50}
+                      key={item.id}
+                      activeOpacity={0.4}
+                    >
+                      <View style={styles.ProductCont}>
+                        <View style={styles.ProductDetails}>
+                          <Image
+                            resizeMode="contain"
+                            source={require("../assets/nike1.png")}
+                            style={styles.ProductImage}
+                          />
+                          <View>
+                            <Text style={styles.ProductTitle}>
+                              {item.Title}
+                            </Text>
+                            <Text style={styles.ProductCategory}>
+                              {item.Category}
+                            </Text>
+                          </View>
+                        </View>
+                        <View style={{ flexDirection: "row" }}>
+                          <View>
+                            <Text>1pc</Text>
+                          </View>
+                          <View style={styles.PriceCont}>
+                            <Text>${item.Price}</Text>
+                          </View>
+                        </View>
+                        <TouchableOpacity
+                          delayPressIn={50}
+                          style={styles.CloseButton}
+                          hitSlop={{ top: 9, bottom: 9, left: 9, right: 9 }}
+                          onPress={() => RemoveCart(item)}
+                        >
+                          <MaterialIcons name="close" size={24} />
+                        </TouchableOpacity>
+                      </View>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            </View>
+          </ScrollView>
         ) : (
           <View
             style={{
@@ -105,8 +176,9 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingTop: 20,
+    paddingTop: 50,
     backgroundColor: "#ffffff",
+    paddingHorizontal: 20,
   },
   CartCont: {
     paddingLeft: 20,
@@ -115,5 +187,41 @@ const styles = StyleSheet.create({
 
     maxHeight: "80%",
     minHeight: "60%",
+  },
+  RecentText: {
+    fontWeight: "bold",
+    fontSize: 18,
+  },
+  ProductDetails: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "55%",
+    height: "100%",
+  },
+  ProductsCont: {
+    marginTop: 10,
+  },
+  ProductCont: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 10,
+    width: "96%",
+  },
+  ProductImage: {
+    width: 90,
+    height: 60,
+  },
+  ProductTitle: {
+    fontWeight: "bold",
+    fontSize: 14,
+    marginBottom: 5,
+  },
+  ProductCategory: {
+    fontSize: 12,
+  },
+  PriceCont: {
+    marginLeft: 10,
   },
 });

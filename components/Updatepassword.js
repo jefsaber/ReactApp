@@ -5,12 +5,9 @@ import CustomInputs from "./CustomInputs";
 import { Button, TextInput } from "react-native-paper";
 import { getUserData } from "./homepage";
 import { db } from "../firebase/firebase";
-import {
-  doc,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 
-const Updatepassword = ({ navigation ,route}) => {
+const Updatepassword = ({ navigation, route }) => {
   const { Userid } = route.params;
   const { control, handleSubmit, watch } = useForm();
   const User = getUserData();
@@ -61,6 +58,11 @@ const Updatepassword = ({ navigation ,route}) => {
   };
   return (
     <View style={styles.container}>
+      <View style={{ paddingHorizontal: 20, marginTop: 80 }}>
+        <Text style={{ fontSize: 24, fontWeight: "bold" }}>
+          Password Update
+        </Text>
+      </View>
       <View style={{ marginTop: 30, marginHorizontal: 20 }}>
         <CustomInputs
           name="oldPassword"

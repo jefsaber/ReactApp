@@ -12,7 +12,6 @@ import { Button } from "react-native-paper";
 import { getUserData } from "./homepage";
 import { db } from "../firebase/firebase";
 import { doc, updateDoc } from "firebase/firestore";
-//import { data } from "../assets/Data";
 import { getAllProducts } from "../App.js";
 import MaterialIcons from "@expo/vector-icons/Ionicons";
 
