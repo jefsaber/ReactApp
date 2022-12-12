@@ -12,7 +12,8 @@ import { Button, TextInput } from "react-native-paper";
 import { useForm } from "react-hook-form";
 import Icon from "react-native-vector-icons/FontAwesome";
 import CustomInputs from "./CustomInputs";
-import { db } from "../firebase/firebase";
+import { db, auth } from "../firebase/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { collection, getDocs } from "firebase/firestore";
 
 const Signin = ({ navigation }) => {
@@ -56,21 +57,32 @@ const Signin = ({ navigation }) => {
   };
   const { passwordVisibility, rightIcon, handlePasswordVisibility } =
     useTogglePasswordVisibility();
- 
+
   const onSubmit = (data) => {
-    let userFound = false;
-    users.forEach((user) => {
-      if (data.Email == user.Email && data.Password == user.Password) {
-        userFound = true;
-        navigation.navigate("Tabs", {
-          screen: "Homepage",
-          params: { user_data: user },
-        });
-      }
-    });
-    if (!userFound) {
-      alert("Account does not exist");
-    }
+    const result = signInWithEmailAndPassword(auth, data.Email, data.Password)
+      .then(() => {
+        // alert("SUCUCUCUCUEUSUSSJSSSS");
+        console.log("added");
+        navigation.navigate("Tabs", { screen: "Homepage" });
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("not found");
+        //return navigation.navigate('LoginScreen');
+      });
+    // let userFound = false;
+    // users.forEach((user) => {
+    //   if (data.Email == user.Email && data.Password == user.Password) {
+    //     userFound = true;
+    //     navigation.navigate("Tabs", {
+    //       screen: "Homepage",
+    //       params: { user_data: user },
+    //     });
+    //   }
+    // });
+    // if (!userFound) {
+    //   alert("Account does not exist");
+    // }
   };
   return (
     <View style={styles.SiginContainer}>

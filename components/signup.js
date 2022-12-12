@@ -7,12 +7,21 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
-import { db } from "../firebase/firebase";
-import { collection, addDoc, getDocs, where, query } from "firebase/firestore";
+import { db, auth } from "../firebase/firebase";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  where,
+  query,
+  setDoc,
+  doc,
+} from "firebase/firestore";
 import { Button, TextInput } from "react-native-paper";
 import { useForm } from "react-hook-form";
 import CustomInputs from "./CustomInputs";
 import { useHeaderHeight } from "@react-navigation/elements";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { data } from "../assets/Data";
 
 const Signup = ({ navigation }) => {
@@ -45,31 +54,58 @@ const Signup = ({ navigation }) => {
   const { control, handleSubmit, watch } = useForm();
   const pass = watch("Password");
 
+  const timestamp = new Date();
   const onSubmit = async (data) => {
-    const userRef = collection(db, "Users");
-    const q = query(userRef, where("Email", "==", data.Email));
-    getDocs(q)
-      .then((result) => {
-        if (result.empty) {
-          addDoc(userRef, {
-            Email: data.Email,
-            Password: data.Password,
-            FirstName: data.FirstName,
-            LastName: data.LastName,
-            CreatedAt: new Date(),
-            IsAdmin: false,
-          }).then(() => {
-            console.warn("data submited");
-            navigation.navigate("Tabs", { screen: "Homepage" });
-          });
-        } else {
-          alert("email is already in use");
-        }
+    const res = await createUserWithEmailAndPassword(
+      auth,
+      data.Email,
+      data.Password
+    );
+    await setDoc(doc(db, "Users", res.user.uid), {
+      FirstName: data.FirstName,
+      LastName: data.LastName,
+      Email: data.Email,
+      Password: data.Password,
+      CreatedAt: timestamp,
+      IsAdmin: false,
+    })
+      .then(() => {
+        alert("SUCUCUCUCUEUSUSSJSSSS");
+        console.log("added");
       })
-      .catch((error) => {
-        console.warn(error);
+      .catch((err) => {
+        console.log(err);
       });
+    return navigation.navigate("Tabs", { screen: "Homepage" });
   };
+  //   // catch(error){
+  //   //   console.log(error.message);
+  //   //   return navigation.navigate('RegisterScreen');
+  //   // }
+  //   // const userRef = collection(db, "Users");
+  //   // const q = query(userRef, where("Email", "==", data.Email));
+  //   // getDocs(q)
+  //   //   .then((result) => {
+  //   //     if (result.empty) {
+  //   //       addDoc(userRef, {
+  //   //         Email: data.Email,
+  //   //         Password: data.Password,
+  //   //         FirstName: data.FirstName,
+  //   //         LastName: data.LastName,
+  //   //         CreatedAt: new Date(),
+  //   //         IsAdmin: false,
+  //   //       }).then(() => {
+  //   //         console.warn("data submited");
+  //   //         navigation.navigate("Tabs", { screen: "Homepage" });
+  //   //       });
+  //   //     } else {
+  //   //       alert("email is already in use");
+  //   //     }
+  //   //   })
+  //   //   .catch((error) => {
+  //   //     console.warn(error);
+  //   //   });
+  // },
   return (
     <View style={styles.Signupcontainer}>
       <KeyboardAvoidingView
@@ -190,7 +226,12 @@ const Signup = ({ navigation }) => {
             </Button>
           </View>
           <View style={{ marginTop: 20 }}>
-            <Button color="#6E9FFF" mode="outlined" style={styles.signinbutton}>
+            <Button
+              color="#6E9FFF"
+              onPress={() => navigation.navigate("Sign In")}
+              mode="outlined"
+              style={styles.signinbutton}
+            >
               Sign in
             </Button>
           </View>

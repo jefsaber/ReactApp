@@ -117,7 +117,7 @@ const MainStacks = ({ navigation }) => {
   );
 };
 const Tabs = () => {
-  let user = getUserData();
+  //let user = getUserData();
   return (
     <Tab.Navigator
       screenOptions={{
@@ -132,7 +132,7 @@ const Tabs = () => {
       initialRouteName="Homepage"
       screenListeners={({ navigation, route }) => ({
         tabPress: (e) => {
-          navigation.navigate(route.name, { params: user });
+          navigation.navigate(route.name);
         },
       })}
     >
