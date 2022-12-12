@@ -19,7 +19,7 @@ import {
 import { getUserData } from "./homepage";
 import call from "react-native-phone-call";
 import email from "react-native-email";
-
+import * as Location from 'expo-location';import * as Notifications from 'expo-notifications';
 const args = {
   number: "81236606", // String value with the number to call
   prompt: false, // Optional boolean property. Determines if the user should be prompted prior to the call
@@ -28,15 +28,42 @@ const args = {
 
 const Profile = ({ navigation }) => {
   const tmpUser = getUserData();
-  console.log(tmpUser);
   // const User = {
   //   id: tmpUser.id,
   //   fname: tmpUser.FirstName,
   //   lname: tmpUser.LastName,
   //   imageurl: tmpUser.ImageUrl,
   // };
-
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: false,
+      shouldSetBadge: false,
+    }),
+  });
   const docRef = doc(db, "Users", tmpUser.id);
+  const [location, setLocation] = useState(null); 
+  const getNotification = ()=>{
+    
+    Notifications.scheduleNotificationAsync({
+      content: {
+        title: 'Look at that notification',
+        body: "I'm so proud of myself!",
+      },
+      trigger: null,
+    });
+      }
+  const getLocation =async ()=>{
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      alert('Permission to access location was denied')
+      return;
+    }
+    let locationc = await Location.getCurrentPositionAsync({});
+    setLocation(locationc);
+    alert(JSON.stringify(location))
+    getNotification();
+  }
 
   const [image, setImage] = useState(null);
 
@@ -174,13 +201,22 @@ const Profile = ({ navigation }) => {
             </Button>
           </View>
         )}
-        <View style={styles.logout}>
+        <View style={styles.dashboard}>
           <Button
             style={{ backgroundColor: "#6E9FFF" }}
             onPress={() => navigation.navigate("Auth", { screen: "Sigin In" })}
             mode="contained"
           >
             Logout
+          </Button>
+        </View>
+        <View style={styles.logout}>
+          <Button
+            style={{ backgroundColor: "#6E9FFF" }}
+            onPress={getLocation}
+            mode="contained"
+          >
+           Location
           </Button>
         </View>
       </View>
