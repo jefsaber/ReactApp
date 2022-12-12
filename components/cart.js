@@ -10,60 +10,69 @@ import React, { useState, useEffect } from "react";
 import { TouchableRipple } from "react-native-paper";
 import MaterialIcons from "@expo/vector-icons/Ionicons";
 import { Button } from "react-native-paper";
-import { getAllProducts } from "../App.js";
+import { query, where } from "firebase/firestore";
 import { db, auth } from "../firebase/firebase";
-import { doc, updateDoc, getDoc } from "firebase/firestore";
+import {
+  doc,
+  updateDoc,
+  getDocs,
+  getDoc,
+  collection,
+} from "firebase/firestore";
 
-const Cart = ({ navigation }) => {
-  let AllProducts = getAllProducts();
-  //const tmpUser = getUserData();
-  const [tmpUser, setuser] = useState({});
+const Cart = ({ navigation, route }) => {
+  //console.log(route.params);
+  //const Cart = route.params.Cart;
+  let AllProducts = route.params.Products;
+  //console.log(route.params.Products);
+  const [data, setdata] = useState([]);
 
   const [loading, setLoading] = useState(false);
+  const [tmpUser, setuser] = useState({});
 
-  const getuserinfo = async () => {
-    try {
-      if (loading == false) {
-        console.log("enterrrede");
+  try {
+    if (loading == false) {
+      //console.log(auth.currentUser.uid);
 
-        console.log(auth.currentUser.uid);
+      getDoc(doc(db, "Users", auth.currentUser.uid)).then((docSnap) => {
+        if (docSnap.exists) {
+          //console.log(docSnap.data());
+          setuser(docSnap.data());
+          const data = AllProducts.filter((element) => {
+            return tmpUser.Favorites.includes(element.id);
+          });
+          setdata(data);
+        }
+        console.log(data);
+        // setLoading(true);
+      });
 
-        getDoc(doc(db, "Users", auth.currentUser.uid)).then((docSnap) => {
-          if (docSnap.exists) {
-            setuser(docSnap.data());
-          }
-
-          console.log("hereeeeee2");
-
-          setLoading(true);
-        });
-      }
-    } catch (err) {
-      console.log(err);
+      //console.log(username);
     }
-  };
+  } catch (err) {
+    console.log(err);
+  }
 
-  useEffect(() => {
-    getuserinfo();
-  }, []);
+  // useEffect(() => {
+  //   getuserinfo();
+  //   //getAllProducts();
+  // }, []);
   //const data = AllProducts;
   //console.log("hi" + tmpUser);
-  const data = AllProducts.filter((element) => {
-    return tmpUser.Cart.includes(element.id);
-  });
+
   const [cart, setcart] = useState(data);
   //console.log(Favorites);
   const RemoveCart = async (item) => {
     console.log(item.id);
     const docRef = doc(db, "Users", auth.currentUser.uid);
-    tmpUser.Cart.splice(tmpUser.Cart.indexOf(item.id));
+    Cart.splice(Cart.indexOf(item.id));
 
     const Cart = {
-      Cart: tmpUser.Cart,
+      Cart: Cart,
     };
     updateDoc(docRef, Cart)
       .then(() => {
-        setcart(tmpUser.Cart);
+        setcart(Cart);
         console.log("added successfuly");
         alert("Favorites Successfuly changed");
       })
@@ -71,6 +80,7 @@ const Cart = ({ navigation }) => {
         console.log(err);
       });
   };
+  //console.log(cart);
   return (
     <View style={styles.container}>
       <View style={styles.CartCont}>

@@ -11,10 +11,17 @@ import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { Button } from "react-native-paper";
 import { db, auth } from "../firebase/firebase";
-import { doc, updateDoc, getDoc } from "firebase/firestore";
+import {
+  doc,
+  updateDoc,
+  getDoc,
+  getDocs,
+  collection,
+} from "firebase/firestore";
 import call from "react-native-phone-call";
 import email from "react-native-email";
-import * as Location from 'expo-location';import * as Notifications from 'expo-notifications';
+import * as Location from "expo-location";
+import * as Notifications from "expo-notifications";
 const args = {
   number: "81236606", // String value with the number to call
   prompt: false, // Optional boolean property. Determines if the user should be prompted prior to the call
@@ -22,7 +29,6 @@ const args = {
 };
 
 const Profile = ({ navigation }) => {
-
   Notifications.setNotificationHandler({
     handleNotification: async () => ({
       shouldShowAlert: true,
@@ -30,28 +36,28 @@ const Profile = ({ navigation }) => {
       shouldSetBadge: false,
     }),
   });
-  const [location, setLocation] = useState(null); 
-  const getNotification = ()=>{
-    
+  const [location, setLocation] = useState(null);
+  const getNotification = () => {
     Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Look at that notification',
+        title: "Look at that notification",
         body: "I'm so proud of myself!",
       },
       trigger: null,
     });
-      }
-  const getLocation =async ()=>{
+  };
+  const getLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') {
-      alert('Permission to access location was denied')
+    if (status !== "granted") {
+      alert("Permission to access location was denied");
       return;
     }
     let locationc = await Location.getCurrentPositionAsync({});
     setLocation(locationc);
-    alert(JSON.stringify(location))
+    alert(JSON.stringify(location));
     getNotification();
-  }
+  };
+  let AllProducts = [];
 
   const [loading, setLoading] = useState(false);
   const [tmpUser, setuser] = useState({});
@@ -62,10 +68,11 @@ const Profile = ({ navigation }) => {
 
         getDoc(doc(db, "Users", auth.currentUser.uid)).then((docSnap) => {
           if (docSnap.exists) {
+            console.log(docSnap.data());
             setuser(docSnap.data());
           }
-          console.log("hereeeeee2");
-          setLoading(true);
+
+          // setLoading(true);
         });
 
         //console.log(username);
@@ -74,12 +81,25 @@ const Profile = ({ navigation }) => {
       console.log(err);
     }
   };
+  const getAllProducts = async () => {
+    // const q = query(where('country', 'in', tmpUser.Cart))
+    getDocs(collection(db, "Products"))
+      .then((docSnap) => {
+        docSnap.forEach((doc) => {
+          AllProducts.push({ ...doc.data(), id: doc.id });
+        });
+        console.log(AllProducts);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
+    getAllProducts();
     getuserinfo();
   }, []);
-  console.log(tmpUser)
-
+  //console.log(tmpUser);
   const [image, setImage] = useState(null);
 
   const addImage = async () => {
@@ -113,6 +133,7 @@ const Profile = ({ navigation }) => {
       checkCanOpen: false, // Call Linking.canOpenURL prior to Linking.openURL
     }).catch(console.error);
   };
+  //console.log(tmpUser);
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -140,7 +161,6 @@ const Profile = ({ navigation }) => {
           <Text style={{ fontSize: 24 }}>
             {tmpUser.FirstName + " " + tmpUser.LastName}
           </Text>
-       
         </View>
         <View style={styles.passbutton}>
           <Button
@@ -173,7 +193,9 @@ const Profile = ({ navigation }) => {
             contentStyle={{ justifyContent: "flex-start" }}
             icon="cart"
             mode="contained"
-            onPress={() => navigation.navigate("Cart")}
+            onPress={() =>
+              navigation.navigate("Cart", { Products: AllProducts })
+            }
           >
             Shopping Cart
           </Button>
@@ -229,7 +251,7 @@ const Profile = ({ navigation }) => {
             onPress={getLocation}
             mode="contained"
           >
-           Location
+            Location
           </Button>
         </View>
       </View>

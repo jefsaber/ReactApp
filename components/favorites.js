@@ -6,17 +6,23 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "react-native-paper";
 import { db, auth } from "../firebase/firebase";
-import { doc, updateDoc ,getDoc,getDocs,collection} from "firebase/firestore";
+import {
+  doc,
+  updateDoc,
+  getDoc,
+  getDocs,
+  collection,
+} from "firebase/firestore";
 import MaterialIcons from "@expo/vector-icons/Ionicons";
 
 const Favorites = ({ navigation }) => {
-  let AllProducts=[];
+  let AllProducts = [];
   const [loading, setLoading] = useState(false);
   const [tmpUser, setuser] = useState({});
-  const getuserinfo =  () => {
+  const getuserinfo = () => {
     try {
       if (loading == false) {
         console.log(auth.currentUser.uid);
@@ -34,7 +40,7 @@ const Favorites = ({ navigation }) => {
       console.log(err);
     }
   };
-  const getAllProducts =  () => {
+  const getAllProducts = () => {
     getDocs(collection(db, "Products"))
       .then((docSnap) => {
         docSnap.forEach((doc) => {
@@ -55,9 +61,9 @@ const Favorites = ({ navigation }) => {
   });
   const [Favorites, setFavorites] = useState(data);
   const RemoveFavorites = async (item) => {
-    const docRef = doc(db, "Users",auth.currentUser.uid);
+    const docRef = doc(db, "Users", auth.currentUser.uid);
     tmpUser.Favorites.splice(tmpUser.Favorites.indexOf(item.id));
-   
+
     const Favorites = {
       Favorites: tmpUser.Favorites,
     };
@@ -71,95 +77,97 @@ const Favorites = ({ navigation }) => {
         console.log(err);
       });
   };
+  console.log(Favorites);
   return (
     <View style={styles.container}>
       <View>
         <Text style={styles.RecentText}>Favorites</Text>
       </View>
       {/* {tmpUser.Favorites.length != 0 ? ( */}
-        <ScrollView>
-          <View>
-            <View style={styles.ProductsCont}>
-              {Favorites.map((item) => {
-                console.log(item);
-                return (
-                  <TouchableOpacity
-                    delayPressIn={50}
-                    key={item.id}
-                    activeOpacity={0.4}
-                  >
-                    <View style={styles.ProductCont}>
-                      <View style={styles.ProductDetails}>
-                        <Image
-                          resizeMode="contain"
-                          source={require("../assets/nike1.png")}
-                          style={styles.ProductImage}
-                        />
-                        <View>
-                          <Text style={styles.ProductTitle}>{item.Title}</Text>
-                          <Text style={styles.ProductCategory}>
-                            {item.Category}
-                          </Text>
-                        </View>
+      <ScrollView>
+        <View>
+          <View style={styles.ProductsCont}>
+            {Favorites.map((item) => {
+              console.log(item);
+              return (
+                <TouchableOpacity
+                  delayPressIn={50}
+                  key={item.id}
+                  activeOpacity={0.4}
+                >
+                  <View style={styles.ProductCont}>
+                    <View style={styles.ProductDetails}>
+                      <Image
+                        resizeMode="contain"
+                        source={require("../assets/nike1.png")}
+                        style={styles.ProductImage}
+                      />
+                      <View>
+                        <Text style={styles.ProductTitle}>{item.Title}</Text>
+                        <Text style={styles.ProductCategory}>
+                          {item.Category}
+                        </Text>
                       </View>
-                      <View style={{ flexDirection: "row" }}>
-                        <View>
-                          <Text>1pc</Text>
-                        </View>
-                        <View style={styles.PriceCont}>
-                          <Text>${item.Price}</Text>
-                        </View>
-                      </View>
-                      <TouchableOpacity
-                        delayPressIn={50}
-                        style={styles.CloseButton}
-                        hitSlop={{ top: 9, bottom: 9, left: 9, right: 9 }}
-                        onPress={() => RemoveFavorites(item)}
-                      >
-                        <MaterialIcons name="heart" size={24} />
-                      </TouchableOpacity>
                     </View>
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
+                    <View style={{ flexDirection: "row" }}>
+                      <View>
+                        <Text>1pc</Text>
+                      </View>
+                      <View style={styles.PriceCont}>
+                        <Text>${item.Price}</Text>
+                      </View>
+                    </View>
+                    <TouchableOpacity
+                      delayPressIn={50}
+                      style={styles.CloseButton}
+                      hitSlop={{ top: 9, bottom: 9, left: 9, right: 9 }}
+                      onPress={() => RemoveFavorites(item)}
+                    >
+                      <MaterialIcons name="heart" size={24} />
+                    </TouchableOpacity>
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
           </View>
-        </ScrollView>
-     </View> ) 
-      // : (
-      //   <View
-      //     style={{
-      //       height: "100%",
-      //     }}
-      //   >
-      //     <Text
-      //       style={{
-      //         marginTop: "50%",
-      //         textAlign: "center",
-      //         fontWeight: "bold",
-      //         fontSize: 22,
-      //         marginBottom: 20,
-      //       }}
-      //     >
-      //       Your Favorites List Is Empty
-      //     </Text>
-      //     <Button
-      //       style={{
-      //         backgroundColor: "#6E9FFF",
-      //         marginRight: 20,
-      //         marginLeft: 20,
-      //         padding: 6,
-      //       }}
-      //       labelStyle={{ fontWeight: "bold" }}
-      //       mode="contained"
-      //       title="Go to Shop"
-      //       onPress={() => navigation.navigate("Shop")}
-      //     >
-      //       go to shop
-      //     </Button>
-      //   </View>
-      // )}
-   // </View>
+        </View>
+      </ScrollView>
+    </View>
+  );
+  // : (
+  //   <View
+  //     style={{
+  //       height: "100%",
+  //     }}
+  //   >
+  //     <Text
+  //       style={{
+  //         marginTop: "50%",
+  //         textAlign: "center",
+  //         fontWeight: "bold",
+  //         fontSize: 22,
+  //         marginBottom: 20,
+  //       }}
+  //     >
+  //       Your Favorites List Is Empty
+  //     </Text>
+  //     <Button
+  //       style={{
+  //         backgroundColor: "#6E9FFF",
+  //         marginRight: 20,
+  //         marginLeft: 20,
+  //         padding: 6,
+  //       }}
+  //       labelStyle={{ fontWeight: "bold" }}
+  //       mode="contained"
+  //       title="Go to Shop"
+  //       onPress={() => navigation.navigate("Shop")}
+  //     >
+  //       go to shop
+  //     </Button>
+  //   </View>
+  // )}
+  // </View>
   //);
 };
 

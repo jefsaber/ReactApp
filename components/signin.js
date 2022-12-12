@@ -67,22 +67,8 @@ const Signin = ({ navigation }) => {
       })
       .catch((error) => {
         console.log(error);
-        alert("not found");
-        //return navigation.navigate('LoginScreen');
+        alert("User not found");
       });
-    // let userFound = false;
-    // users.forEach((user) => {
-    //   if (data.Email == user.Email && data.Password == user.Password) {
-    //     userFound = true;
-    //     navigation.navigate("Tabs", {
-    //       screen: "Homepage",
-    //       params: { user_data: user },
-    //     });
-    //   }
-    // });
-    // if (!userFound) {
-    //   alert("Account does not exist");
-    // }
   };
   return (
     <View style={styles.SiginContainer}>
