@@ -43,16 +43,7 @@ const slides = [
     image: require("../assets/nike.jpg"),
   },
 ];
-export let loggedinUser;
-function setUserData(data) {
-  loggedinUser = data;
-}
 
-function getUserData() {
-  return loggedinUser;
-}
-
-export { setUserData, getUserData };
 const Homepage = ({ route, navigation }) => {
   let AllProducts = getAllProducts();
 

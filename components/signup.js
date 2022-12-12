@@ -6,6 +6,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  TouchableOpacity,
 } from "react-native";
 import { db, auth } from "../firebase/firebase";
 import {
@@ -185,26 +186,42 @@ const Signup = ({ navigation }) => {
               />
             </View>
           </View>
-          <View style={{ marginTop: 20 }}>
-            <Button
-              color="white"
-              labelStyle={{ fontWeight: "bold" }}
-              style={styles.button}
-              onPress={handleSubmit(onSubmit)}
+      
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleSubmit(onSubmit)}
+            delayPressIn={100}
+            activeOpacity={0.5}
+          >
+            <Text
+              style={{
+                color: "white",
+                fontWeight: "bold",
+                fontSize: 18,
+              }}
             >
-              Sign up
-            </Button>
-          </View>
-          <View style={{ marginTop: 20 }}>
-            <Button
-              color="#6E9FFF"
-              onPress={() => navigation.navigate("Sign In")}
-              mode="outlined"
-              style={styles.signinbutton}
+              Sign Up
+            </Text>
+           
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.signinbutton}
+            onPress={() => navigation.navigate("Sign In")}
+            delayPressIn={100}
+            activeOpacity={0.5}
+          >
+            <Text
+              style={{
+                color: "#6E9FFF",
+                fontWeight: "bold",
+                fontSize: 18,
+              }}
             >
-              Sign in
-            </Button>
-          </View>
+              Sign In
+            </Text>
+           
+          </TouchableOpacity>
+
           <View style={{ width: "100%", marginTop: 30 }}>
             <Text style={{ textAlign: "center" }}>
               By Signing up, you agree to our
@@ -254,13 +271,27 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginLeft: 20,
     padding: 6,
+    marginTop: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    height: 50,
+    borderRadius: 5,
   },
   signinbutton: {
+    borderWidth:1,
+    borderColor: "#6E9FFF",
     marginRight: 20,
     marginLeft: 20,
     padding: 6,
-    borderColor: "#6E9FFF",
+    marginTop: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    height: 50,
+    borderRadius: 5,
   },
+  buttoncont :{ 
+    marginTop:20,
+  }
 });
 
 export default Signup;

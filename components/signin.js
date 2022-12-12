@@ -154,14 +154,14 @@ const Signin = ({ navigation }) => {
             </TouchableOpacity>
           </View>
           <TouchableOpacity
-            style={styles.button}
+            style={styles.signinbutton}
             onPress={() => navigation.navigate("Sign Up")}
             delayPressIn={100}
             activeOpacity={0.5}
           >
             <Text
               style={{
-                color: "white",
+                color: "#6E9FFF",
                 fontWeight: "bold",
                 fontSize: 18,
               }}
@@ -234,6 +234,19 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "#6E9FFF",
+    marginRight: 20,
+    marginLeft: 20,
+    padding: 6,
+    marginTop: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    height: 50,
+    borderRadius: 5,
+    flexDirection: "row",
+  },
+  signinbutton: {
+    borderWidth:1,
+    borderColor: "#6E9FFF",
     marginRight: 20,
     marginLeft: 20,
     padding: 6,

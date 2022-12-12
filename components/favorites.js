@@ -17,48 +17,53 @@ import {
   collection,
 } from "firebase/firestore";
 import MaterialIcons from "@expo/vector-icons/Ionicons";
-
+import { getAllProducts } from "../App";
+import { getUserData } from "../App";
 const Favorites = ({ navigation }) => {
-  let AllProducts = [];
+
+  
+  let AllProducts = getAllProducts();
   const [loading, setLoading] = useState(false);
-  const [tmpUser, setuser] = useState({});
-  const getuserinfo = () => {
-    try {
-      if (loading == false) {
-        console.log(auth.currentUser.uid);
+  let tmpUser=getUserData()
+  // const [tmpUser, settmpUser] = useState({});
+  
+  // const getuserinfo = async() => {
+  //     if (loading == false) {
+  //       console.log("id  " +  auth.currentUser.uid);
+  //       getDoc(doc(db, "Users", auth.currentUser.uid))
+  //       .then((docSnap) => {
+  //         if (docSnap.exists) {
+  //           console.log('innn')
+  //           settmpUser(docSnap.data());
+  //           //  console.log(docSnap.data())
+  //           //  console.log(tmpUser)
+  //            datamaker();
 
-        getDoc(doc(db, "Users", auth.currentUser.uid)).then((docSnap) => {
-          if (docSnap.exists) {
-            setuser(docSnap.data());
-          }
-          setLoading(true);
-        });
+  //         }
+  //         // setLoading(true);
+  //         // console.log('first')
 
-        //console.log(username);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  const getAllProducts = () => {
-    getDocs(collection(db, "Products"))
-      .then((docSnap) => {
-        docSnap.forEach((doc) => {
-          AllProducts.push({ ...doc.data(), id: doc.id });
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  //       }).catch((err)=>{
+  //         console.log(err)
+  //       })
+
+  //       //console.log(username);
+  //     }
+   
+  // };
+  const [data, setdata] = useState([]);
+  const datamaker= ()=>{
+    const temp = AllProducts.filter((element) => {
+      return tmpUser.Favorites.includes(element.id);
+    });
+    setdata(temp)
+
+  }
   useEffect(() => {
-    getuserinfo();
-    getAllProducts();
+    // getuserinfo();
+   datamaker() 
   }, []);
 
-  const data = AllProducts.filter((element) => {
-    return tmpUser.Favorites.includes(element.id);
-  });
   const [Favorites, setFavorites] = useState(data);
   const RemoveFavorites = async (item) => {
     const docRef = doc(db, "Users", auth.currentUser.uid);
@@ -69,7 +74,7 @@ const Favorites = ({ navigation }) => {
     };
     updateDoc(docRef, Favorites)
       .then(() => {
-        setFavorites(tmpUser.Favorites);
+        setdata(tmpUser.Favorites);
         console.log("added successfuly");
         alert("Favorites Successfuly changed");
       })
@@ -77,7 +82,6 @@ const Favorites = ({ navigation }) => {
         console.log(err);
       });
   };
-  console.log(Favorites);
   return (
     <View style={styles.container}>
       <View>
@@ -87,7 +91,7 @@ const Favorites = ({ navigation }) => {
       <ScrollView>
         <View>
           <View style={styles.ProductsCont}>
-            {Favorites.map((item) => {
+            {data.map((item) => {
               console.log(item);
               return (
                 <TouchableOpacity

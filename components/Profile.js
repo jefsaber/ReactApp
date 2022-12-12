@@ -54,7 +54,7 @@ const Profile = ({ navigation }) => {
     }
     let locationc = await Location.getCurrentPositionAsync({});
     setLocation(locationc);
-    alert(JSON.stringify(location));
+    alert(JSON.stringify(locationc));
     getNotification();
   };
   let AllProducts = [];
@@ -70,6 +70,7 @@ const Profile = ({ navigation }) => {
           if (docSnap.exists) {
             console.log(docSnap.data());
             setuser(docSnap.data());
+            console.log(tmpUser)
           }
 
           // setLoading(true);
@@ -81,22 +82,21 @@ const Profile = ({ navigation }) => {
       console.log(err);
     }
   };
-  const getAllProducts = async () => {
-    // const q = query(where('country', 'in', tmpUser.Cart))
-    getDocs(collection(db, "Products"))
-      .then((docSnap) => {
-        docSnap.forEach((doc) => {
-          AllProducts.push({ ...doc.data(), id: doc.id });
-        });
-        console.log(AllProducts);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  // const getAllProducts = async () => {
+  //   // const q = query(where('country', 'in', tmpUser.Cart))
+  //   getDocs(collection(db, "Products"))
+  //     .then((docSnap) => {
+  //       docSnap.forEach((doc) => {
+  //         AllProducts.push({ ...doc.data(), id: doc.id });
+  //       });
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
   useEffect(() => {
-    getAllProducts();
+    // getAllProducts();
     getuserinfo();
   }, []);
   //console.log(tmpUser);
@@ -193,9 +193,11 @@ const Profile = ({ navigation }) => {
             contentStyle={{ justifyContent: "flex-start" }}
             icon="cart"
             mode="contained"
-            onPress={() =>
-              navigation.navigate("Cart", { Products: AllProducts })
-            }
+            onPress={() => {
+              console.log(AllProducts)
+              console.log('sss')
+              navigation.navigate("Cart", { tmpUser:tmpUser})
+            }}
           >
             Shopping Cart
           </Button>

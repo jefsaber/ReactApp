@@ -19,68 +19,81 @@ import {
   getDoc,
   collection,
 } from "firebase/firestore";
+import { getAllProducts } from "../App";
 
 const Cart = ({ navigation, route }) => {
-  //console.log(route.params);
-  //const Cart = route.params.Cart;
-  let AllProducts = route.params.Products;
-  //console.log(route.params.Products);
+  let AllProducts = getAllProducts();
+  let tmpUser=route.params.tmpUser
   const [data, setdata] = useState([]);
+  // const [tmpUser, setuser] = useState({});
+  // const getuserinfo =  async() => {
+  // try {
+  //   if (loading == false) {
+  //     getDoc(doc(db, "Users", auth.currentUser.uid)).then((docSnap) => {
+  //       if (docSnap.exists) {
+  //         setuser(docSnap.data());
+  //         const data = AllProducts.filter((element) => {
+  //           return tmpUser.Favorites.includes(element.id);
+  //         });
+  //         setdata(data);
+  //       }
+  //       console.log(data);
+  //     });
 
-  const [loading, setLoading] = useState(false);
-  const [tmpUser, setuser] = useState({});
-
-  try {
-    if (loading == false) {
-      //console.log(auth.currentUser.uid);
-
-      getDoc(doc(db, "Users", auth.currentUser.uid)).then((docSnap) => {
-        if (docSnap.exists) {
-          //console.log(docSnap.data());
-          setuser(docSnap.data());
-          const data = AllProducts.filter((element) => {
-            return tmpUser.Favorites.includes(element.id);
-          });
-          setdata(data);
-        }
-        console.log(data);
-        // setLoading(true);
-      });
-
-      //console.log(username);
-    }
-  } catch (err) {
-    console.log(err);
-  }
-
+  //   }
+  // } catch (err) {
+  //   console.log(err);
+  // }
+  // }
   // useEffect(() => {
   //   getuserinfo();
-  //   //getAllProducts();
   // }, []);
-  //const data = AllProducts;
-  //console.log("hi" + tmpUser);
 
-  const [cart, setcart] = useState(data);
-  //console.log(Favorites);
+  const datamaker= ()=>{
+    const temp = AllProducts.filter((element) => {
+      return tmpUser.Favorites.includes(element.id);
+    });
+    setdata(temp)
+  }
+  useEffect(() => {
+    // getAllProducts();
+    datamaker();
+  }, []);
   const RemoveCart = async (item) => {
-    console.log(item.id);
+    // const [cart, setcart] = useState(data);
+    let Cart=data;
     const docRef = doc(db, "Users", auth.currentUser.uid);
     Cart.splice(Cart.indexOf(item.id));
-
-    const Cart = {
+    const cart = {
       Cart: Cart,
     };
-    updateDoc(docRef, Cart)
+    updateDoc(docRef, cart)
       .then(() => {
-        setcart(Cart);
+        setdata(Cart);
+        console.log("data1"+data)
         console.log("added successfuly");
-        alert("Favorites Successfuly changed");
       })
       .catch((err) => {
         console.log(err);
       });
   };
-  //console.log(cart);
+  const checkout = async()=>{
+    setdata([])
+    const cart = {
+      Cart: [],
+    };
+    const docRef = doc(db, "Users", auth.currentUser.uid);
+
+    updateDoc(docRef, cart)
+    .then(() => {
+    
+      console.log("data1"+data)
+      console.log("added successfuly");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
   return (
     <View style={styles.container}>
       <View style={styles.CartCont}>
@@ -91,7 +104,7 @@ const Cart = ({ navigation, route }) => {
           <ScrollView>
             <View>
               <View style={styles.ProductsCont}>
-                {cart.map((item) => {
+                {data.map((item) => {
                   return (
                     <TouchableOpacity
                       delayPressIn={50}
@@ -115,21 +128,19 @@ const Cart = ({ navigation, route }) => {
                           </View>
                         </View>
                         <View style={{ flexDirection: "row" }}>
-                          <View>
-                            <Text>1pc</Text>
-                          </View>
+                        
                           <View style={styles.PriceCont}>
                             <Text>${item.Price}</Text>
                           </View>
                         </View>
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                           delayPressIn={50}
                           style={styles.CloseButton}
                           hitSlop={{ top: 9, bottom: 9, left: 9, right: 9 }}
                           onPress={() => RemoveCart(item)}
                         >
                           <MaterialIcons name="close" size={24} />
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                       </View>
                     </TouchableOpacity>
                   );
@@ -175,7 +186,7 @@ const Cart = ({ navigation, route }) => {
         <TouchableRipple
           borderless={true}
           style={styles.Button}
-          onPress={() => console.log("Pressed")}
+          onPress={checkout}
           rippleColor="rgba(255, 255, 255, .32)"
         >
           <View
@@ -185,12 +196,8 @@ const Cart = ({ navigation, route }) => {
               justifyContent: "center",
             }}
           >
-            <Text style={{ color: "white", fontSize: 20 }}>Next</Text>
-            <MaterialIcons
-              name="chevron-forward"
-              size={24}
-              color={"white"}
-            ></MaterialIcons>
+            <Text style={{ color: "white", fontSize: 20 }}>Check Out</Text>
+           
           </View>
         </TouchableRipple>
       ) : (
@@ -216,7 +223,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 50,
     backgroundColor: "#ffffff",
-    paddingHorizontal: 20,
+    // paddingHorizontal: 20,
   },
   CartCont: {
     paddingLeft: 20,

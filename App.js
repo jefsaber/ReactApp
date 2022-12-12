@@ -12,27 +12,22 @@ import MaterialIcons from "@expo/vector-icons/Ionicons";
 import React, { useEffect, useState } from "react";
 import UpdatePassword from "./components/Updatepassword";
 import AppIntroSlider from "react-native-app-intro-slider";
-import { db } from "./firebase/firebase";
+import { db, auth } from "./firebase/firebase";
+
 import {
   collection,
   doc,
-  setDoc,
-  addDoc,
-  updateDoc,
-  deleteDoc,
+  
   getDoc,
   getDocs,
-  where,
-  query,
+  
 } from "firebase/firestore";
 import {
-  StyleSheet,
   Text,
   View,
   Image,
   Dimensions,
   Platform,
-  Button,
 } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ProductDetails from "./components/productDetails";
@@ -46,7 +41,6 @@ const MainStack = createNativeStackNavigator();
 const ProfileStack = createNativeStackNavigator();
 const DashboardStacks = createNativeStackNavigator();
 const { width, height } = Dimensions.get("screen");
-import { getUserData } from "./components/homepage";
 export let AllProducts = [];
 
 function setAllProducts(data) {
@@ -56,7 +50,16 @@ function getAllProducts() {
   return AllProducts;
 }
 export { setAllProducts, getAllProducts };
+export let loggedinUser;
+function setUserData(data) {
+  loggedinUser = data;
+}
 
+function getUserData() {
+  return loggedinUser;
+}
+
+export { setUserData, getUserData };
 const DashboardStack = () => {
   return (
     <DashboardStacks.Navigator
@@ -241,12 +244,20 @@ export default function App() {
           temp.push({ ...doc.data(), id: doc.id });
         });
         setAllProducts(temp);
+        getDoc(doc(db, "Users", auth.currentUser.uid))
+        .then((docSnap) => {
+          if (docSnap.exists) {
+            setUserData(docSnap.data());
+          }
+        })
       })
 
       .catch((err) => {
         console.log(err);
       });
   };
+  
+ 
   useEffect(() => {
     getAllProducts();
   }, []);
