@@ -55,8 +55,8 @@ function getUserData() {
 export { setUserData, getUserData };
 const Homepage = ({ route, navigation }) => {
   let AllProducts = getAllProducts();
-  //const user_data = route.params.user_data;
-  //setUserData(user_data);
+
+
   return (
     <View style={styles.container}>
       <ScrollView>

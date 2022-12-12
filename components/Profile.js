@@ -6,17 +6,12 @@ import {
   Image,
   ScrollView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { Button } from "react-native-paper";
-import { db } from "../firebase/firebase";
-import {
-  doc,
-  updateDoc,
-
-} from "firebase/firestore";
-import { getUserData } from "./homepage";
+import { db, auth } from "../firebase/firebase";
+import { doc, updateDoc, getDoc } from "firebase/firestore";
 import call from "react-native-phone-call";
 import email from "react-native-email";
 import * as Location from 'expo-location';import * as Notifications from 'expo-notifications';
@@ -27,13 +22,7 @@ const args = {
 };
 
 const Profile = ({ navigation }) => {
-  const tmpUser = getUserData();
-  // const User = {
-  //   id: tmpUser.id,
-  //   fname: tmpUser.FirstName,
-  //   lname: tmpUser.LastName,
-  //   imageurl: tmpUser.ImageUrl,
-  // };
+
   Notifications.setNotificationHandler({
     handleNotification: async () => ({
       shouldShowAlert: true,
@@ -41,7 +30,6 @@ const Profile = ({ navigation }) => {
       shouldSetBadge: false,
     }),
   });
-  const docRef = doc(db, "Users", tmpUser.id);
   const [location, setLocation] = useState(null); 
   const getNotification = ()=>{
     
@@ -65,6 +53,33 @@ const Profile = ({ navigation }) => {
     getNotification();
   }
 
+  const [loading, setLoading] = useState(false);
+  const [tmpUser, setuser] = useState({});
+  const getuserinfo = async () => {
+    try {
+      if (loading == false) {
+        console.log(auth.currentUser.uid);
+
+        getDoc(doc(db, "Users", auth.currentUser.uid)).then((docSnap) => {
+          if (docSnap.exists) {
+            setuser(docSnap.data());
+          }
+          console.log("hereeeeee2");
+          setLoading(true);
+        });
+
+        //console.log(username);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getuserinfo();
+  }, []);
+  console.log(tmpUser)
+
   const [image, setImage] = useState(null);
 
   const addImage = async () => {
@@ -80,7 +95,7 @@ const Profile = ({ navigation }) => {
       const data = {
         ImageUrl: image,
       };
-      updateDoc(docRef, data)
+      updateDoc(doc(db, "Users", auth.currentUser.uid), data)
         .then(() => {
           console.log("added successfuly");
           tmpUser.ImageUrl = data.ImageUrl;
@@ -125,9 +140,7 @@ const Profile = ({ navigation }) => {
           <Text style={{ fontSize: 24 }}>
             {tmpUser.FirstName + " " + tmpUser.LastName}
           </Text>
-          {/* <Text style={{ textAlign: "center", marginTop: 10 }}>
-            {tmpUser.CreatedAt.toDate()}
-          </Text> */}
+       
         </View>
         <View style={styles.passbutton}>
           <Button

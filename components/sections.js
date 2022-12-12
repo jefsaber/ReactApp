@@ -6,18 +6,39 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import React from "react";
-import MaterialIcons from "@expo/vector-icons/Ionicons";
+import React, { useState,useEffect } from "react";
+import { doc, updateDoc, getDoc } from "firebase/firestore";
+import MaterialIcons from "@expo/vector-icons/Ionicons";import { db, auth } from "../firebase/firebase";
 const Section = (props) => {
+  const [tmpUser, setuser] = useState({});
+  const [loading, setLoading] = useState(false);
+  const getuserinfo =  async() => {
+    try {
+      if (loading == false) {
+        console.log("enterrrede")
+        console.log(auth.currentUser.uid);
+        getDoc(doc(db, "Users", auth.currentUser.uid)).then((docSnap) => {
+          if (docSnap.exists) {
+            setuser(docSnap.data());
+          }
+          console.log("hereeeeee2");
+          setLoading(true);
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    getuserinfo();
+  }, []);
   return (
     <View>
       <ScrollView style={styles.ProductsScrollCont}>
         {props.SectionTitle && (
           <View style={styles.SectionCont}>
             <Text style={styles.SectionTitle}>{props.SectionTitle}</Text>
-            {/* <TouchableOpacity delayPressIn={30}  >
-      <MaterialIcons size={45} name='chevron-forward-circle'></MaterialIcons>
-      </TouchableOpacity> */}
+
           </View>
         )}
         <View
@@ -43,6 +64,7 @@ const Section = (props) => {
                     image: item.ImageUrl,
                     description: item.Description,
                     sizes: item.Sizes,
+                    tmpUser:tmpUser
                   });
                 }}
               >

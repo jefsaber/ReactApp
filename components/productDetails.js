@@ -1,92 +1,76 @@
 import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Button } from "react-native-paper";
 import { List } from "react-native-paper";
-import { getUserData } from "./homepage";import { db } from "../firebase/firebase";
-import {
-  doc,
-  updateDoc,
-} from "firebase/firestore";
+import { db, auth } from "../firebase/firebase";
+import { doc, updateDoc, getDoc } from "firebase/firestore";
 const ProductDetails = ({ navigation, route }) => {
-  const tmpUser = getUserData();
-  const { title, color, price, image, description, sizes, id } = route.params;
+  const { title, color, price, image, description, sizes, id,tmpUser } = route.params;
   const [isFav,setisFav]=useState(tmpUser.Favorites.includes(id));
   const [isCart,setisCart]=useState(tmpUser.Cart.includes(id));
+      const AddtoCart = () => {
+          tmpUser.Cart.push(id)
+          const Cart={
+            Cart:tmpUser.Cart
+          }
+          updateDoc(doc(db, "Users", auth.currentUser.uid),Cart)
+          .then(()=>{
+            setisCart(!isCart)
+            console.log("added successfuly");
+            alert("Cart Successfuly changed");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
 
-    const AddtoCart = () => {
-        const docRef = doc(db, "Users", tmpUser.id);
-        tmpUser.Cart.push(id)
-        console.log(tmpUser.Cart)
-        const cart={
+        }
+      const RemoveCart = () => {
+        tmpUser.Cart.splice(tmpUser.Cart.indexOf(id),1)
+        const Cart={
           Cart:tmpUser.Cart
         }
-        updateDoc(docRef,cart)
+        updateDoc(doc(db, "Users", auth.currentUser.uid),Cart)
         .then(()=>{
           setisCart(!isCart)
 
-          console.log("added successfuly");
-          alert("Cart Successfuly changed");
+          console.log("Remove successfuly");
+          alert("Cart Successfuly Remove");
         })
         .catch((err) => {
           console.log(err);
         });
 
       }
-    const RemoveCart = () => {
-      const docRef = doc(db, "Users", tmpUser.id);
-      tmpUser.Cart.splice(tmpUser.Cart.indexOf(id),1)
-      const cart={
-        Cart:tmpUser.Cart
+      const AddtoFav =()=>{
+        tmpUser.Favorites.push(id)
+        const Fav={
+          Favorites:tmpUser.Favorites
+        }
+        updateDoc(doc(db, "Users", auth.currentUser.uid),Fav)
+        .then(()=>{
+          setisFav(!isFav)
+          console.log("added successfuly");
+          alert("Favorites Successfuly changed");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       }
-      updateDoc(docRef,cart)
-      .then(()=>{
-        setisCart(!isCart)
-
-        console.log("Remove successfuly");
-        alert("Cart Successfuly Remove");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    }
-    const AddtoFav =()=>{
-      const docRef = doc(db, "Users", tmpUser.id);
-      tmpUser.Favorites.push(id)
-      
-      const fav={
-        Favorites:tmpUser.Favorites
+      const RemoveFav =()=>{
+        tmpUser.Favorites.splice(tmpUser.Favorites.indexOf(id),1)
+        const Favorites={
+          Favorites:tmpUser.Favorites
+        }
+        updateDoc(doc(db, "Users", auth.currentUser.uid),Favorites)
+        .then(()=>{
+          setisFav(!isFav)
+          console.log("Remove successfuly");
+          alert("fav Successfuly Remove");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       }
-      updateDoc(docRef,fav)
-      .then(()=>{
-        setisFav(!isFav)
-        console.log("added successfuly");
-        alert("Favorites Successfuly changed");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    }
-    const RemoveFav =()=>{
-      const docRef = doc(db, "Users", tmpUser.id);
-      tmpUser.Favorites.splice(tmpUser.Favorites.indexOf(id),1)
-      const Favorites={
-        Favorites:tmpUser.Favorites
-      }
-      updateDoc(docRef,Favorites)
-      .then(()=>{
-        setisFav(!isFav)
-
-        console.log("Remove successfuly");
-        alert("fav Successfuly Remove");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    }
-  console.log(tmpUser.Cart.includes(id))
   return (
     <ScrollView style={{ backgroundColor: "#fff" }}>
       <View style={styles.image}>
