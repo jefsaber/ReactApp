@@ -6,16 +6,12 @@ import {
   Image,
   ScrollView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { Button } from "react-native-paper";
-import { db } from "../firebase/firebase";
-import {
-  doc,
-  updateDoc,
-
-} from "firebase/firestore";
+import { db, auth } from "../firebase/firebase";
+import { doc, updateDoc, getDoc } from "firebase/firestore";
 import { getUserData } from "./homepage";
 import call from "react-native-phone-call";
 import email from "react-native-email";
@@ -27,16 +23,33 @@ const args = {
 };
 
 const Profile = ({ navigation }) => {
-  const tmpUser = getUserData();
-  console.log(tmpUser);
-  // const User = {
-  //   id: tmpUser.id,
-  //   fname: tmpUser.FirstName,
-  //   lname: tmpUser.LastName,
-  //   imageurl: tmpUser.ImageUrl,
-  // };
+  const [loading, setLoading] = useState(false);
+  const [tmpUser, setuser] = useState({});
+  const getuserinfo = async () => {
+    try {
+      if (loading == false) {
+        console.log(auth.currentUser.uid);
 
-  const docRef = doc(db, "Users", tmpUser.id);
+        getDoc(doc(db, "Users", auth.currentUser.uid)).then((docSnap) => {
+          if (docSnap.exists) {
+            setuser(docSnap.data());
+          }
+          console.log("hereeeeee2");
+          setLoading(true);
+        });
+
+        //console.log(username);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getuserinfo();
+  }, []);
+
+  // const docRef = doc(db, "Users", tmpUser.id);
 
   const [image, setImage] = useState(null);
 
@@ -53,7 +66,7 @@ const Profile = ({ navigation }) => {
       const data = {
         ImageUrl: image,
       };
-      updateDoc(docRef, data)
+      updateDoc(doc(db, "Users", auth.currentUser.uid), data)
         .then(() => {
           console.log("added successfuly");
           tmpUser.ImageUrl = data.ImageUrl;
