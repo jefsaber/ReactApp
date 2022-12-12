@@ -14,22 +14,10 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import CustomInputs from "./CustomInputs";
 import { db, auth } from "../firebase/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { collection, getDocs } from "firebase/firestore";
+import { getDoc, query, getDocs, where, collection } from "firebase/firestore";
+import BcryptReactNative from "bcrypt-react-native";
 
 const Signin = ({ navigation }) => {
-  let users = [];
-  useEffect(() => {
-    getDocs(collection(db, "Users"))
-      .then((docSnap) => {
-        docSnap.forEach((doc) => {
-          users.push({ ...doc.data(), id: doc.id });
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  });
-
   const { control, handleSubmit } = useForm();
 
   const EMAIL_REGEX =
@@ -58,11 +46,10 @@ const Signin = ({ navigation }) => {
   const { passwordVisibility, rightIcon, handlePasswordVisibility } =
     useTogglePasswordVisibility();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    //const isSame = await BcryptReactNative.compareSync(data.Password, hash);
     const result = signInWithEmailAndPassword(auth, data.Email, data.Password)
       .then(() => {
-        // alert("SUCUCUCUCUEUSUSSJSSSS");
-        console.log("added");
         navigation.navigate("Tabs", { screen: "Homepage" });
       })
       .catch((error) => {
@@ -245,7 +232,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   signinbutton: {
-    borderWidth:1,
+    borderWidth: 1,
     borderColor: "#6E9FFF",
     marginRight: 20,
     marginLeft: 20,

@@ -9,10 +9,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { db, auth } from "../firebase/firebase";
-import {
-  setDoc,
-  doc,
-} from "firebase/firestore";
+import { setDoc, doc } from "firebase/firestore";
 import { Button, TextInput } from "react-native-paper";
 import { useForm } from "react-hook-form";
 import CustomInputs from "./CustomInputs";
@@ -63,14 +60,11 @@ const Signup = ({ navigation }) => {
       Password: data.Password,
       CreatedAt: timestamp,
       IsAdmin: false,
-      Recent:[],
-      Favorites :[],
-      Cart:[]
+      Recent: [],
+      Favorites: [],
+      Cart: [],
     })
-      .then(() => {
-        alert("SUCUCUCUCUEUSUSSJSSSS");
-        console.log("added");
-      })
+      .then(() => {})
       .catch((err) => {
         console.log(err);
       });
@@ -186,7 +180,7 @@ const Signup = ({ navigation }) => {
               />
             </View>
           </View>
-      
+
           <TouchableOpacity
             style={styles.button}
             onPress={handleSubmit(onSubmit)}
@@ -202,7 +196,6 @@ const Signup = ({ navigation }) => {
             >
               Sign Up
             </Text>
-           
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.signinbutton}
@@ -219,7 +212,6 @@ const Signup = ({ navigation }) => {
             >
               Sign In
             </Text>
-           
           </TouchableOpacity>
 
           <View style={{ width: "100%", marginTop: 30 }}>
@@ -278,7 +270,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   signinbutton: {
-    borderWidth:1,
+    borderWidth: 1,
     borderColor: "#6E9FFF",
     marginRight: 20,
     marginLeft: 20,
@@ -289,9 +281,9 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 5,
   },
-  buttoncont :{ 
-    marginTop:20,
-  }
+  buttoncont: {
+    marginTop: 20,
+  },
 });
 
 export default Signup;

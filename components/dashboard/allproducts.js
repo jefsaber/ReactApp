@@ -16,13 +16,32 @@ import {
   doc,
   getDocs,
 } from "firebase/firestore";
-import { getAllProducts } from "../../App";
+
 import MaterialIcons from "@expo/vector-icons/Ionicons";
-import { setAllProducts } from "../../App";
 
 const Allproducts = ({ navigation, route }) => {
-  const AllProducts = getAllProducts();
-  const [Products, setProducts] = useState(AllProducts);
+  const [AllProducts, setAllProducts] = useState([]);
+
+  const getAllProducts = async () => {
+    let temp = [];
+    getDocs(collection(db, "Products"))
+      .then((docSnap) => {
+        docSnap.forEach((doc) => {
+          temp.push({ ...doc.data(), id: doc.id });
+        });
+        setAllProducts(temp);
+      })
+
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      getAllProducts();
+    });
+  }, [navigation, AllProducts]);
 
   const RemoveProduct = async (id) => {
     deleteDoc(doc(db, "Products", id))
@@ -33,7 +52,7 @@ const Allproducts = ({ navigation, route }) => {
             temp.push({ ...doc.data(), id: doc.id });
           });
           //console.log(temp);
-          setProducts(temp);
+
           setAllProducts(temp);
         });
       })
@@ -49,7 +68,7 @@ const Allproducts = ({ navigation, route }) => {
       <ScrollView>
         <View>
           <View style={styles.ProductsCont}>
-            {Products.map((item) => {
+            {AllProducts.map((item) => {
               return (
                 <TouchableOpacity
                   delayPressIn={50}

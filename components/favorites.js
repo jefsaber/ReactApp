@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  TouchableWithoutFeedback,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { Button } from "react-native-paper";
@@ -18,63 +19,39 @@ import {
 } from "firebase/firestore";
 import MaterialIcons from "@expo/vector-icons/Ionicons";
 import { getAllProducts } from "../App";
-import { getUserData } from "../App";
-const Favorites = ({ navigation }) => {
-
-  
+const Favorites = ({ navigation, route }) => {
   let AllProducts = getAllProducts();
-  const [loading, setLoading] = useState(false);
-  let tmpUser=getUserData()
-  // const [tmpUser, settmpUser] = useState({});
-  
-  // const getuserinfo = async() => {
-  //     if (loading == false) {
-  //       console.log("id  " +  auth.currentUser.uid);
-  //       getDoc(doc(db, "Users", auth.currentUser.uid))
-  //       .then((docSnap) => {
-  //         if (docSnap.exists) {
-  //           console.log('innn')
-  //           settmpUser(docSnap.data());
-  //           //  console.log(docSnap.data())
-  //           //  console.log(tmpUser)
-  //            datamaker();
+  let tmpUser = route.params.tmpUser;
+  // console.log(tmpUser);
 
-  //         }
-  //         // setLoading(true);
-  //         // console.log('first')
-
-  //       }).catch((err)=>{
-  //         console.log(err)
-  //       })
-
-  //       //console.log(username);
-  //     }
-   
-  // };
   const [data, setdata] = useState([]);
-  const datamaker= ()=>{
+  const datamaker = () => {
     const temp = AllProducts.filter((element) => {
       return tmpUser.Favorites.includes(element.id);
     });
-    setdata(temp)
+    setdata(temp);
+    //console.log(Favorites);
+  };
 
-  }
   useEffect(() => {
-    // getuserinfo();
-   datamaker() 
-  }, []);
-
+    const unsubscribe = navigation.addListener("focus", () => {
+      datamaker();
+    });
+    //1return unsubscribe;
+  }, [navigation]);
+  //console.log(data);
   const [Favorites, setFavorites] = useState(data);
   const RemoveFavorites = async (item) => {
     const docRef = doc(db, "Users", auth.currentUser.uid);
-    tmpUser.Favorites.splice(tmpUser.Favorites.indexOf(item.id));
-
+    tmpUser.Favorites.splice(tmpUser.Favorites.indexOf(item), 1);
+    datamaker();
+    //setdata(tmpUser.Favorites);
+    console.log(data);
     const Favorites = {
       Favorites: tmpUser.Favorites,
     };
     updateDoc(docRef, Favorites)
       .then(() => {
-        setdata(tmpUser.Favorites);
         console.log("added successfuly");
         alert("Favorites Successfuly changed");
       })
@@ -87,92 +64,93 @@ const Favorites = ({ navigation }) => {
       <View>
         <Text style={styles.RecentText}>Favorites</Text>
       </View>
-      {/* {tmpUser.Favorites.length != 0 ? ( */}
-      <ScrollView>
-        <View>
-          <View style={styles.ProductsCont}>
-            {data.map((item) => {
-              console.log(item);
-              return (
-                <TouchableOpacity
-                  delayPressIn={50}
-                  key={item.id}
-                  activeOpacity={0.4}
-                >
-                  <View style={styles.ProductCont}>
-                    <View style={styles.ProductDetails}>
-                      <Image
-                        resizeMode="contain"
-                        source={require("../assets/nike1.png")}
-                        style={styles.ProductImage}
-                      />
-                      <View>
-                        <Text style={styles.ProductTitle}>{item.Title}</Text>
-                        <Text style={styles.ProductCategory}>
-                          {item.Category}
-                        </Text>
+      {tmpUser.Favorites.length != 0 ? (
+        <ScrollView>
+          <View>
+            <View style={styles.ProductsCont}>
+              {data.map((item, index) => {
+                // console.log(item.id);
+                return (
+                  <TouchableOpacity
+                    key={index}
+                    delayPressIn={50}
+                    activeOpacity={0.4}
+                    onPress={() => console.log(item.id)}
+                  >
+                    <View style={styles.ProductCont}>
+                      <View style={styles.ProductDetails}>
+                        <Image
+                          resizeMode="contain"
+                          source={require("../assets/nike1.png")}
+                          style={styles.ProductImage}
+                        />
+                        <View>
+                          <Text style={styles.ProductTitle}>{item.Title}</Text>
+                          <Text style={styles.ProductCategory}>
+                            {item.Category}
+                          </Text>
+                        </View>
                       </View>
+                      <View style={{ flexDirection: "row" }}>
+                        <View>
+                          <Text>1pc</Text>
+                        </View>
+                        <View style={styles.PriceCont}>
+                          <Text>${item.Price}</Text>
+                        </View>
+                      </View>
+                      <TouchableOpacity
+                        delayPressIn={50}
+                        style={styles.CloseButton}
+                        hitSlop={{ top: 9, bottom: 9, left: 9, right: 9 }}
+                        onPress={() => {
+                          console.log(item.id), RemoveFavorites(item.id);
+                        }}
+                      >
+                        <MaterialIcons name="heart" size={24} />
+                      </TouchableOpacity>
                     </View>
-                    <View style={{ flexDirection: "row" }}>
-                      <View>
-                        <Text>1pc</Text>
-                      </View>
-                      <View style={styles.PriceCont}>
-                        <Text>${item.Price}</Text>
-                      </View>
-                    </View>
-                    <TouchableOpacity
-                      delayPressIn={50}
-                      style={styles.CloseButton}
-                      hitSlop={{ top: 9, bottom: 9, left: 9, right: 9 }}
-                      onPress={() => RemoveFavorites(item)}
-                    >
-                      <MaterialIcons name="heart" size={24} />
-                    </TouchableOpacity>
-                  </View>
-                </TouchableOpacity>
-              );
-            })}
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
           </View>
+        </ScrollView>
+      ) : (
+        <View
+          style={{
+            height: "100%",
+          }}
+        >
+          <Text
+            style={{
+              marginTop: "50%",
+              textAlign: "center",
+              fontWeight: "bold",
+              fontSize: 22,
+              marginBottom: 20,
+            }}
+          >
+            Your Favorites List Is Empty
+          </Text>
+          <Button
+            style={{
+              backgroundColor: "#6E9FFF",
+              marginRight: 20,
+              marginLeft: 20,
+              padding: 6,
+            }}
+            labelStyle={{ fontWeight: "bold" }}
+            mode="contained"
+            title="Go to Shop"
+            onPress={() => navigation.navigate("Shop")}
+          >
+            go to shop
+          </Button>
         </View>
-      </ScrollView>
+      )}
     </View>
   );
-  // : (
-  //   <View
-  //     style={{
-  //       height: "100%",
-  //     }}
-  //   >
-  //     <Text
-  //       style={{
-  //         marginTop: "50%",
-  //         textAlign: "center",
-  //         fontWeight: "bold",
-  //         fontSize: 22,
-  //         marginBottom: 20,
-  //       }}
-  //     >
-  //       Your Favorites List Is Empty
-  //     </Text>
-  //     <Button
-  //       style={{
-  //         backgroundColor: "#6E9FFF",
-  //         marginRight: 20,
-  //         marginLeft: 20,
-  //         padding: 6,
-  //       }}
-  //       labelStyle={{ fontWeight: "bold" }}
-  //       mode="contained"
-  //       title="Go to Shop"
-  //       onPress={() => navigation.navigate("Shop")}
-  //     >
-  //       go to shop
-  //     </Button>
-  //   </View>
-  // )}
-  // </View>
-  //);
 };
 
 export default Favorites;

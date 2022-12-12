@@ -6,22 +6,20 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { doc, updateDoc, getDoc } from "firebase/firestore";
-import MaterialIcons from "@expo/vector-icons/Ionicons";import { db, auth } from "../firebase/firebase";
+import MaterialIcons from "@expo/vector-icons/Ionicons";
+import { db, auth } from "../firebase/firebase";
 const Section = (props) => {
   const [tmpUser, setuser] = useState({});
   const [loading, setLoading] = useState(false);
-  const getuserinfo =  async() => {
+  const getuserinfo = async () => {
     try {
       if (loading == false) {
-        console.log("enterrrede")
-        console.log(auth.currentUser.uid);
         getDoc(doc(db, "Users", auth.currentUser.uid)).then((docSnap) => {
           if (docSnap.exists) {
             setuser(docSnap.data());
           }
-          console.log("hereeeeee2");
           setLoading(true);
         });
       }
@@ -30,15 +28,16 @@ const Section = (props) => {
     }
   };
   useEffect(() => {
-    getuserinfo();
-  }, []);
+    const unsubscribe = props.navigation.addListener("focus", () => {
+      getuserinfo();
+    });
+  }, [props.navigation]);
   return (
     <View>
       <ScrollView style={styles.ProductsScrollCont}>
         {props.SectionTitle && (
           <View style={styles.SectionCont}>
             <Text style={styles.SectionTitle}>{props.SectionTitle}</Text>
-
           </View>
         )}
         <View
@@ -64,7 +63,7 @@ const Section = (props) => {
                     image: item.ImageUrl,
                     description: item.Description,
                     sizes: item.Sizes,
-                    tmpUser:tmpUser
+                    tmpUser: tmpUser,
                   });
                 }}
               >

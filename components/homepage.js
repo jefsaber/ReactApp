@@ -11,43 +11,63 @@ import React, { useState, useEffect } from "react";
 import AppIntroSlider from "react-native-app-intro-slider";
 const { width: screenWidth } = Dimensions.get("window");
 import Section from "./sections";
+import { db, auth } from "../firebase/firebase";
+import { doc, updateDoc, getDocs, collection } from "firebase/firestore";
 
-import { getAllProducts } from "../App.js";
 const slides = [
   {
     id: 1,
     title: "icon",
     description:
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic",
-    image: require("../assets/nike.jpg"),
+    image: require("../assets/image3.jpg"),
   },
   {
     id: 2,
     title: "Explore",
     description:
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic",
-    image: require("../assets/Carouselimage.png"),
+    image: require("../assets/image6.png"),
   },
   {
     id: 3,
     title: "Order",
     description:
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic",
-    image: require("../assets/nike.jpg"),
+    image: require("../assets/image4.jpg"),
   },
   {
     id: 4,
     title: "Recieve",
     description:
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic",
-    image: require("../assets/nike.jpg"),
+    image: require("../assets/image7.png"),
   },
 ];
 
-const Homepage = ({ route, navigation }) => {
-  let AllProducts = getAllProducts();
+const Homepage = ({ navigation, route }) => {
+  // let AllProducts = getAllProducts();
+  const [AllProducts, setAllProducts] = useState([]);
+  const getAllProducts = async () => {
+    let temp = [];
+    getDocs(collection(db, "Products"))
+      .then((docSnap) => {
+        docSnap.forEach((doc) => {
+          temp.push({ ...doc.data(), id: doc.id });
+        });
+        setAllProducts(temp);
+      })
 
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      getAllProducts();
+    });
+  }, [navigation]);
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -75,7 +95,7 @@ const Homepage = ({ route, navigation }) => {
             renderItem={({ item, index }) => {
               return (
                 <View style={styles.CarouselImageCont}>
-                  <Image source={item.image} resizeMode="cover"></Image>
+                  <Image source={item.image} resizeMode="repeat"></Image>
                 </View>
               );
             }}

@@ -10,9 +10,7 @@ import React from "react";
 import MaterialIcons from "@expo/vector-icons/Ionicons";
 
 const Productlist = (props) => {
-  const { data, title, icon, iconfunction,navigation } = props;
- console.log('prdct list')
-  console.log(data)
+  const { data, title, icon, iconfunction, navigation } = props;
 
   return (
     <ScrollView>
@@ -20,15 +18,15 @@ const Productlist = (props) => {
         <Text style={styles.RecentText}>{title}</Text>
 
         <View>
-          <View style={styles.ProductsCont} >
-            {data.map((item)  => {
+          <View style={styles.ProductsCont}>
+            {data.map((item) => {
               return (
                 <TouchableOpacity
                   delayPressIn={50}
                   key={item.id}
                   activeOpacity={0.4}
                   onPress={() => {
-                      navigation.navigate("ProductDetails", {
+                    navigation.navigate("ProductDetails", {
                       id: item.id,
                       category: item.Category,
                       title: item.Title,
@@ -40,7 +38,7 @@ const Productlist = (props) => {
                     });
                   }}
                 >
-                  <View style={styles.ProductCont} >
+                  <View style={styles.ProductCont}>
                     <View style={styles.ProductDetails}>
                       <Image
                         resizeMode="contain"

@@ -14,21 +14,8 @@ import UpdatePassword from "./components/Updatepassword";
 import AppIntroSlider from "react-native-app-intro-slider";
 import { db, auth } from "./firebase/firebase";
 
-import {
-  collection,
-  doc,
-  
-  getDoc,
-  getDocs,
-  
-} from "firebase/firestore";
-import {
-  Text,
-  View,
-  Image,
-  Dimensions,
-  Platform,
-} from "react-native";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { Text, View, Image, Dimensions, Platform } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ProductDetails from "./components/productDetails";
 import Dashboard from "./components/dashboard/dashboard";
@@ -90,7 +77,7 @@ const AuthStack = createNativeStackNavigator();
 const Auth = () => {
   return (
     <AuthStack.Navigator
-      screenOptions={{ headerShown: false }}
+      screenOptions={{ headerShown: false, gestureEnabled: false }}
       initialRouteName="Sign In"
     >
       <AuthStack.Screen name="Sign In" component={Signin} />
@@ -151,6 +138,7 @@ const Tabs = () => {
             return <MaterialIcons name={iconName} size={26} color={"white"} />;
           },
           headerShown: false,
+          gestureEnabled: false,
         })}
       />
       <Tab.Screen
@@ -182,7 +170,7 @@ const Tabs = () => {
           headerShown: false,
         })}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Favorites"
         component={Favorites}
         options={({ route }) => ({
@@ -195,7 +183,7 @@ const Tabs = () => {
           },
           headerShown: false,
         })}
-      />
+      /> */}
       <Tab.Screen
         name="User"
         component={ProfileStacks}
@@ -244,21 +232,20 @@ export default function App() {
           temp.push({ ...doc.data(), id: doc.id });
         });
         setAllProducts(temp);
-        getDoc(doc(db, "Users", auth.currentUser.uid))
-        .then((docSnap) => {
+        getDoc(doc(db, "Users", auth.currentUser.uid)).then((docSnap) => {
           if (docSnap.exists) {
             setUserData(docSnap.data());
           }
-        })
+        });
       })
 
       .catch((err) => {
         console.log(err);
       });
   };
-  
- 
+
   useEffect(() => {
+    console.log(1);
     getAllProducts();
   }, []);
   const [showhomepage, setShowhomepage] = useState(false);

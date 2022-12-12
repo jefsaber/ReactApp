@@ -23,45 +23,47 @@ import { getAllProducts } from "../App";
 
 const Cart = ({ navigation, route }) => {
   let AllProducts = getAllProducts();
-  let tmpUser=route.params.tmpUser
+  let tmpUser = route.params.tmpUser;
   const [data, setdata] = useState([]);
-  // const [tmpUser, setuser] = useState({});
-  // const getuserinfo =  async() => {
-  // try {
-  //   if (loading == false) {
-  //     getDoc(doc(db, "Users", auth.currentUser.uid)).then((docSnap) => {
-  //       if (docSnap.exists) {
-  //         setuser(docSnap.data());
-  //         const data = AllProducts.filter((element) => {
-  //           return tmpUser.Favorites.includes(element.id);
-  //         });
-  //         setdata(data);
-  //       }
-  //       console.log(data);
-  //     });
-
+  //const [tmpUser, setuser] = useState({});
+  // const getuserinfo = async () => {
+  //   try {
+  //     if (loading == false) {
+  //       getDoc(doc(db, "Users", auth.currentUser.uid)).then((docSnap) => {
+  //         if (docSnap.exists) {
+  //           setuser(docSnap.data());
+  //           const data = AllProducts.filter((element) => {
+  //             return tmpUser.Favorites.includes(element.id);
+  //           });
+  //           setdata(data);
+  //         }
+  //         console.log(data);
+  //       });
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
   //   }
-  // } catch (err) {
-  //   console.log(err);
-  // }
-  // }
+  // };
   // useEffect(() => {
   //   getuserinfo();
   // }, []);
-
-  const datamaker= ()=>{
+  //console.log(tmpUser.Cart);
+  console.log(AllProducts);
+  const datamaker = () => {
     const temp = AllProducts.filter((element) => {
-      return tmpUser.Favorites.includes(element.id);
+      return tmpUser.Cart.includes(element.id);
     });
-    setdata(temp)
-  }
+    setdata(temp);
+  };
   useEffect(() => {
-    // getAllProducts();
-    datamaker();
-  }, []);
+    const unsubscribe = navigation.addListener("focus", () => {
+      datamaker();
+    });
+    //1return unsubscribe;
+  }, [navigation]);
   const RemoveCart = async (item) => {
     // const [cart, setcart] = useState(data);
-    let Cart=data;
+    let Cart = data;
     const docRef = doc(db, "Users", auth.currentUser.uid);
     Cart.splice(Cart.indexOf(item.id));
     const cart = {
@@ -70,30 +72,29 @@ const Cart = ({ navigation, route }) => {
     updateDoc(docRef, cart)
       .then(() => {
         setdata(Cart);
-        console.log("data1"+data)
+        console.log("data1" + data);
         console.log("added successfuly");
       })
       .catch((err) => {
         console.log(err);
       });
   };
-  const checkout = async()=>{
-    setdata([])
+  const checkout = async () => {
+    setdata([]);
     const cart = {
       Cart: [],
     };
     const docRef = doc(db, "Users", auth.currentUser.uid);
 
     updateDoc(docRef, cart)
-    .then(() => {
-    
-      console.log("data1"+data)
-      console.log("added successfuly");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  }
+      .then(() => {
+        console.log("data1" + data);
+        console.log("added successfuly");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <View style={styles.container}>
       <View style={styles.CartCont}>
@@ -128,7 +129,6 @@ const Cart = ({ navigation, route }) => {
                           </View>
                         </View>
                         <View style={{ flexDirection: "row" }}>
-                        
                           <View style={styles.PriceCont}>
                             <Text>${item.Price}</Text>
                           </View>
@@ -197,7 +197,6 @@ const Cart = ({ navigation, route }) => {
             }}
           >
             <Text style={{ color: "white", fontSize: 20 }}>Check Out</Text>
-           
           </View>
         </TouchableRipple>
       ) : (

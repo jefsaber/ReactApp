@@ -1,76 +1,92 @@
 import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "react-native-paper";
 import { List } from "react-native-paper";
 import { db, auth } from "../firebase/firebase";
 import { doc, updateDoc, getDoc } from "firebase/firestore";
+
 const ProductDetails = ({ navigation, route }) => {
-  const { title, color, price, image, description, sizes, id,tmpUser } = route.params;
-  const [isFav,setisFav]=useState(tmpUser.Favorites.includes(id));
-  const [isCart,setisCart]=useState(tmpUser.Cart.includes(id));
-      const AddtoCart = () => {
-          tmpUser.Cart.push(id)
-          const Cart={
-            Cart:tmpUser.Cart
-          }
-          updateDoc(doc(db, "Users", auth.currentUser.uid),Cart)
-          .then(()=>{
-            setisCart(!isCart)
-            console.log("added successfuly");
-            alert("Cart Successfuly changed");
-          })
+  const { title, color, price, image, description, sizes, id, tmpUser } =
+    route.params;
+  const [isFav, setisFav] = useState(tmpUser.Favorites.includes(id));
+  const [isCart, setisCart] = useState(tmpUser.Cart.includes(id));
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      if (!tmpUser.Recent.includes(id)) {
+        tmpUser.Recent.push(id);
+        const Recent = {
+          Recent: tmpUser.Recent,
+        };
+        updateDoc(doc(db, "Users", auth.currentUser.uid), Recent)
+          .then(() => {})
           .catch((err) => {
             console.log(err);
           });
-
-        }
-      const RemoveCart = () => {
-        tmpUser.Cart.splice(tmpUser.Cart.indexOf(id),1)
-        const Cart={
-          Cart:tmpUser.Cart
-        }
-        updateDoc(doc(db, "Users", auth.currentUser.uid),Cart)
-        .then(()=>{
-          setisCart(!isCart)
-
-          console.log("Remove successfuly");
-          alert("Cart Successfuly Remove");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
       }
-      const AddtoFav =()=>{
-        tmpUser.Favorites.push(id)
-        const Fav={
-          Favorites:tmpUser.Favorites
-        }
-        updateDoc(doc(db, "Users", auth.currentUser.uid),Fav)
-        .then(()=>{
-          setisFav(!isFav)
-          console.log("added successfuly");
-          alert("Favorites Successfuly changed");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      }
-      const RemoveFav =()=>{
-        tmpUser.Favorites.splice(tmpUser.Favorites.indexOf(id),1)
-        const Favorites={
-          Favorites:tmpUser.Favorites
-        }
-        updateDoc(doc(db, "Users", auth.currentUser.uid),Favorites)
-        .then(()=>{
-          setisFav(!isFav)
-          console.log("Remove successfuly");
-          alert("fav Successfuly Remove");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      }
+      console.log(tmpUser);
+    });
+  }, [navigation]);
+  const AddtoCart = () => {
+    tmpUser.Cart.push(id);
+    const Cart = {
+      Cart: tmpUser.Cart,
+    };
+    updateDoc(doc(db, "Users", auth.currentUser.uid), Cart)
+      .then(() => {
+        setisCart(!isCart);
+        console.log("added successfuly");
+        alert("Cart Successfuly changed");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const RemoveCart = () => {
+    tmpUser.Cart.splice(tmpUser.Cart.indexOf(id), 1);
+    const Cart = {
+      Cart: tmpUser.Cart,
+    };
+    updateDoc(doc(db, "Users", auth.currentUser.uid), Cart)
+      .then(() => {
+        setisCart(!isCart);
+
+        console.log("Remove successfuly");
+        alert("Cart Successfuly Remove");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const AddtoFav = () => {
+    tmpUser.Favorites.push(id);
+    const Fav = {
+      Favorites: tmpUser.Favorites,
+    };
+    updateDoc(doc(db, "Users", auth.currentUser.uid), Fav)
+      .then(() => {
+        setisFav(!isFav);
+        console.log("added successfuly");
+        alert("Favorites Successfuly changed");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const RemoveFav = () => {
+    tmpUser.Favorites.splice(tmpUser.Favorites.indexOf(id), 1);
+    const Favorites = {
+      Favorites: tmpUser.Favorites,
+    };
+    updateDoc(doc(db, "Users", auth.currentUser.uid), Favorites)
+      .then(() => {
+        setisFav(!isFav);
+        console.log("Remove successfuly");
+        alert("fav Successfuly Remove");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <ScrollView style={{ backgroundColor: "#fff" }}>
       <View style={styles.image}>
@@ -116,7 +132,7 @@ const ProductDetails = ({ navigation, route }) => {
           );
         })}
       </View>
-        
+
       <View
         style={{
           marginHorizontal: 10,
@@ -127,64 +143,61 @@ const ProductDetails = ({ navigation, route }) => {
           borderWidth: 0,
         }}
       >
-        {
-         isCart ?
-        <Button
-          icon="cart"
-          mode="outlined"
-          color="#6E9FFF"
-          style={styles.ButtonStyle}
-          labelStyle={{ fontSize: 15 }}
-          onPress={RemoveCart}
-          uppercase={false}
-        >
-        Remove  Cart
-        </Button> :
-        <Button
-          icon="cart"
-          mode="outlined"
-          color="#6E9FFF"
-          style={styles.ButtonStyle}
-          labelStyle={{ fontSize: 15 }}
-          onPress={AddtoCart}
-          uppercase={false}>
-        Add to Cart
-
-        </Button>
-      }
-      {
-          isFav ?
-              <Button
-                mode="contained"
-                color="#6E9FFF"
-                style={styles.ButtonStyle}
-                icon="heart"
-                onPress={RemoveFav}
-                labelStyle={{ fontSize: 14, color: "white" }}
-                uppercase={false}
-              >
-                Remove From Fav
-              </Button>
-              :
-              <Button
-              mode="contained"
-              color="#6E9FFF"
-              style={styles.ButtonStyle}
-              icon="heart"
-              onPress={AddtoFav}
-              labelStyle={{ fontSize: 14, color: "white" }}
-              uppercase={false}
-            >
-                Add to Fav 
-
-            </Button>
-      }
+        {isCart ? (
+          <Button
+            icon="cart"
+            mode="outlined"
+            color="#6E9FFF"
+            style={styles.ButtonStyle}
+            labelStyle={{ fontSize: 15 }}
+            onPress={RemoveCart}
+            uppercase={false}
+          >
+            Remove Cart
+          </Button>
+        ) : (
+          <Button
+            icon="cart"
+            mode="outlined"
+            color="#6E9FFF"
+            style={styles.ButtonStyle}
+            labelStyle={{ fontSize: 15 }}
+            onPress={AddtoCart}
+            uppercase={false}
+          >
+            Add to Cart
+          </Button>
+        )}
+        {isFav ? (
+          <Button
+            mode="contained"
+            color="#6E9FFF"
+            style={styles.ButtonStyle}
+            icon="heart"
+            onPress={RemoveFav}
+            labelStyle={{ fontSize: 14, color: "white" }}
+            uppercase={false}
+          >
+            Remove From Fav
+          </Button>
+        ) : (
+          <Button
+            mode="contained"
+            color="#6E9FFF"
+            style={styles.ButtonStyle}
+            icon="heart"
+            onPress={AddtoFav}
+            labelStyle={{ fontSize: 14, color: "white" }}
+            uppercase={false}
+          >
+            Add to Fav
+          </Button>
+        )}
       </View>
-
     </ScrollView>
   );
- }
-export default ProductDetails; 
+};
+export default ProductDetails;
 
 const styles = StyleSheet.create({
   image: {
@@ -227,4 +240,4 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     // flexDirection:'row-reverse'
   },
-})
+});

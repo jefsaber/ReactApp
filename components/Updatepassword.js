@@ -3,16 +3,14 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import CustomInputs from "./CustomInputs";
 import { Button, TextInput } from "react-native-paper";
-import { getUserData } from "./homepage";
-import { db } from "../firebase/firebase";
+
+import { db, auth } from "../firebase/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 
 const Updatepassword = ({ navigation, route }) => {
-  const { Userid } = route.params;
+  const tmpUser = route.params.tmpUser;
   const { control, handleSubmit, watch } = useForm();
-  const User = getUserData();
-  //console.log(User);
-  console.log(Userid);
+
   const pass = watch("newPassword");
   const useTogglePasswordVisibility = () => {
     const [passwordVisibility, setPasswordVisibility] = useState(true);
@@ -36,10 +34,10 @@ const Updatepassword = ({ navigation, route }) => {
   };
   const { passwordVisibility, rightIcon, handlePasswordVisibility } =
     useTogglePasswordVisibility();
-  const docRef = doc(db, "Users", User.id);
+  const docRef = doc(db, "Users", auth.currentUser.uid);
 
   const onSubmit = (data) => {
-    if (data.oldPassword == User.Password) {
+    if (data.oldPassword == tmpUser.Password) {
       const Password = {
         Password: data.newPassword,
       };

@@ -3,45 +3,43 @@ import {
   Text,
   View,
   Keyboard,
-  TouchableWithoutFeedback,
-  KeyboardAvoidingView,
+  TouchableOpacity,
   Platform,
 } from "react-native";
 import { Button } from "react-native-paper";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import CustomInputs from "../CustomInputs";
 import KeyboardWrapper from "../KeyboardWrapper";
 import { db } from "../../firebase/firebase";
-//import { collection, addDoc, getDocs, where, query } from "firebase/firestore";
+import { addDoc, doc, collection } from "firebase/firestore";
+
 const Addproduct = () => {
   // const [ImageUrl, setImageUrl] = React.useState([]);
   const { control, handleSubmit } = useForm();
+
   const onSubmit = async (data) => {
-    const userRef = collection(db, "Products");
-    const q = query(userRef, where("Title", "==", data.Title));
-    // getDocs(q)
-    //   .then((result) => {
-    //     if (result.empty) {
-    //       addDoc(userRef, {
-    //         Title: data.Title,
-    //         Category: data.Category,
-    //         Colors: data.Color,
-    //         Price: data.Price,
-    //         Description: data.Description,
-    //         ImageUrl: data.ImageUrl,
-    //         Sizes: data.Sizes
-    //       }).then(() => {
-    //         console.warn("data submited");
-    //         navigation.navigate("Homepage");
-    //       });
-    //     } else {
-    //       alert("Product already exist");
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.warn(error);
-    //   });
+    let temp = [];
+    for (let i = 0; i < 4; i++) {
+      let n = (Math.random() * 0xfffff * 1000000).toString(16);
+      t = "#" + n.slice(0, 6);
+      temp.push(t);
+    }
+    addDoc(collection(db, "Products"), {
+      Category: data.Category,
+      Description: data.Description,
+      Price: data.Price,
+      Title: data.Title,
+      Colors: temp,
+      Sizes: [32, 34, 36, 38, 40],
+      ImageUrl: "",
+    })
+      .then(() => {
+        console.log("Product Added");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <View style={styles.container}>
@@ -90,31 +88,11 @@ const Addproduct = () => {
               }}
             />
             <CustomInputs
-              name="Colors"
-              placeholder="Color"
-              control={control}
-              rules={{
-                required: "Color is required",
-                minLength: {
-                  value: 3,
-                  message: "Color should be more than 3 characters",
-                },
-                maxLength: {
-                  value: 24,
-                  message: "Color should be less than 24 characters",
-                },
-              }}
-            />
-            <CustomInputs
               name="Price"
               placeholder="Price"
               control={control}
               rules={{
                 required: "Price is required",
-                minLength: {
-                  value: 3,
-                  message: "Price should be more than 3 characters",
-                },
                 maxLength: {
                   value: 24,
                   message: "Price should be less than 24 characters",
@@ -138,16 +116,16 @@ const Addproduct = () => {
               }}
             />
 
-            <View style={{ marginTop: 20, width: "100%" }}>
+            <TouchableOpacity style={{ marginTop: 20, width: "100%" }}>
               <Button
                 color="white"
                 labelStyle={{ fontWeight: "bold" }}
                 style={styles.button}
                 onPress={handleSubmit(onSubmit)}
               >
-                Sign up
+                Add Product
               </Button>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
       </KeyboardWrapper>

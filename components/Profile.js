@@ -64,42 +64,34 @@ const Profile = ({ navigation }) => {
   const getuserinfo = async () => {
     try {
       if (loading == false) {
-        console.log(auth.currentUser.uid);
+        //console.log(auth.currentUser.uid);
 
         getDoc(doc(db, "Users", auth.currentUser.uid)).then((docSnap) => {
           if (docSnap.exists) {
-            console.log(docSnap.data());
             setuser(docSnap.data());
-            console.log(tmpUser)
           }
-
-          // setLoading(true);
         });
-
-        //console.log(username);
       }
     } catch (err) {
       console.log(err);
     }
   };
-  // const getAllProducts = async () => {
-  //   // const q = query(where('country', 'in', tmpUser.Cart))
-  //   getDocs(collection(db, "Products"))
-  //     .then((docSnap) => {
-  //       docSnap.forEach((doc) => {
-  //         AllProducts.push({ ...doc.data(), id: doc.id });
-  //       });
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
+
+  auth
+    .signOut()
+    .then(() => {
+      // Sign-out successful.
+    })
+    .catch((error) => {
+      // An error happened.
+    });
 
   useEffect(() => {
-    // getAllProducts();
-    getuserinfo();
-  }, []);
-  //console.log(tmpUser);
+    const unsubscribe = navigation.addListener("focus", () => {
+      getuserinfo();
+    });
+  }, [navigation]);
+
   const [image, setImage] = useState(null);
 
   const addImage = async () => {
@@ -168,11 +160,11 @@ const Profile = ({ navigation }) => {
             contentStyle={{ justifyContent: "flex-start" }}
             icon="lock"
             mode="contained"
-            onPress={() =>
+            onPress={() => {
               navigation.navigate("Update Password", {
-                Userid: tmpUser.id,
-              })
-            }
+                tmpUser: tmpUser,
+              });
+            }}
           >
             Password Update
           </Button>
@@ -184,7 +176,9 @@ const Profile = ({ navigation }) => {
             contentStyle={{ justifyContent: "flex-start" }}
             icon="heart"
             mode="contained"
-            onPress={() => navigation.navigate("Favorites")}
+            onPress={() =>
+              navigation.navigate("Favorites", { tmpUser: tmpUser })
+            }
           >
             Favourites
           </Button>
@@ -194,9 +188,7 @@ const Profile = ({ navigation }) => {
             icon="cart"
             mode="contained"
             onPress={() => {
-              console.log(AllProducts)
-              console.log('sss')
-              navigation.navigate("Cart", { tmpUser:tmpUser})
+              navigation.navigate("Cart", { tmpUser: tmpUser });
             }}
           >
             Shopping Cart
@@ -241,7 +233,16 @@ const Profile = ({ navigation }) => {
         <View style={styles.dashboard}>
           <Button
             style={{ backgroundColor: "#6E9FFF" }}
-            onPress={() => navigation.navigate("Auth", { screen: "Sigin In" })}
+            onPress={() => {
+              auth
+                .signOut()
+                .then(() => {
+                  navigation.navigate("Auth", { screen: "Sigin In" });
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            }}
             mode="contained"
           >
             Logout
