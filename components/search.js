@@ -3,16 +3,54 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  Keyboard,
+  Keyboard,ScrollView
 } from "react-native";
-import Productlist from "./productlist";
-import React from "react";
+import React, { useState ,useEffect} from "react";
+import { Button } from "react-native-paper";
+import { db, auth } from "../firebase/firebase";
+import { doc, updateDoc ,getDoc,getDocs} from "firebase/firestore";
 import MaterialIcons from "@expo/vector-icons/Ionicons";
-import { data } from "../assets/Data";
-import { getAllProducts } from "../App.js";
-import { getUserData } from "./homepage";
 
 const Search = () => {
+
+  let AllProducts=[];
+  const [loading, setLoading] = useState(false);
+  const [tmpUser, setuser] = useState({});
+  const getuserinfo = async () => {
+    try {
+      if (loading == false) {
+        console.log(auth.currentUser.uid);
+
+        getDoc(doc(db, "Users", auth.currentUser.uid)).then((docSnap) => {
+          if (docSnap.exists) {
+            setuser(docSnap.data());
+          }
+          console.log("hereeeeee2");
+          setLoading(true);
+        });
+
+        //console.log(username);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const getAllProducts = async () => {
+    getDocs(collection(db, "Products"))
+      .then((docSnap) => {
+        docSnap.forEach((doc) => {
+          AllProducts.push({ ...doc.data(), id: doc.id });
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  useEffect(() => {
+    getuserinfo();
+    getAllProducts();
+  }, []);
+  
   const [searchQuery, setSearchQuery] = React.useState("");
   const onChangeSearch = (query) => {
     setSearchQuery(query);
@@ -20,12 +58,25 @@ const Search = () => {
       item;
     });
   };
-  let AllProducts = getAllProducts();
-  const tmpUser = getUserData();
+
 
   const data = AllProducts.filter((element) => {
     return tmpUser.Recent.includes(element.id);
   });
+  const RemoveRecent =()=>{
+    const docRef = doc(db, "Users",auth.currentUser.uid);
+   tmpUser.Recent.splice(tmpUser.Recent.indexof(item.id)) 
+   const Recent = {
+    Recent:tmpUser.Recent
+   }
+   updateDoc(docRef, Recent)
+   .then(() => {
+     console.log("added successfuly");
+   })
+   .catch((err) => {
+     console.log(err);
+   });
+  }
   const iconfunction = () => {
     console.log("1");
   };
@@ -61,12 +112,54 @@ const Search = () => {
           Keyboard.dismiss();
         }}
         style={{ marginHorizontal: 20, marginTop: 20 }}>
-        <Productlist
-          icon="close"
-          title="Recent"
-          data={data}
-          iconfunction={iconfunction}
-        />
+       <ScrollView>
+          <View>
+            <View style={styles.ProductsCont}>
+              {data.map((item) => {
+                console.log(item);
+                return (
+                  <TouchableOpacity
+                    delayPressIn={50}
+                    key={item.id}
+                    activeOpacity={0.4}
+                  >
+                    <View style={styles.ProductCont}>
+                      <View style={styles.ProductDetails}>
+                        <Image
+                          resizeMode="contain"
+                          source={require("../assets/nike1.png")}
+                          style={styles.ProductImage}
+                        />
+                        <View>
+                          <Text style={styles.ProductTitle}>{item.Title}</Text>
+                          <Text style={styles.ProductCategory}>
+                            {item.Category}
+                          </Text>
+                        </View>
+                      </View>
+                      <View style={{ flexDirection: "row" }}>
+                        <View>
+                          <Text>1pc</Text>
+                        </View>
+                        <View style={styles.PriceCont}>
+                          <Text>${item.Price}</Text>
+                        </View>
+                      </View>
+                      <TouchableOpacity
+                        delayPressIn={50}
+                        style={styles.CloseButton}
+                        hitSlop={{ top: 9, bottom: 9, left: 9, right: 9 }}
+                        onPress={() => RemoveRecent(item)}
+                      >
+                        <MaterialIcons name="heart" size={24} />
+                      </TouchableOpacity>
+                    </View>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          </View>
+        </ScrollView>
       </View>
     </View>
   );

@@ -9,14 +9,14 @@ import {
 import React, { useState ,useEffect} from "react";
 import { Button } from "react-native-paper";
 import { db, auth } from "../firebase/firebase";
-import { doc, updateDoc ,getDoc} from "firebase/firestore";
+import { doc, updateDoc ,getDoc,getDocs,collection} from "firebase/firestore";
 import MaterialIcons from "@expo/vector-icons/Ionicons";
 
 const Favorites = ({ navigation }) => {
   let AllProducts=[];
   const [loading, setLoading] = useState(false);
   const [tmpUser, setuser] = useState({});
-  const getuserinfo = async () => {
+  const getuserinfo =  () => {
     try {
       if (loading == false) {
         console.log(auth.currentUser.uid);
@@ -25,7 +25,6 @@ const Favorites = ({ navigation }) => {
           if (docSnap.exists) {
             setuser(docSnap.data());
           }
-          console.log("hereeeeee2");
           setLoading(true);
         });
 
@@ -35,7 +34,7 @@ const Favorites = ({ navigation }) => {
       console.log(err);
     }
   };
-  const getAllProducts = async () => {
+  const getAllProducts =  () => {
     getDocs(collection(db, "Products"))
       .then((docSnap) => {
         docSnap.forEach((doc) => {
@@ -77,7 +76,7 @@ const Favorites = ({ navigation }) => {
       <View>
         <Text style={styles.RecentText}>Favorites</Text>
       </View>
-      {tmpUser.Favorites.length != 0 ? (
+      {/* {tmpUser.Favorites.length != 0 ? ( */}
         <ScrollView>
           <View>
             <View style={styles.ProductsCont}>
@@ -126,41 +125,42 @@ const Favorites = ({ navigation }) => {
             </View>
           </View>
         </ScrollView>
-      ) : (
-        <View
-          style={{
-            height: "100%",
-          }}
-        >
-          <Text
-            style={{
-              marginTop: "50%",
-              textAlign: "center",
-              fontWeight: "bold",
-              fontSize: 22,
-              marginBottom: 20,
-            }}
-          >
-            Your Favorites List Is Empty
-          </Text>
-          <Button
-            style={{
-              backgroundColor: "#6E9FFF",
-              marginRight: 20,
-              marginLeft: 20,
-              padding: 6,
-            }}
-            labelStyle={{ fontWeight: "bold" }}
-            mode="contained"
-            title="Go to Shop"
-            onPress={() => navigation.navigate("Shop")}
-          >
-            go to shop
-          </Button>
-        </View>
-      )}
-    </View>
-  );
+     </View> ) 
+      // : (
+      //   <View
+      //     style={{
+      //       height: "100%",
+      //     }}
+      //   >
+      //     <Text
+      //       style={{
+      //         marginTop: "50%",
+      //         textAlign: "center",
+      //         fontWeight: "bold",
+      //         fontSize: 22,
+      //         marginBottom: 20,
+      //       }}
+      //     >
+      //       Your Favorites List Is Empty
+      //     </Text>
+      //     <Button
+      //       style={{
+      //         backgroundColor: "#6E9FFF",
+      //         marginRight: 20,
+      //         marginLeft: 20,
+      //         padding: 6,
+      //       }}
+      //       labelStyle={{ fontWeight: "bold" }}
+      //       mode="contained"
+      //       title="Go to Shop"
+      //       onPress={() => navigation.navigate("Shop")}
+      //     >
+      //       go to shop
+      //     </Button>
+      //   </View>
+      // )}
+   // </View>
+  //);
 };
 
 export default Favorites;

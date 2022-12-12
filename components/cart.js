@@ -6,19 +6,48 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TouchableRipple } from "react-native-paper";
 import MaterialIcons from "@expo/vector-icons/Ionicons";
 import { Button } from "react-native-paper";
 import { getAllProducts } from "../App.js";
-import { getUserData } from "./homepage";
-import { db } from "../firebase/firebase";
-import { doc, updateDoc } from "firebase/firestore";
+import { db, auth } from "../firebase/firebase";
+import { doc, updateDoc, getDoc } from "firebase/firestore";
 
 const Cart = ({ navigation }) => {
   let AllProducts = getAllProducts();
-  const tmpUser = getUserData();
+  //const tmpUser = getUserData();
+  const [tmpUser, setuser] = useState({});
 
+  const [loading, setLoading] = useState(false);
+
+  const getuserinfo = async () => {
+    try {
+      if (loading == false) {
+        console.log("enterrrede");
+
+        console.log(auth.currentUser.uid);
+
+        getDoc(doc(db, "Users", auth.currentUser.uid)).then((docSnap) => {
+          if (docSnap.exists) {
+            setuser(docSnap.data());
+          }
+
+          console.log("hereeeeee2");
+
+          setLoading(true);
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getuserinfo();
+  }, []);
+  //const data = AllProducts;
+  //console.log("hi" + tmpUser);
   const data = AllProducts.filter((element) => {
     return tmpUser.Cart.includes(element.id);
   });
@@ -26,7 +55,7 @@ const Cart = ({ navigation }) => {
   //console.log(Favorites);
   const RemoveCart = async (item) => {
     console.log(item.id);
-    const docRef = doc(db, "Users", tmpUser.id);
+    const docRef = doc(db, "Users", auth.currentUser.uid);
     tmpUser.Cart.splice(tmpUser.Cart.indexOf(item.id));
 
     const Cart = {
@@ -53,7 +82,6 @@ const Cart = ({ navigation }) => {
             <View>
               <View style={styles.ProductsCont}>
                 {cart.map((item) => {
-                  console.log(item);
                   return (
                     <TouchableOpacity
                       delayPressIn={50}
