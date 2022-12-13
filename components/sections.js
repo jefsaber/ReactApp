@@ -67,17 +67,6 @@ const Section = (props) => {
                   });
                 }}
               >
-                <TouchableOpacity
-                  style={{
-                    justifyContent: "flex-end",
-                    flexDirection: "row",
-                    paddingTop: 5,
-                    paddingRight: 5,
-                  }}
-                >
-                  <MaterialIcons name="heart-outline" size={24} color="red" />
-                </TouchableOpacity>
-
                 <Image source={require("../assets/nike1.png")} />
 
                 <Text

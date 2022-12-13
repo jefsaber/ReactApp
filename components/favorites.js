@@ -42,7 +42,7 @@ const Favorites = ({ navigation, route }) => {
   //console.log(data);
   const [Favorites, setFavorites] = useState(data);
   const RemoveFavorites = async (item) => {
-    const docRef = doc(db, "Users", auth.currentUser.uid);
+    //const docRef = ;
     tmpUser.Favorites.splice(tmpUser.Favorites.indexOf(item), 1);
     datamaker();
     //setdata(tmpUser.Favorites);
@@ -50,7 +50,7 @@ const Favorites = ({ navigation, route }) => {
     const Favorites = {
       Favorites: tmpUser.Favorites,
     };
-    updateDoc(docRef, Favorites)
+    updateDoc(doc(db, "Users", auth.currentUser.uid), Favorites)
       .then(() => {
         console.log("added successfuly");
         alert("Favorites Successfuly changed");
