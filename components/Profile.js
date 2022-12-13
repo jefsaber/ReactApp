@@ -77,15 +77,6 @@ const Profile = ({ navigation }) => {
     }
   };
 
-  auth
-    .signOut()
-    .then(() => {
-      // Sign-out successful.
-    })
-    .catch((error) => {
-      // An error happened.
-    });
-
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       getuserinfo();
@@ -132,7 +123,7 @@ const Profile = ({ navigation }) => {
         <View style={styles.imagecontainer}>
           {image && (
             <Image
-              source={{ uri: tmpUser.ImageUrl }}
+              source={{ uri: image }}
               style={{ width: 200, height: 200 }}
             />
           )}
